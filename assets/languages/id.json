@@ -1,0 +1,606 @@
+{
+    "otp": {
+        "resend": "Ulang",
+        "confirm": "Mengonfirmasi",
+        "verification": "Verifikasi OTP",
+        "verification_text": "Harap masukkan kode verifikasi di sini kami baru saja mengirim Anda di +6288 ****** 10",
+        "please_wait": "Mohon tunggu"
+    },
+    "signin": {
+        "welcome": "Selamat datang",
+        "sign_continue": "Masuk untuk melanjutkan",
+        "or_text": "Atau menandatangani dengan",
+        "login": "Gabung",
+        "enter_number": "Masukkan nomor ponsel Anda"
+    },
+    "app_exit": {
+        "exit_text": "Tekan kembali sekali lagi untuk keluar"
+    },
+    "signup": {
+        "welcome": "Selamat datang",
+        "Signup_continue": "Daftar untuk melanjutkan",
+        "register": "Daftar",
+        "or_text": "Atau mendaftar",
+        "mobile_number": "Nomor handphone",
+        "email_address": "Alamat email",
+        "name": "Nama"
+    },
+    "book": {
+        "packages": "Paket Liburan",
+        "flights": "Penerbangan",
+        "trains": "Kereta",
+        "cabs": "Taksi",
+        "hotels": "Hotel",
+        "choose_text": "Pilih apa yang perlu Anda pesan \n & nikmati jurnal Anda",
+        "book_now": "Pesan Anda \n tiket sekarang",
+        "select_city": "Pilih Kota"
+    },
+    "bottom_navigation": {
+        "home": "Rumah",
+        "booking": "Pemesanan",
+        "favorites": "Favorit",
+        "profile": "Profil"
+    },
+    "cab_book_histroy": {
+        "cab_booking": "Pemesanan taksi",
+        "pickup_from": "Mengambil dari",
+        "bali_airport": "Bandara Bali",
+        "dropup_to": "Menjatuhkan",
+        "hilton_hotel": "Hilton Hotel, Bali",
+        "time": "Waktu",
+        "monday": "Senin 21:00",
+        "give_rate": "Memberi tingkat",
+        "date": "15 Jan 2022",
+        "seater": "kursi laut",
+        "driver_number": "Nomor telepon driver",
+        "driver_name": "Nama pengemudi"
+    },
+    "cab_book_ongoing": {
+        "cab_booking": "Pemesanan taksi",
+        "pickup_from": "Mengambil dari",
+        "bali_airport": "Bandara Bali",
+        "dropup_to": "Menjatuhkan",
+        "hilton_hotel": "Hilton Hotel, Bali",
+        "time": "Waktu",
+        "monday": "Senin 21:00",
+        "cancel_booking": "Batalkan pemesanan",
+        "cancel_text": "Apakah Anda yakin ingin membatalkan pemesanan?",
+        "no": "Tidak",
+        "date": "15 Jan 2022",
+        "seater": "kursi laut",
+        "driver_number": "Nomor telepon driver",
+        "driver_name": "Nama pengemudi",
+        "cancel": "Membatalkan"
+    },
+    "cabs": {
+        "cabs": "Taksi",
+        "from_place": "Ngurah Rai International Airport",
+        "to_palce": "Hilton Hotel, Bali",
+        "to_palce2": "Tegallalang Rice Terraces",
+        "search_cabs": "Cari taksi",
+        "from": "Dari",
+        "to": "Ke",
+        "date": "Tanggal",
+        "pickup_time": "Waktu pickup",
+        "kids": "Anak-anak",
+        "adult": "Dewasa",
+        "airport_pickup": "Penjemputan Bandara",
+        "airport_drop": "Drop bandara",
+        "airport_cabs": "Taksi bandara",
+        "outstation_cabs": "Taksi outstation"
+    },
+    "cab_detail": {
+        "cabs": "Taksi",
+        "book_now": "Pesan sekarang",
+        "features": "Fitur",
+        "description": "Keterangan",
+        "driver": "Pengemudi",
+        "review": "tinjauan"
+    },
+    "cab_traveller_detail": {
+        "travellers_detail": "Detail pelancong",
+        "continue": "Melanjutkan",
+        "agree_box": "Setuju dengan Syarat & Ketentuan",
+        "Add_drop_address": "Tambahkan alamat drop up",
+        "add_pickup_address": "Tambahkan alamat penjemputan",
+        "full_name": "Nama lengkap",
+        "name_suggestion_text": "*(Nama harus sama seperti dalam bukti ID pemerintah.)",
+        "mobile_number": "Nomor handphone",
+        "email_suggestion_text": "*(Detail pemesanan Anda akan dikirim ke detail kontak di atas.)"
+    },
+    "checkin_checkout": {
+        "checkin_checkout": "Check -in & check out",
+        "kids": "Anak-anak",
+        "adult": "Dewasa",
+        "Number_room": "Jumlah kamar",
+        "check_date": "Tanggal check in"
+    },
+    "credit_card": {
+        "credit_card": "Kartu kredit",
+        "enter_holder_name": "Masukkan Nama Pemegang Kartu",
+        "card_holder_name": "Nama pemegang kartu",
+        "card_number": "Nomor kartu",
+        "cvv_code": "kode CVV",
+        "enter_cvv": "Masukkan kode CVV",
+        "make_payment": "Melakukan pembayaran"
+    },
+    "detail": {
+        "bali_packages": "Paket Bali",
+        "see_all": "Lihat semua",
+        "detail_text": "Penerbangan, aktivitas, transfer bandara",
+        "per_person": "(Per orang)",
+        "things_to_do": "Hal -hal yang harus dilihat dan dilakukan",
+        "review": "Tinjauan",
+        "images": "Gambar-gambar",
+        "description": "Keterangan",
+        "best_visit": "Waktu Terbaik Untuk Mengunjungi",
+        "months": "April, Mei, Juni dan September",
+        "seeall_review": "Lihat semua ulasan",
+        "about": "Tentang",
+        "things_todo": "Hal yang harus dilakukan",
+        "bali": "Bali",
+        "indonesia": "(Indonesia)"
+    },
+    "favorite_add_remove": {
+        "added_favorites": "Ditambahkan ke favorit",
+        "removed_favorites": "Dihapus dari favorit"
+    },
+    "favorite": {
+        "empty_list": "Daftar favorit kosong",
+        "empty_content": "Rasanya tidak ada yang disimpan dalam daftar Anda. \n Mari Tambahkan Seseorang",
+        "sunset_point": "Titik matahari terbenam yang menakjubkan",
+        "favourite": "Favorit",
+        "favorite_content": "Daftar favorit Anda"
+    },
+    "flights": {
+        "flights": "Penerbangan",
+        "depart": "Berangkat",
+        "return": "Kembali",
+        "search_flights": "Cari penerbangan",
+        "business_class": "Kelas bisnis",
+        "economy_class": "Kelas ekonomi",
+        "kids": "Anak-anak",
+        "adult": "Dewasa",
+        "date": "Tanggal",
+        "from": "Dari",
+        "to": "Ke",
+        "one_way": "SATU ARAH",
+        "round_trip": "Perjalanan pulang pergi"
+    },
+    "flight_detail": {
+        "details": "Detail",
+        "book_now": "Pesan sekarang",
+        "cabin_bag": "Tas kabin",
+        "kgs": "60 hingga 4 kg",
+        "check_in": "Mendaftar",
+        "checkin_kgs": "80 hingga 10 kg",
+        "air_India": "Air",
+        "gate": "Gerbang",
+        "flight_number": "Nomor penerbangan",
+        "class": "Kelas",
+        "business": "Bisnis",
+        "price": "harga",
+        "from": "Dari",
+        "non_stop": "Non -stop",
+        "to": "Ke"
+    },
+    "flight_ticket": {
+        "flight_ticket": "Tiket penerbangan",
+        "cancel_booking": "Batalkan pemesanan",
+        "cancle_text": "Apakah Anda yakin ingin membatalkan pemesanan?",
+        "no": "Tidak",
+        "cancel": "Membatalkan",
+        "boarding_pass": "Pass boarding",
+        "boarding_time": "Jam keberangkatan",
+        "economy": "Ekonomi",
+        "name_passanger": "Nama penumpang",
+        "from": "Dari",
+        "to": "Ke",
+        "seat": "Kursi",
+        "flight": "Penerbangan",
+        "gate": "Gerbang",
+        "date": "Tanggal",
+        "book_again": "Pesan lagi"
+    },
+    "flight_traveller_detail": {
+        "travellers_detail": "Detail pelancong",
+        "continue": "Melanjutkan",
+        "full_name": "Nama lengkap",
+        "name_suggestion_text": "*(Nama harus sama seperti dalam bukti ID pemerintah.)",
+        "mobile_number": "Nomor handphone",
+        "mobile_suggestion_text": "*(Detail pemesanan Anda akan dikirim ke detail kontak di atas.)",
+        "email_address": "Alamat email",
+        "agree_text": "Setuju dengan Syarat & Ketentuan"
+    },
+    "holiday_ongoing_histroy": {
+        "holiday_package": "Paket liburan",
+        "date": "Tanggal",
+        "no_travellers": "Tidak ada pelancong",
+        "person": "orang",
+        "give_rate": "Memberi tingkat",
+        "cancel_booking": "Batalkan pemesanan",
+        "cancle_content": "Apakah Anda yakin ingin membatalkan pemesanan?",
+        "experiance_text": "Percobaan Bali dalam anggaran Anda",
+        "text": "Penerbangan, aktivitas, transfer bandara",
+        "per_person": "(Per orang)",
+        "no": "Tidak",
+        "cancel": "Membatalkan"
+    },
+    "holiday_package": {
+        "holiday_package": "Paket liburan",
+        "top_destination": "Tujuan India teratas",
+        "discover_intrest": "Temukan dengan intrest",
+        "hot_new": "Panas & Baru",
+        "staring_from": "Menatap dari",
+        "per_person": "(per orang)",
+        "international_deationation": "Tujuan internasional teratas"
+    },
+    "home": {
+        "discover_intrest": "Temukan dengan intrest",
+        "indian_destination": "Tujuan India teratas",
+        "see_all": "Lihat semua",
+        "international_deationation": "Tujuan internasional teratas",
+        "upcoming_event": "Rencanakan perjalanan untuk acara mendatang",
+        "places": "tempat",
+        "latest_collection": "Koleksi terbaru untuk Anda",
+        "travel_text": "Hai Teresaki, siap tour?",
+        "search_destination": "Cari tujuan Anda",
+        "select_city": "Pilih Kota"
+    },
+    "hotel": {
+        "hotel": "Hotel",
+        "search_hotel": "Cari hotel",
+        "enter_city": "Masukkan nama kota, lokasi, area",
+        "city_name": "Mumbai, Gujarat",
+        "kids": "Anak-anak",
+        "adult": "Dewasa",
+        "no_room": "Jumlah kamar",
+        "check_date": "Tanggal check in"
+    },
+    "hotel_booking": {
+        "hotel_booking": "Detail Pemesanan Hotel",
+        "check_in_date": "Tanggal check in",
+        "date_in": "11 Des 2022",
+        "check_out_date": "Tanggal keluar",
+        "date_out": "14 Des 2022",
+        "give_rate": "Memberi tingkat",
+        "review": "tinjauan",
+        "per_night": "per malam",
+        "number_room": "jumlah kamar",
+        "bedroom": "2 kamar tidur",
+        "guest": "Tamu",
+        "kids": "anak-anak",
+        "adult": "dewasa",
+        "cancel_booking": "Batalkan pemesanan",
+        "cancel_text": "Apakah Anda yakin ingin membatalkan pemesanan?",
+        "no": "Tidak",
+        "cancel": "Membatalkan"
+    },
+    "hotel_detail": {
+        "review": "Tinjauan",
+        "per_person": "(per orang)",
+        "select_room": "Pilih kamar",
+        "see_all_review": "Lihat semua ulasan",
+        "location": "Lokasi",
+        "facilities": "Fasilitas",
+        "check_in_out": "Check -in & check out",
+        "guest_room": "Kamar tamu",
+        "description": "Keterangan",
+        "per_night": "(per malam)"
+    },
+    "hotel_find": {
+        "review": "tinjauan",
+        "per_night": "(per malam)",
+        "find_hotel": "Temukan hotel",
+        "search": "Cari",
+        "filter": "Saring",
+        "clear_all": "Bersihkan semua",
+        "apply": "Berlaku",
+        "property_type": "jenis properti",
+        "price_pernight": "Harga per malam",
+        "star": "Bintang"
+    },
+    "international_destination": {
+        "international_destination": "Tujuan internasional",
+        "search": "Cari",
+        "top_international_destination": "Tujuan internasional teratas"
+    },
+    "latest_collection": {
+        "latest_collection": "Koleksi terbaru untuk Anda",
+        "places": "tempat"
+    },
+    "location": {
+        "away": "jauh",
+        "reach_time": "Mencapai waktu"
+    },
+    "notification": {
+        "notification": "Pemberitahuan",
+        "no_notification": "Tidak ada pemberitahuan baru",
+        "older_notification": "Pemberitahuan yang lebih tua",
+        "new_notification": "Pemberitahuan baru",
+        "remove_notification": "Romove dari pemberitahuan"
+    },
+    "onboarding": {
+        "find_destination": "Temukan tujuan Anda",
+        "book_ticket": "Pesan tour Anda",
+        "enjoy_holiday": "Nikmati liburan Anda",
+        "skip": "melewati"
+    },
+    "package_detail": {
+        "per_person": "(per orang)",
+        "book_now": "Pesan sekarang",
+        "day": "Hari",
+        "detail": "Hotel, aktivitas, makanan",
+        "hotel": "Hotel",
+        "transfer": "Transfer",
+        "tour_information": "Informasi wisata",
+        "view_details": "Melihat rincian",
+        "seater": "kursi laut",
+        "included": "Termasuk",
+        "flight": "Penerbangan",
+        "transport": "Mengangkut",
+        "meals": "Makanan",
+        "activity": "Aktivitas",
+        "duration": "Durasi",
+        "days": "Hari -hari",
+        "nights": "Malam",
+        "start_point": "Titik awal",
+        "end_point": "Titik akhir",
+        "about_tour": "Tentang tur",
+        "review": "tinjauan"
+    },
+    "packages": {
+        "bali_packages": "Paket Bali",
+        "per_person": "(Per orang)"
+    },
+    "pick_location": {
+        "search_location": "Lokasi pencarian",
+        "pick_location": "Pilih lokasi ini"
+    },
+    "place_detail": {
+        "review": "Tinjauan",
+        "view_more": "Lihat lebih banyak",
+        "similar_places": "Tempat serupa",
+        "time_visit": "Saatnya berkunjung",
+        "details": "Detail"
+    },
+    "about_us": {
+        "about_us": "Tentang kami",
+        "data_policy": "Kebijakan Data",
+        "terms_condition": "Syarat dan Kondisi"
+    },
+    "booking": {
+        "per_person": "(Per orang)",
+        "view_detail": "Lihat Detail",
+        "per_night": "(per malam)",
+        "seater": "kursi laut",
+        "ongoing": "Sedang berlangsung",
+        "history": "Sejarah"
+    },
+    "edit_profile": {
+        "edit_profile": "Sunting profil",
+        "update": "Memperbarui",
+        "location": "Lokasi",
+        "choose_location": "Pilih lokasi Anda",
+        "email_id": "ID Email",
+        "enter_email": "Masukkan ID Email Anda",
+        "phone_number": "Nomor telepon",
+        "enter_number": "Masukkan nomor telepon Anda",
+        "name": "Nama",
+        "enter_name": "Masukkan nama Anda",
+        "change_profile": "Ubah foto profil",
+        "camera": "Kamera",
+        "gallery": "Galeri",
+        "remove_image": "Hapus gambar",
+        "change": "Mengubah"
+    },
+    "feed_back": {
+        "feedback": "Masukan",
+        "cancel": "Membatalkan",
+        "submit": "Kirim",
+        "give_feedback": "Berikan umpan balik Anda",
+        "write_something": "Tulis sesuatu di sini"
+    },
+    "help_support": {
+        "help_support": "Bantuan & Dukungan",
+        "get_touch": "Hubungi (24 jam)",
+        "call": "Panggilan",
+        "write_message": "Menulis pesan"
+    },
+    "languages": {
+        "language": "Bahasa"
+    },
+    "legal_info": {
+        "legal_information": "Informasi hukum"
+    },
+    "profile": {
+        "edit_profile": "Sunting profil",
+        "notification": "Pemberitahuan",
+        "my_booking": "Pemesanan saya",
+        "settings": "Pengaturan",
+        "legal_information": "Informasi hukum",
+        "help_support": "Bantuan & Dukungan",
+        "about_us": "Tentang kami",
+        "feedback": "Masukan",
+        "profile": "Profil",
+        "logout_text": "Apakah Anda yakin ingin keluar?",
+        "cancel": "Membatalkan",
+        "logout": "Keluar"
+    },
+    "settings": {
+        "settings": "Pengaturan",
+        "notification": "Pemberitahuan",
+        "your_account": "Akun Anda",
+        "account_support": "Dukungan akun",
+        "policy_community": "Kebijakan & Komunitas",
+        "your_trip": "Perjalananmu",
+        "bookings": "Pemesanan",
+        "messages": "Pesan",
+        "app_setting": "Pengaturan Aplikasi",
+        "languages": "Bahasa"
+    },
+    "write_message": {
+        "write_message": "Menulis pesan",
+        "message": "Pesan"
+    },
+    "rate": {
+        "your_review": "Ulasan Anda",
+        "review_text": "Tolong berikan tarif tempat ini jika Anda matang",
+        "send": "Kirim",
+        "say_somthing": "Katakan sesuatu"
+    },
+    "restaurant_detail": {
+        "review": "Tinjauan",
+        "similar_places": "Tempat serupa",
+        "location": "Lokasi",
+        "opening_time": "Waktu pembukaan",
+        "details": "Detail"
+    },
+    "review": {
+        "review": "Tinjauan"
+    },
+    "search": {
+        "trending_search": "Pencarian tren",
+        "recently_search": "Baru -baru ini pencarian",
+        "clear_all": "Bersihkan semua",
+        "search": "Mencari",
+        "search_hint": "Cari"
+    },
+    "search_cab": {
+        "seater": "kursi laut",
+        "cabs": "Taksi",
+        "search": "Cari",
+        "filter": "Saring",
+        "clear_all": "Bersihkan semua",
+        "apply": "Berlaku",
+        "star": "Bintang",
+        "seating_capacity": "Kapasitas tempat duduk",
+        "price": "Harga",
+        "cab_type": "Jenis taksi"
+    },
+    "selecte_room": {
+        "select_room": "Pilih kamar",
+        "per_night": "(per malam)",
+        "free_wifi": "Wifi gratis",
+        "television": "Televisi",
+        "air_conditioner": "Pendingin ruangan",
+        "bath": "Mandi",
+        "per_person": "(per orang)",
+        "make_payment": "Melakukan pembayaran"
+    },
+    "select_flight": {
+        "view_detail": "Lihat Detail",
+        "select_flights": "Pilih penerbangan",
+        "from": "Dari",
+        "to": "Ke",
+        "fastest": "Tercepat",
+        "cheapest": "Termurah",
+        "you_prefer": "Anda mungkin lebih suka"
+    },
+    "select_train": {
+        "seat_left": "Kursi Kiri",
+        "select_train": "Pilih Kereta",
+        "from": "Dari",
+        "to": "Ke"
+    },
+    "similar_place": {
+        "review": "Tinjauan",
+        "view_more": "Lihat lebih banyak",
+        "similar_places": "Tempat serupa",
+        "time_visit": "Saatnya berkunjung",
+        "details": "Detail"
+    },
+    "success": {
+        "back_home": "Kembali ke rumah",
+        "success_text": "Pembayaran Anda telah berhasil diproses",
+        "success_content": "Halaman saat secara otomatis dialihkan ke halaman utama atau tombol klik di bawah"
+    },
+    "things_to_do": {
+        "book_trip": "Pesan perjalanan Anda",
+        "flight": "Penerbangan",
+        "approximatly": "Kira -kira",
+        "view_detail": "Lihat Detail",
+        "from": "Dari",
+        "review": "tinjauan",
+        "per_night": "(per malam)",
+        "select_city": "Pilih Kota"
+    },
+    "indian_destination": {
+        "top_indian_destination": "Tujuan India teratas"
+    },
+    "train_book_success": {
+        "back_home": "Kembali ke rumah",
+        "train": "Kereta",
+        "ticket": "Tiket",
+        "name": "Nama",
+        "from": "Dari",
+        "to": "Ke",
+        "class": "Kelas",
+        "date": "Tanggal",
+        "seat": "Kursi",
+        "depart_time": "Waktu berangkat",
+        "number": "Nomor",
+        "name_passanger": "Nama penumpang",
+        "success_text": "Tiket Anda berhasil buku",
+        "congratulation": "Selamat!"
+    },
+    "trains": {
+        "trains": "Kereta",
+        "search": "Mencari",
+        "class": "Kelas",
+        "first_class": "Kelas utama",
+        "second_class": "kelas kedua",
+        "bussiness_class": "Kelas Bussiness",
+        "kids": "Anak-anak",
+        "date": "Tanggal",
+        "adult": "Dewasa",
+        "to": "Ke",
+        "from": "Dari"
+    },
+    "train_ticket": {
+        "train_ticket": "Tiket kereta api",
+        "book_again": "Pesan lagi",
+        "train": "Kereta",
+        "ticket": "Tiket",
+        "name": "Nama",
+        "from": "Dari",
+        "to": "Ke",
+        "class": "Kelas",
+        "date": "Tanggal",
+        "seat": "Kursi",
+        "depart_time": "Waktu berangkat",
+        "number": "Nomor",
+        "name_passanger": "Nama penumpang",
+        "cancel_booking": "Batalkan pemesanan",
+        "cancel_text": "Apakah Anda yakin ingin membatalkan pemesanan?",
+        "no": "Tidak",
+        "cancel": "Membatalkan"
+    },
+    "train_traveller_detail": {
+        "travellers_detail": "Detail pelancong",
+        "continue": "Melanjutkan",
+        "full_name": "Nama lengkap",
+        "name_suggestion_text": "*(Nama harus sama seperti dalam bukti ID pemerintah.)",
+        "mobile_number": "Nomor handphone",
+        "mobile_suggestion_text": "*(Detail pemesanan Anda akan dikirim ke detail kontak di atas.)",
+        "email_address": "Alamat email",
+        "agree_text": "Setuju dengan Syarat & Ketentuan"
+    },
+    "travel_detail": {
+        "travellers_detail": "Detail pelancong",
+        "continue": "Melanjutkan",
+        "agree_text": "Setuju dengan Syarat & Ketentuan",
+        "full_name": "Nama lengkap",
+        "name_suggestion_text": "*(Nama harus sama seperti dalam bukti ID pemerintah.)",
+        "mobile_number": "Nomor handphone",
+        "mobile_suggestion_text": "*(Detail pemesanan Anda akan dikirim ke detail kontak di atas.)",
+        "email_address": "Alamat email",
+        "no_travellers": "Tidak ada pelancong",
+        "kids": "Anak-anak",
+        "adult": "Dewasa",
+        "booking_date": "Tanggal pemesanan"
+    },
+    "upcoming_event": {
+        "upcoming_events": "Acara Mendatang"
+    }
+}

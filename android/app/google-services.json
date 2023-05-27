@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "264017055555",
+    "firebase_url": "https://skripsi-6bd6c-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "skripsi-6bd6c",
+    "storage_bucket": "skripsi-6bd6c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:264017055555:android:da23b6c13922a4440729f6",
+        "android_client_info": {
+          "package_name": "com.example.fl_travelapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "264017055555-gv0j7dtgv472gmpfkfqrn2if888im6jl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIegS27oSUwr1L54-J7pike881uxxwzwU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "264017055555-gv0j7dtgv472gmpfkfqrn2if888im6jl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "264017055555-l5r4ovmuvquo9e01qpf8jf6nimdig2hu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.touravelog"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:264017055555:android:e044f979aeed0f870729f6",
+        "android_client_info": {
+          "package_name": "com.example.tour_a_vlog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "264017055555-gv0j7dtgv472gmpfkfqrn2if888im6jl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIegS27oSUwr1L54-J7pike881uxxwzwU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "264017055555-gv0j7dtgv472gmpfkfqrn2if888im6jl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "264017055555-l5r4ovmuvquo9e01qpf8jf6nimdig2hu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.touravelog"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

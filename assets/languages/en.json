@@ -1,0 +1,606 @@
+{
+    "otp": {
+        "resend": "Resend",
+        "confirm": "Confirm",
+        "verification": "OTP verification",
+        "verification_text": "Please enter the verification code here we just sent you on +6288******10",
+        "please_wait": "Please wait"
+    },
+    "signin": {
+        "welcome": "Welcome",
+        "sign_continue": "Sign in to continue",
+        "or_text": "Or signin with",
+        "login": "Login",
+        "enter_number": "Enter your mobile number"
+    },
+    "app_exit": {
+        "exit_text": "Press back once again to exit"
+    },
+    "signup": {
+        "welcome": "Welcome",
+        "Signup_continue": "Sign up to continue",
+        "register": "Register",
+        "or_text": "Or sign up with",
+        "mobile_number": "Mobile Number",
+        "email_address": "Email Address",
+        "name": "Name"
+    },
+    "book": {
+        "packages": "Holidays packages",
+        "flights": "Flights",
+        "trains": "Trains",
+        "cabs": "Cabs",
+        "hotels": "Hotels",
+        "choose_text": "Choose what you need to book\n& enjoy your journy",
+        "book_now": "Book your\ntickets now",
+        "select_city": "Select city"
+    },
+    "bottom_navigation": {
+        "home": "Home",
+        "booking": "Booking",
+        "favorites": "Favorites",
+        "profile": "Profile"
+    },
+    "cab_book_histroy": {
+        "cab_booking": "Cab booking",
+        "pickup_from": "Pick up from",
+        "bali_airport": "Bali airport",
+        "dropup_to": "Drop up to",
+        "hilton_hotel": "Hilton hotel,bali",
+        "time": "Time",
+        "monday": "Monday 9PM",
+        "give_rate": "Give rate",
+        "date": "15 jan 2022",
+        "seater": "seater",
+        "driver_number": "Driver phone number",
+        "driver_name": "Driver name"
+    },
+    "cab_book_ongoing": {
+        "cab_booking": "Cab booking",
+        "pickup_from": "Pick up from",
+        "bali_airport": "Bali airport",
+        "dropup_to": "Drop up to",
+        "hilton_hotel": "Hilton hotel,bali",
+        "time": "Time",
+        "monday": "Monday 9PM",
+        "cancel_booking": "Cancel booking",
+        "cancel_text": "Are you sure want to cancel booking?",
+        "no": "No",
+        "date": "15 jan 2022",
+        "seater": "seater",
+        "driver_number": "Driver phone number",
+        "driver_name": "Driver name",
+        "cancel": "Cancel"
+    },
+    "cabs": {
+        "cabs": "Cabs",
+        "from_place": "Ngurah Rai International Airport",
+        "to_palce": "Hilton hotel,Bali",
+        "to_palce2": "Tegallalang Rice Terraces",
+        "search_cabs": "Search cabs",
+        "from": "From",
+        "to": "To",
+        "date": "Date",
+        "pickup_time": "Pickup time",
+        "kids": "Kids",
+        "adult": "Adult",
+        "airport_pickup": "Airport pickup",
+        "airport_drop": "Airport Drop",
+        "airport_cabs": "Airport cabs",
+        "outstation_cabs": "Outstation cabs"
+    },
+    "cab_detail": {
+        "cabs": "Cabs",
+        "book_now": "Book now",
+        "features": "Features",
+        "description": "Description",
+        "driver": "Driver",
+        "review": "review"
+    },
+    "cab_traveller_detail": {
+        "travellers_detail": "Travellers detail",
+        "continue": "Continue",
+        "agree_box": "Agree to terms & Conditions",
+        "Add_drop_address": "Add Drop up address",
+        "add_pickup_address": "Add pick up address",
+        "full_name": "Full name",
+        "name_suggestion_text": "*(Name should be same as in goverment ID proof. )",
+        "mobile_number": "Mobile Number",
+        "email_suggestion_text": "*( Your booking details will be sent to above contact details.)"
+    },
+    "checkin_checkout": {
+        "checkin_checkout": "Check in & check out",
+        "kids": "Kids",
+        "adult": "Adult",
+        "Number_room": "Number of room",
+        "check_date": "Check in date"
+    },
+    "credit_card": {
+        "credit_card": "Credit card",
+        "enter_holder_name": "Enter Card Holder Name",
+        "card_holder_name": "Card holder name",
+        "card_number": "Card Number",
+        "cvv_code": "CVV Code",
+        "enter_cvv": "Enter CVV Code",
+        "make_payment": "Make payment"
+    },
+    "detail": {
+        "bali_packages": "Bali packages",
+        "see_all": "See all",
+        "detail_text": "Flight, activity, airport transfers",
+        "per_person": "(Per Person)",
+        "things_to_do": "Things to see and do",
+        "review": "Review",
+        "images": "Images",
+        "description": "Description",
+        "best_visit": "Best Time to visit",
+        "months": "April, may,june and September",
+        "seeall_review": "See all review",
+        "about": "About",
+        "things_todo": "Things to do",
+        "bali": "Bali",
+        "indonesia": "(Indonesia)"
+    },
+    "favorite_add_remove": {
+        "added_favorites": "Added to Favorites",
+        "removed_favorites": "Removed from Favorites"
+    },
+    "favorite": {
+        "empty_list": "Empty Favorite list",
+        "empty_content": "It feel like nothing to save in your list.\nlet's add someone",
+        "sunset_point": "Amazing sunset point",
+        "favourite": "Favourite",
+        "favorite_content": "Your favourite list"
+    },
+    "flights": {
+        "flights": "Flights",
+        "depart": "Depart",
+        "return": "Return",
+        "search_flights": "Search flights",
+        "business_class": "Business class",
+        "economy_class": "Economy class",
+        "kids": "Kids",
+        "adult": "Adult",
+        "date": "Date",
+        "from": "From",
+        "to": "To",
+        "one_way": "One way",
+        "round_trip": "Round Trip"
+    },
+    "flight_detail": {
+        "details": "Details",
+        "book_now": "Book now",
+        "cabin_bag": "Cabin bag",
+        "kgs": "60 up to 4 kgs",
+        "check_in": "Check in",
+        "checkin_kgs": "80 up to 10 kgs",
+        "air_India": "Garuda",
+        "gate": "Gate",
+        "flight_number": "Flight number",
+        "class": "Class",
+        "business": "Business",
+        "price": "price",
+        "from": "From",
+        "non_stop": "Non stop",
+        "to": "To"
+    },
+    "flight_ticket": {
+        "flight_ticket": "Flight ticket",
+        "cancel_booking": "Cancel booking",
+        "cancle_text": "Are you sure want to cancel booking?",
+        "no": "No",
+        "cancel": "Cancel",
+        "boarding_pass": "Boarding pass",
+        "boarding_time": "Boarding time",
+        "economy": "Economy",
+        "name_passanger": "Name of passanger",
+        "from": "From",
+        "to": "To",
+        "seat": "Seat",
+        "flight": "Flight",
+        "gate": "Gate",
+        "date": "Date",
+        "book_again": "Book again"
+    },
+    "flight_traveller_detail": {
+        "travellers_detail": "Travellers detail",
+        "continue": "Continue",
+        "full_name": "Full name",
+        "name_suggestion_text": "*(Name should be same as in goverment ID proof. )",
+        "mobile_number": "Mobile Number",
+        "mobile_suggestion_text": "*( Your booking details will be sent to above contact details.)",
+        "email_address": "Email Address",
+        "agree_text": "Agree to terms & Conditions"
+    },
+    "holiday_ongoing_histroy": {
+        "holiday_package": "Holiday package",
+        "date": "Date",
+        "no_travellers": "No of travellers",
+        "person": "person",
+        "give_rate": "Give rate",
+        "cancel_booking": "Cancel booking",
+        "cancle_content": "Are you sure want to cancel booking?",
+        "experiance_text": "Experiance Bali in your Budgets",
+        "text": "Flight, activity, airport transfers",
+        "per_person": "(Per Person)",
+        "no": "No",
+        "cancel": "Cancel"
+    },
+    "holiday_package": {
+        "holiday_package": "Holiday package",
+        "top_destination": "Top Indonesia destination",
+        "discover_intrest": "Discover by intrest",
+        "hot_new": "Hot & New",
+        "staring_from": "Staring from",
+        "per_person": "(per person)",
+        "international_deationation": "Top international destination"
+    },
+    "home": {
+        "discover_intrest": "Discover by intrest",
+        "indonesia_destination": "Top Indonesia destination",
+        "see_all": "see all",
+        "international_deationation": "Top international destination",
+        "upcoming_event": "Plan travel for upcoming events",
+        "places": "places",
+        "latest_collection": "Latest Collection for you",
+        "travel_text": "Hi Teresaki,Ready to tour?",
+        "search_destination": "Search your destination",
+        "select_city": "Select city"
+    },
+    "hotel": {
+        "hotel": "Hotel",
+        "search_hotel": "Search Hotel",
+        "enter_city": "Enter city name,location,area",
+        "city_name": "Jakarta ,Indonesia",
+        "kids": "Kids",
+        "adult": "Adult",
+        "no_room": "Number of room",
+        "check_date": "Check in date"
+    },
+    "hotel_booking": {
+        "hotel_booking": "Hotel booking detail",
+        "check_in_date": "Check in date",
+        "date_in": "11 dec 2022",
+        "check_out_date": "Check out date",
+        "date_out": "14 dec 2022",
+        "give_rate": "Give rate",
+        "review": "review",
+        "per_night": "per night",
+        "number_room": "number of room",
+        "bedroom": "2 bedroom",
+        "guest": "Guest",
+        "kids": "kids",
+        "adult": "adult",
+        "cancel_booking": "Cancel booking",
+        "cancel_text": "Are you sure want to cancel booking?",
+        "no": "No",
+        "cancel": "Cancel"
+    },
+    "hotel_detail": {
+        "review": "Review",
+        "per_person": "(per person)",
+        "select_room": "Select room",
+        "see_all_review": "See all review",
+        "location": "Location",
+        "facilities": "Facilities",
+        "check_in_out": "Check in & check out",
+        "guest_room": "Guest & room",
+        "description": "Description",
+        "per_night": "(per night)"
+    },
+    "hotel_find": {
+        "review": "review",
+        "per_night": "(per night)",
+        "find_hotel": "Find a hotel",
+        "search": "search",
+        "filter": "Filter",
+        "clear_all": "clear all",
+        "apply": "Apply",
+        "property_type": "Property Type",
+        "price_pernight": "Price per night",
+        "star": "Star"
+    },
+    "international_destination": {
+        "international_destination": "International destination",
+        "search": "search",
+        "top_international_destination": "Top international destination"
+    },
+    "latest_collection": {
+        "latest_collection": "Latest collection for you",
+        "places": "places"
+    },
+    "location": {
+        "away": "away",
+        "reach_time": "Reach time"
+    },
+    "notification": {
+        "notification": "Notification",
+        "no_notification": "No new notification",
+        "older_notification": "Older notification",
+        "new_notification": "New notification",
+        "remove_notification": "Romove From Notification"
+    },
+    "onboarding": {
+        "find_destination": "Find your destination",
+        "book_ticket": "Book your tour",
+        "enjoy_holiday": "Enjoy your holiday",
+        "skip": "skip"
+    },
+    "package_detail": {
+        "per_person": "(per person)",
+        "book_now": "Book now",
+        "day": "Day",
+        "detail": "Hotel, activity,meal",
+        "hotel": "Hotel",
+        "transfer": "Transfer",
+        "tour_information": "Tour Information",
+        "view_details": "View details",
+        "seater": "seater",
+        "included": "Included",
+        "flight": "Flight",
+        "transport": "Transport",
+        "meals": "Meals",
+        "activity": "Activity",
+        "duration": "Duration",
+        "days": "Days",
+        "nights": "Nights",
+        "start_point": "Start Point",
+        "end_point": "End Point",
+        "about_tour": "About the tour",
+        "review": "review"
+    },
+    "packages": {
+        "bali_packages": "Bali packages",
+        "per_person": "(Per Person)"
+    },
+    "pick_location": {
+        "search_location": "Search location",
+        "pick_location": "Pick this location"
+    },
+    "place_detail": {
+        "review": "Review",
+        "view_more": "View more",
+        "similar_places": "Similar places",
+        "time_visit": "Time to visit",
+        "details": "Details"
+    },
+    "about_us": {
+        "about_us": "About us",
+        "data_policy": "Data Policy",
+        "terms_condition": "Terms and condition"
+    },
+    "booking": {
+        "per_person": "(Per Person)",
+        "view_detail": "View detail",
+        "per_night": "(per night)",
+        "seater": "seater",
+        "ongoing": "Ongoing",
+        "history": "History"
+    },
+    "edit_profile": {
+        "edit_profile": "Edit profile",
+        "update": "Update",
+        "location": "Location",
+        "choose_location": "Choose your location",
+        "email_id": "Email id",
+        "enter_email": "Enter your email id",
+        "phone_number": "Phone number",
+        "enter_number": "Enter your phone number",
+        "name": "Name",
+        "enter_name": "Enter your name",
+        "change_profile": "Change profile Photo",
+        "camera": "Camera",
+        "gallery": "Gallery",
+        "remove_image": "Remove image",
+        "change": "Change"
+    },
+    "feed_back": {
+        "feedback": "Feedback",
+        "cancel": "Cancel",
+        "submit": "Submit",
+        "give_feedback": "Give your feedback",
+        "write_something": "Write something here"
+    },
+    "help_support": {
+        "help_support": "Help & support",
+        "get_touch": "Get in touch(24 hour)",
+        "call": "Call",
+        "write_message": "Write a message"
+    },
+    "languages": {
+        "language": "Language"
+    },
+    "legal_info": {
+        "legal_information": "Legal information"
+    },
+    "profile": {
+        "edit_profile": "Edit profile",
+        "notification": "Notification",
+        "my_booking": "My booking",
+        "settings": "Settings",
+        "legal_information": "Legal Information",
+        "help_support": "Help & support",
+        "about_us": "About us",
+        "feedback": "Feedback",
+        "profile": "Profile",
+        "logout_text": "Are you sure you want to logout?",
+        "cancel": "Cancel",
+        "logout": "Logout"
+    },
+    "settings": {
+        "settings": "Settings",
+        "notification": "Notification",
+        "your_account": "Your account",
+        "account_support": "Account Support",
+        "policy_community": "Policy & community",
+        "your_trip": "Your Trip",
+        "bookings": "Bookings",
+        "messages": "Messages",
+        "app_setting": "App setting",
+        "languages": "Languages"
+    },
+    "write_message": {
+        "write_message": "Write a message",
+        "message": "Message"
+    },
+    "rate": {
+        "your_review": "Your review",
+        "review_text": "Please give a rate this place if you visted",
+        "send": "Send",
+        "say_somthing": "Say somthing"
+    },
+    "restaurant_detail": {
+        "review": "Review",
+        "similar_places": "Similar places",
+        "location": "Location",
+        "opening_time": "Opening time",
+        "details": "Details"
+    },
+    "review": {
+        "review": "Review"
+    },
+    "search": {
+        "trending_search": "Trending search",
+        "recently_search": "Recently search",
+        "clear_all": "Clear all",
+        "search": "Search",
+        "search_hint": "search"
+    },
+    "search_cab": {
+        "seater": "seater",
+        "cabs": "Cabs",
+        "search": "search",
+        "filter": "Filter",
+        "clear_all": "clear all",
+        "apply": "Apply",
+        "star": "Star",
+        "seating_capacity": "Seating capacity",
+        "price": "Price",
+        "cab_type": "Cab type"
+    },
+    "selecte_room": {
+        "select_room": "Select room",
+        "per_night": "(per night)",
+        "free_wifi": "Free wifi",
+        "television": "Television",
+        "air_conditioner": "Air conditioner",
+        "bath": "Bath",
+        "per_person": "(per person)",
+        "make_payment": "Make payment"
+    },
+    "select_flight": {
+        "view_detail": "View detail",
+        "select_flights": "Select flights",
+        "from": "From",
+        "to": "To",
+        "fastest": "Fastest",
+        "cheapest": "Cheapest",
+        "you_prefer": "You may prefer"
+    },
+    "select_train": {
+        "seat_left": "seat left",
+        "select_train": "Select train",
+        "from": "From",
+        "to": "To"
+    },
+    "similar_place": {
+        "review": "Review",
+        "view_more": "View more",
+        "similar_places": "Similar places",
+        "time_visit": "Time to visit",
+        "details": "Details"
+    },
+    "success": {
+        "back_home": "Back to home",
+        "success_text": "Your payment has been process successfully",
+        "success_content": "page while be automatically redirected to the main page or click button below"
+    },
+    "things_to_do": {
+        "book_trip": "Book Your trip",
+        "flight": "Flight",
+        "approximatly": "Approximatly",
+        "view_detail": "View detail",
+        "from": "From",
+        "review": "review",
+        "per_night": "(per night)",
+        "select_city": "Select city"
+    },
+    "indonesia_destination": {
+        "top_indonesia_destination": "Top Indonesia destination"
+    },
+    "train_book_success": {
+        "back_home": "Back to home",
+        "train": "Train",
+        "ticket": "Ticket",
+        "name": "Name",
+        "from": "From",
+        "to": "To",
+        "class": "Class",
+        "date": "Date",
+        "seat": "Seat",
+        "depart_time": "Depart time",
+        "number": "Number",
+        "name_passanger": "Name of passanger",
+        "success_text": "Your ticket has been book successfully",
+        "congratulation": "congratulation!"
+    },
+    "trains": {
+        "trains": "Trains",
+        "search": "Search",
+        "class": "Class",
+        "first_class": "First class",
+        "second_class": "second class",
+        "bussiness_class": "Bussiness class",
+        "kids": "Kids",
+        "date": "Date",
+        "adult": "Adult",
+        "to": "To",
+        "from": "From"
+    },
+    "train_ticket": {
+        "train_ticket": "Train ticket",
+        "book_again": "Book again",
+        "train": "Train",
+        "ticket": "Ticket",
+        "name": "Name",
+        "from": "From",
+        "to": "To",
+        "class": "Class",
+        "date": "Date",
+        "seat": "Seat",
+        "depart_time": "Depart time",
+        "number": "Number",
+        "name_passanger": "Name of passanger",
+        "cancel_booking": "Cancel booking",
+        "cancel_text": "Are you sure want to cancel booking?",
+        "no": "No",
+        "cancel": "Cancel"
+    },
+    "train_traveller_detail": {
+        "travellers_detail": "Travellers detail",
+        "continue": "Continue",
+        "full_name": "Full name",
+        "name_suggestion_text": "*(Name should be same as in goverment ID proof. )",
+        "mobile_number": "Mobile Number",
+        "mobile_suggestion_text": "*( Your booking details will be sent to above contact details.)",
+        "email_address": "Email Address",
+        "agree_text": "Agree to terms & Conditions"
+    },
+    "travel_detail": {
+        "travellers_detail": "Travellers detail",
+        "continue": "Continue",
+        "agree_text": "Agree to terms & Conditions",
+        "full_name": "Full name",
+        "name_suggestion_text": "*(Name should be same as in goverment ID proof. )",
+        "mobile_number": "Mobile Number",
+        "mobile_suggestion_text": "*( Your booking details will be sent to above contact details.)",
+        "email_address": "Email Address",
+        "no_travellers": "No of travellers",
+        "kids": "Kids",
+        "adult": "Adult",
+        "booking_date": "Booking date"
+    },
+    "upcoming_event": {
+        "upcoming_events": "Upcoming events"
+    }
+}
