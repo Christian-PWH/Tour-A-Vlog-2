@@ -1,11 +1,19 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
+import 'package:tour_a_vlog/3_auth/screens/signin.dart';
 
-class SignUpScreen extends StatelessWidget {
-  SignUpScreen({Key? key}) : super(key: key);
+import '../controller/auth_screen_controller.dart';
+
+class SignUpScreen extends ConsumerWidget {
+  static const routeName = '/sign_up';
+
+  SignUpScreen({super.key});
 
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -13,7 +21,7 @@ class SignUpScreen extends StatelessWidget {
   TextEditingController passwordController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: whiteColor,
@@ -35,7 +43,7 @@ class SignUpScreen extends StatelessWidget {
                     heightSpace,
                     heightSpace,
                     height5Space,
-                    bottomContainer(size, context),
+                    bottomContainer(size, context, ref),
                   ],
                 ),
               )
@@ -134,16 +142,16 @@ class SignUpScreen extends StatelessWidget {
     );
   }
 
-  bottomContainer(Size size, BuildContext context) {
+  bottomContainer(Size size, BuildContext context, ref) {
     return Column(
       children: [
-        arrowButton(size, context),
-        heightSpace,
-        heightSpace,
-        orText(context),
-        heightSpace,
-        heightSpace,
-        socialButtons(size),
+        arrowButton(size, context, ref),
+        // heightSpace,
+        // heightSpace,
+        // orText(context),
+        // heightSpace,
+        // heightSpace,
+        // socialButtons(size),
       ],
     );
   }
@@ -204,24 +212,79 @@ class SignUpScreen extends StatelessWidget {
     );
   }
 
-  arrowButton(Size size, context) {
-    return GestureDetector(
-      onTap: () {},
-      child: Container(
-        height: size.height * 0.1,
-        width: size.height * 0.1,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: LinearGradient(
-            colors: gradient,
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+  bool validate(context, ref) {
+    if (nameController.text.trim() != '' &&
+        emailController.text.trim() != '' &&
+        phoneController.text.trim() != '' &&
+        passwordController.text.trim() != '') {
+      return true;
+    }
+    ref.read(signInLoadingProvider.notifier).state = false;
+    showSnackBar(context, Icons.cancel_outlined, Colors.red,
+        "There is empty field!", Colors.red);
+    return false;
+  }
+
+  void firebaseSignUp(context, ref) async {
+    ref.read(signUpLoadingProvider.notifier).state = true;
+    if (validate(context, ref)) {
+      try {
+        final credential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
+        );
+        DatabaseReference dbRef =
+            FirebaseDatabase.instance.ref("Users/${credential.user?.uid}");
+        await dbRef.set({
+          "email": emailController.text.trim(),
+          "fullName": nameController.text.trim(),
+          "phoneNumber": phoneController.text.trim(),
+          "password": passwordController.text.trim(),
+        });
+        ref.read(signInLoadingProvider.notifier).state = false;
+        showSnackBar(context, Icons.done, Colors.greenAccent, "Sign up success",
+            Colors.greenAccent);
+        Navigator.pushNamed(context, SignInScreen.routeName);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          ref.read(signInLoadingProvider.notifier).state = false;
+          showSnackBar(context, Icons.cancel_outlined, Colors.red,
+              "The password provided is too weak.", Colors.red);
+        } else if (e.code == 'email-already-in-use') {
+          ref.read(signInLoadingProvider.notifier).state = false;
+          showSnackBar(context, Icons.cancel_outlined, Colors.red,
+              "The account already exists for that email.", Colors.red);
+        }
+      }
+    }
+  }
+
+  arrowButton(Size size, context, ref) {
+    final isLoading = ref.watch(signInLoadingProvider);
+    return Center(
+      child: GestureDetector(
+        onTap: () {
+          firebaseSignUp(context, ref);
+        },
+        child: Container(
+          height: size.height * 0.1,
+          width: size.height * 0.1,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: gradient,
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
           ),
-        ),
-        child: const Icon(
-          Icons.arrow_forward_rounded,
-          size: 40,
-          color: whiteColor,
+          child: isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : const Icon(
+                  Icons.arrow_forward_rounded,
+                  size: 40,
+                  color: whiteColor,
+                ),
         ),
       ),
     );

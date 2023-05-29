@@ -6,17 +6,26 @@ import 'package:tour_a_vlog/3_auth/screens/signup.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
-    case '/onBoarding':
+    case '/on_boarding':
       return PageTransition(
           child: const OnBoardingScreen(), type: PageTransitionType.fade);
-    case '/signIn':
+    case '/sign_in':
       return PageTransition(
-          child: SignInScreen(), type: PageTransitionType.rightToLeft);
-    case '/signUp':
+          child: SignInScreen(), type: PageTransitionType.fade);
+    case '/sign_up':
       return PageTransition(
-          child: SignUpScreen(), type: PageTransitionType.rightToLeft);
+          child: SignUpScreen(), type: PageTransitionType.fade);
     default:
       return PageTransition(
-          child: Container(), type: PageTransitionType.rightToLeft);
+          child: Scaffold(
+            appBar: AppBar(
+              title: const Text('Page Not Found'),
+              centerTitle: true,
+            ),
+            body: const Center(
+              child: Text("This page does not exists"),
+            ),
+          ),
+          type: PageTransitionType.scale);
   }
 }

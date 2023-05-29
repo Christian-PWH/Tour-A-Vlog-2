@@ -1,12 +1,16 @@
 // ignore_for_file: must_be_immutable
 
 import 'dart:io';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
+import 'package:tour_a_vlog/3_auth/controller/auth_screen_controller.dart';
+import 'package:tour_a_vlog/3_auth/screens/signup.dart';
 
-class SignInScreen extends StatelessWidget {
+class SignInScreen extends ConsumerWidget {
+  static const routeName = '/sign_in';
   TextEditingController passwordController = TextEditingController();
   TextEditingController emailController = TextEditingController();
 
@@ -15,8 +19,9 @@ class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
+    final isLoading = ref.watch(signInLoadingProvider);
     return WillPopScope(
       onWillPop: () async {
         bool backStatus = onWillPop(context);
@@ -50,7 +55,7 @@ class SignInScreen extends StatelessWidget {
                       heightSpace,
                       heightSpace,
                       height5Space,
-                      bottomContainer(size, context),
+                      bottomContainer(size, isLoading, context, ref),
                     ],
                   ),
                 )
@@ -78,16 +83,16 @@ class SignInScreen extends StatelessWidget {
     );
   }
 
-  bottomContainer(Size size, context) {
+  bottomContainer(Size size, bool isLoading, context, ref) {
     return Column(
       children: [
-        arrowButton(size, context),
-        heightSpace,
-        heightSpace,
-        orText(context),
-        heightSpace,
-        heightSpace,
-        socialButtons(size),
+        arrowButton(size, isLoading, context, ref),
+        // heightSpace,
+        // heightSpace,
+        // orText(context),
+        // heightSpace,
+        // heightSpace,
+        // socialButtons(size),
         heightSpace,
         heightSpace,
         continueText(context)
@@ -149,34 +154,92 @@ class SignInScreen extends StatelessWidget {
   }
 
   continueText(context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, '/signup');
-      },
-      child: const Text(
-        " Don't have account? SignUp now!",
+    return Center(
+      child: GestureDetector(
+        onTap: () {
+          Navigator.pushNamed(context, SignUpScreen.routeName);
+        },
+        child: RichText(
+          text: const TextSpan(
+            style: TextStyle(
+              fontSize: 14.0,
+              color: Colors.black,
+            ),
+            children: <TextSpan>[
+              TextSpan(text: "Don't have account? "),
+              TextSpan(
+                  text: "SignUp",
+                  style: TextStyle(
+                      color: Colors.lightBlue, fontWeight: FontWeight.bold)),
+              TextSpan(text: " now!"),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  arrowButton(Size size, context) {
-    return GestureDetector(
-      onTap: () {},
-      child: Container(
-        height: size.height * 0.1,
-        width: size.height * 0.1,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: LinearGradient(
-            colors: gradient,
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+  bool validate(context, ref) {
+    if (emailController.text.trim() != '' &&
+        passwordController.text.trim() != '') {
+      return true;
+    }
+    ref.read(signInLoadingProvider.notifier).state = false;
+    showSnackBar(context, Icons.cancel_outlined, Colors.red,
+        "There is empty field!", Colors.red);
+    return false;
+  }
+
+  void firebaseSignIn(context, ref) async {
+    ref.read(signInLoadingProvider.notifier).state = true;
+    if (validate(context, ref)) {
+      try {
+        final credential =
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
+        );
+        ref.read(signInLoadingProvider.notifier).state = false;
+        showSnackBar(context, Icons.done, Colors.greenAccent,
+            "Sign In Success.", Colors.greenAccent);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          ref.read(signInLoadingProvider.notifier).state = false;
+          showSnackBar(context, Icons.cancel_outlined, Colors.red,
+              "No user found for that email.", Colors.red);
+        } else if (e.code == 'wrong-password') {
+          ref.read(signInLoadingProvider.notifier).state = false;
+          showSnackBar(context, Icons.cancel_outlined, Colors.red,
+              "Wrong password provided for that user.", Colors.red);
+        }
+      }
+    }
+  }
+
+  arrowButton(Size size, bool isLoading, context, ref) {
+    return Center(
+      child: GestureDetector(
+        onTap: () {
+          firebaseSignIn(context, ref);
+        },
+        child: Container(
+          height: size.height * 0.1,
+          width: size.height * 0.1,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: gradient,
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
           ),
-        ),
-        child: const Icon(
-          Icons.arrow_forward_rounded,
-          size: 40,
-          color: whiteColor,
+          child: isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : const Icon(
+                  Icons.arrow_forward_rounded,
+                  size: 40,
+                  color: whiteColor,
+                ),
         ),
       ),
     );
@@ -249,7 +312,7 @@ class SignInScreen extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            getTranslate(context, 'signup.register'),
+            getTranslate(context, 'signin.login'),
             style: semibold22text,
           ),
           heightSpace,
@@ -262,6 +325,47 @@ class SignInScreen extends StatelessWidget {
       ),
     );
   }
+
+  // textField(
+  //   context,
+  //   TextEditingController textEditingController,
+  //   TextInputType textInputType,
+  //   IconData icon,
+  //   String text,
+  // ) {
+  //   return Container(
+  //     decoration: BoxDecoration(
+  //       color: whiteColor,
+  //       borderRadius: BorderRadius.circular(10),
+  //       boxShadow: [
+  //         BoxShadow(
+  //           color: greyColor.withOpacity(0.5),
+  //           blurRadius: 5,
+  //         )
+  //       ],
+  //     ),
+  //     child: Theme(
+  //       data: Theme.of(context).copyWith(
+  //         colorScheme: const ColorScheme.light(
+  //           primary: Color(0xff6879DC),
+  //         ),
+  //       ),
+  //       child: TextField(
+  //         controller: emailController,
+  //         keyboardType: TextInputType.emailAddress,
+  //         decoration: InputDecoration(
+  //           border: InputBorder.none,
+  //           prefixIcon: const Icon(
+  //             Icons.email_outlined,
+  //             size: 18,
+  //           ),
+  //           hintText: getTranslate(context, 'signin.email_address'),
+  //           hintStyle: regular14grey,
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   emailField(context) {
     return Container(
@@ -290,7 +394,7 @@ class SignInScreen extends StatelessWidget {
               Icons.email_outlined,
               size: 18,
             ),
-            hintText: getTranslate(context, 'signup.email_address'),
+            hintText: getTranslate(context, 'signin.email_address'),
             hintStyle: regular14grey,
           ),
         ),

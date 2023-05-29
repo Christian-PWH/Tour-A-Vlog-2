@@ -1,24 +1,42 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:onboarding/onboarding.dart';
+import 'package:tour_a_vlog/2_splash_onBoarding/controller/onboarding_screen_controller.dart';
+import 'package:tour_a_vlog/3_auth/screens/signin.dart';
 
-class OnBoardingScreen extends StatefulWidget {
+class OnBoardingScreen extends ConsumerStatefulWidget {
+  static const routeName = '/on_boarding';
+
   const OnBoardingScreen({super.key});
 
   @override
-  State<OnBoardingScreen> createState() => _OnBoardingScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _OnBoardingScreenState();
 }
 
-class _OnBoardingScreenState extends State<OnBoardingScreen> {
+class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
   int selectedPage = 0;
 
   DateTime? backPressTime;
 
   @override
+  void initState() {
+    if (FirebaseAuth.instance.currentUser != null) {
+      ref.read(onBoardingIsLoginProvider.notifier).state = true;
+    } else {
+      ref.read(onBoardingIsLoginProvider.notifier).state = false;
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final isLogin = ref.watch(onBoardingIsLoginProvider);
     final size = MediaQuery.of(context).size;
     List<PageModel> onBoardingPageList = [
       PageModel(
@@ -171,7 +189,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                 )
                               : TextButton(
                                   onPressed: () {
-                                    Navigator.pushNamed(context, '/signIn');
+                                    if (isLogin) {
+                                      debugPrint("Has Login");
+                                    } else {
+                                      Navigator.pushNamed(
+                                          context, SignInScreen.routeName);
+                                    }
                                   },
                                   child: Text(
                                     getTranslate(context, 'onboarding.skip'),
@@ -186,7 +209,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                 setState(() {
                                   if (selectedPage ==
                                       onBoardingPageList.length - 1) {
-                                    Navigator.pushNamed(context, '/signIn');
+                                    if (isLogin) {
+                                      debugPrint("Has Login");
+                                    } else {
+                                      Navigator.pushNamed(
+                                          context, SignInScreen.routeName);
+                                    }
                                   } else {
                                     selectedPage++;
                                   }

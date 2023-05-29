@@ -11,7 +11,8 @@
         "sign_continue": "Masuk untuk melanjutkan",
         "or_text": "Atau menandatangani dengan",
         "login": "Gabung",
-        "enter_number": "Masukkan nomor ponsel Anda"
+        "enter_number": "Masukkan nomor ponsel Anda",
+        "email_address": "Alamat email"
     },
     "app_exit": {
         "exit_text": "Tekan kembali sekali lagi untuk keluar"

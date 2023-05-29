@@ -11,7 +11,8 @@
         "sign_continue": "Sign in to continue",
         "or_text": "Or signin with",
         "login": "Login",
-        "enter_number": "Enter your mobile number"
+        "enter_number": "Enter your mobile number",
+        "email_address": "Email Address"
     },
     "app_exit": {
         "exit_text": "Press back once again to exit"
