@@ -24,16 +24,6 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
 
   DateTime? backPressTime;
 
-  @override
-  void initState() {
-    if (FirebaseAuth.instance.currentUser != null) {
-      ref.read(onBoardingIsLoginProvider.notifier).state = true;
-    } else {
-      ref.read(onBoardingIsLoginProvider.notifier).state = false;
-    }
-    super.initState();
-  }
-
   List<PageModel> onBoardingPageList(context, Size size) {
     return [
       PageModel(
@@ -142,8 +132,21 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    Future(
+      () {
+        if (FirebaseAuth.instance.currentUser != null) {
+          ref.read(onBoardingIsLoginProvider.notifier).state = true;
+        } else {
+          ref.read(onBoardingIsLoginProvider.notifier).state = false;
+        }
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final isLogin = ref.watch(onBoardingIsLoginProvider);
     final size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async {
@@ -193,7 +196,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                                 )
                               : TextButton(
                                   onPressed: () {
-                                    if (isLogin) {
+                                    if (ref.watch(onBoardingIsLoginProvider)) {
                                       debugPrint("Has Login");
                                     } else {
                                       Navigator.pushNamed(
@@ -214,7 +217,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                                   if (selectedPage ==
                                       onBoardingPageList(context, size).length -
                                           1) {
-                                    if (isLogin) {
+                                    if (ref.watch(onBoardingIsLoginProvider)) {
                                       debugPrint("Has Login");
                                     } else {
                                       Navigator.pushNamed(
