@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
+import 'package:tour_a_vlog/1_common/widgets/show_snackbar.dart';
 import 'package:tour_a_vlog/3_auth/controller/auth_screen_controller.dart';
 import 'package:tour_a_vlog/3_auth/screens/signup.dart';
+import 'package:tour_a_vlog/4_home_navigation/bottom_navigation.dart';
 
 class SignInScreen extends ConsumerWidget {
   static const routeName = '/sign_in';
@@ -87,69 +89,10 @@ class SignInScreen extends ConsumerWidget {
     return Column(
       children: [
         arrowButton(size, isLoading, context, ref),
-        // heightSpace,
-        // heightSpace,
-        // orText(context),
-        // heightSpace,
-        // heightSpace,
-        // socialButtons(size),
         heightSpace,
         heightSpace,
         continueText(context)
       ],
-    );
-  }
-
-  socialButtons(Size size) {
-    return Row(
-      children: [
-        Expanded(
-          child: socialIcon(size, const Color(0xff4A75EB),
-              "assets/auth/la_facebook-f.png", "Facebook"),
-        ),
-        widthSpace,
-        widthSpace,
-        Expanded(
-          child: socialIcon(size, const Color(0xffFB3434),
-              "assets/auth/carbon_logo-google.png", "Google"),
-        ),
-      ],
-    );
-  }
-
-  socialIcon(Size size, Color color, String icon, String name) {
-    return Container(
-      height: size.height * 0.07,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: greyColor.withOpacity(0.5),
-            blurRadius: 5,
-          )
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            icon,
-            height: size.height * 0.03,
-            width: size.height * 0.03,
-            fit: BoxFit.cover,
-          ),
-          widthSpace,
-          Text(name, style: semibold16white)
-        ],
-      ),
-    );
-  }
-
-  orText(context) {
-    return Text(
-      getTranslate(context, 'signin.or_text'),
-      style: medium14grey94,
     );
   }
 
@@ -201,6 +144,7 @@ class SignInScreen extends ConsumerWidget {
         ref.read(signInLoadingProvider.notifier).state = false;
         showSnackBar(context, Icons.done, Colors.greenAccent,
             "Sign In Success.", Colors.greenAccent);
+        Navigator.pushNamed(context, BottomNavigationScreen.routeName);
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           ref.read(signInLoadingProvider.notifier).state = false;
@@ -244,38 +188,6 @@ class SignInScreen extends ConsumerWidget {
     );
   }
 
-  void showSnackBar(BuildContext context, IconData? icon, Color? iconColor,
-      String? message, Color? messageColor) {
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Row(
-            children: [
-              Icon(
-                icon,
-                color: iconColor,
-              ),
-              const SizedBox(
-                width: 10.0,
-              ),
-              Flexible(
-                child: Text(
-                  message!,
-                  style: TextStyle(
-                    color: messageColor!,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  softWrap: true,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-  }
-
   imageContainer(Size size) {
     return Container(
       height: size.height * 0.35,
@@ -316,57 +228,37 @@ class SignInScreen extends ConsumerWidget {
           ),
           heightSpace,
           heightSpace,
-          emailField(context),
+          textField(
+            context,
+            emailController,
+            TextInputType.emailAddress,
+            false,
+            Icons.email_outlined,
+            'signin.email_address',
+          ),
           heightSpace,
           heightSpace,
-          passwordField(context),
+          textField(
+            context,
+            passwordController,
+            TextInputType.visiblePassword,
+            true,
+            Icons.password_outlined,
+            'signin.password',
+          ),
         ],
       ),
     );
   }
 
-  // textField(
-  //   context,
-  //   TextEditingController textEditingController,
-  //   TextInputType textInputType,
-  //   IconData icon,
-  //   String text,
-  // ) {
-  //   return Container(
-  //     decoration: BoxDecoration(
-  //       color: whiteColor,
-  //       borderRadius: BorderRadius.circular(10),
-  //       boxShadow: [
-  //         BoxShadow(
-  //           color: greyColor.withOpacity(0.5),
-  //           blurRadius: 5,
-  //         )
-  //       ],
-  //     ),
-  //     child: Theme(
-  //       data: Theme.of(context).copyWith(
-  //         colorScheme: const ColorScheme.light(
-  //           primary: Color(0xff6879DC),
-  //         ),
-  //       ),
-  //       child: TextField(
-  //         controller: emailController,
-  //         keyboardType: TextInputType.emailAddress,
-  //         decoration: InputDecoration(
-  //           border: InputBorder.none,
-  //           prefixIcon: const Icon(
-  //             Icons.email_outlined,
-  //             size: 18,
-  //           ),
-  //           hintText: getTranslate(context, 'signin.email_address'),
-  //           hintStyle: regular14grey,
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  emailField(context) {
+  textField(
+    context,
+    TextEditingController textEditingController,
+    TextInputType textInputType,
+    bool obscureText,
+    IconData icon,
+    String text,
+  ) {
     return Container(
       decoration: BoxDecoration(
         color: whiteColor,
@@ -385,50 +277,16 @@ class SignInScreen extends ConsumerWidget {
           ),
         ),
         child: TextField(
-          controller: emailController,
-          keyboardType: TextInputType.emailAddress,
+          controller: textEditingController,
+          keyboardType: textInputType,
+          obscureText: obscureText,
           decoration: InputDecoration(
             border: InputBorder.none,
-            prefixIcon: const Icon(
-              Icons.email_outlined,
+            prefixIcon: Icon(
+              icon,
               size: 18,
             ),
-            hintText: getTranslate(context, 'signin.email_address'),
-            hintStyle: regular14grey,
-          ),
-        ),
-      ),
-    );
-  }
-
-  passwordField(context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: whiteColor,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: greyColor.withOpacity(0.5),
-            blurRadius: 5,
-          )
-        ],
-      ),
-      child: Theme(
-        data: Theme.of(context).copyWith(
-          colorScheme: const ColorScheme.light(
-            primary: Color(0xff6879DC),
-          ),
-        ),
-        child: TextField(
-          controller: passwordController,
-          keyboardType: TextInputType.visiblePassword,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            prefixIcon: const Icon(
-              Icons.password_outlined,
-              size: 18,
-            ),
-            hintText: getTranslate(context, "password"),
+            hintText: getTranslate(context, text),
             hintStyle: regular14grey,
           ),
         ),

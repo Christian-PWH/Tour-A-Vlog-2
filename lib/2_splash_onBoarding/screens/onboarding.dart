@@ -34,11 +34,8 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final isLogin = ref.watch(onBoardingIsLoginProvider);
-    final size = MediaQuery.of(context).size;
-    List<PageModel> onBoardingPageList = [
+  List<PageModel> onBoardingPageList(context, Size size) {
+    return [
       PageModel(
         widget: DecoratedBox(
           decoration: const BoxDecoration(
@@ -142,6 +139,12 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
         ),
       )
     ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isLogin = ref.watch(onBoardingIsLoginProvider);
+    final size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async {
         bool backStatus = onWillPop(context);
@@ -178,7 +181,8 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          selectedPage == onBoardingPageList.length - 1
+                          selectedPage ==
+                                  onBoardingPageList(context, size).length - 1
                               ? TextButton(
                                   onPressed: () {},
                                   child: Text(
@@ -208,7 +212,8 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                               setState(() {
                                 setState(() {
                                   if (selectedPage ==
-                                      onBoardingPageList.length - 1) {
+                                      onBoardingPageList(context, size).length -
+                                          1) {
                                     if (isLogin) {
                                       debugPrint("Has Login");
                                     } else {
@@ -238,7 +243,7 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                             selectedPage = index;
                           });
                         },
-                        pages: onBoardingPageList,
+                        pages: onBoardingPageList(context, size),
                       ),
                     ),
                   ],
