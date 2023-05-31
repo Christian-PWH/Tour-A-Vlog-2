@@ -75,6 +75,6 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
               child: Text("This page does not exists"),
             ),
           ),
-          type: PageTransitionType.scale);
+          type: PageTransitionType.fade);
   }
 }
