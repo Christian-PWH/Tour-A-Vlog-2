@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
+import 'package:tour_a_vlog/5_pages/1_detail/detail.dart';
+import 'package:tour_a_vlog/5_pages/1_search/search.dart';
 
 class InternationalDestination extends StatefulWidget {
   static const routeName = '/international_destination';
@@ -79,7 +81,7 @@ class _InternationalDestinationState extends State<InternationalDestination> {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, '/detail');
+                Navigator.pushNamed(context, DetailScreen.routeName);
               },
               child: Container(
                 margin: const EdgeInsets.all(fixPadding),
@@ -225,7 +227,7 @@ class _InternationalDestinationState extends State<InternationalDestination> {
               ),
               child: TextField(
                 onTap: () {
-                  Navigator.pushNamed(context, '/search');
+                  Navigator.pushNamed(context, SearchScreen.routeName);
                 },
                 readOnly: true,
                 decoration: InputDecoration(

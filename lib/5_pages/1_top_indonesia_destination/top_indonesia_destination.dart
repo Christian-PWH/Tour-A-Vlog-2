@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
+import 'package:tour_a_vlog/5_pages/1_detail/detail.dart';
 
 class TopIndonesiaDestination extends StatelessWidget {
   static const routeName = '/top_indonesia_destination';
@@ -63,7 +64,7 @@ class TopIndonesiaDestination extends StatelessWidget {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/detail');
+              Navigator.pushNamed(context, DetailScreen.routeName);
             },
             child: Container(
               decoration: BoxDecoration(

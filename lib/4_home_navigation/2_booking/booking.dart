@@ -3,6 +3,9 @@ import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:tour_a_vlog/1_common/widgets/column_builder.dart';
 import 'package:tour_a_vlog/4_home_navigation/1_home/home.dart';
+import 'package:tour_a_vlog/5_pages/2_flights/flights.dart';
+import 'package:tour_a_vlog/5_pages/2_holiday_package/holiday_packages.dart';
+import 'package:tour_a_vlog/5_pages/2_hotel/hotel.dart';
 
 class BookingScreen extends StatefulWidget {
   static const routeName = '/booking';
@@ -74,7 +77,7 @@ class _BookingScreenState extends State<BookingScreen> {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/holidayPackages');
+                    Navigator.pushNamed(context, HolidayPackages.routeName);
                   },
                   child: Container(
                     width: size.width * 0.7,
@@ -124,7 +127,7 @@ class _BookingScreenState extends State<BookingScreen> {
                             "assets/notification/Group.png",
                             getTranslate(context, 'Open Trip'),
                             const Color(0xffF27D65), () {
-                          Navigator.pushNamed(context, '/flights');
+                          Navigator.pushNamed(context, Flights.routeName);
                         }),
                       ),
                     ],
@@ -144,7 +147,7 @@ class _BookingScreenState extends State<BookingScreen> {
                             "assets/notification/ri_hotel-line.png",
                             getTranslate(context, 'Private Tour'),
                             const Color(0xffC76E1D), () {
-                          Navigator.pushNamed(context, '/hotel');
+                          Navigator.pushNamed(context, HotelScreen.routeName);
                         }),
                       ),
                     ],

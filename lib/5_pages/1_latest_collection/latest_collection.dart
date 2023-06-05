@@ -1,6 +1,7 @@
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:tour_a_vlog/5_pages/1_international_destination/international_destination.dart';
 
 class LatestCollection extends StatelessWidget {
   static const routeName = '/latest_collection';
@@ -84,7 +85,8 @@ class LatestCollection extends StatelessWidget {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, '/internationalDestination');
+                Navigator.pushNamed(
+                    context, InternationalDestination.routeName);
               },
               child: Container(
                 decoration: BoxDecoration(

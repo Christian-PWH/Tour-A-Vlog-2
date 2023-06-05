@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
-import 'package:tour_a_vlog/5_pages/things_todo/things_to_do.dart';
+import 'package:tour_a_vlog/5_pages/1_package_detail.dart/package_detail.dart';
+import 'package:tour_a_vlog/5_pages/1_packages/packages.dart';
+import 'package:tour_a_vlog/5_pages/1_review/review.dart';
+import 'package:tour_a_vlog/5_pages/1_things_todo/things_to_do.dart';
 
 class DetailScreen extends StatefulWidget {
   static const routeName = '/detail';
@@ -180,7 +183,7 @@ class _DetailScreenState extends State<DetailScreen>
               ),
               InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, '/packages');
+                  Navigator.pushNamed(context, Packages.routeName);
                 },
                 child: Text(
                   getTranslate(context, 'detail.see_all'),
@@ -197,7 +200,7 @@ class _DetailScreenState extends State<DetailScreen>
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/packagedetail');
+                  Navigator.pushNamed(context, PackageDetail.routeName);
                 },
                 child: Container(
                   padding: const EdgeInsets.all(fixPadding),
@@ -354,7 +357,7 @@ class _DetailScreenState extends State<DetailScreen>
                 onTap: () {
                   Navigator.pushNamed(
                     context,
-                    '/thingstodo',
+                    ThingsToDo.routeName,
                   );
                 },
                 child: Text(
@@ -571,7 +574,7 @@ class _DetailScreenState extends State<DetailScreen>
           horizontal: fixPadding * 2, vertical: fixPadding),
       child: GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, '/review');
+          Navigator.pushNamed(context, ReviewScreen.routeName);
         },
         child: Container(
           height: size.height * 0.065,

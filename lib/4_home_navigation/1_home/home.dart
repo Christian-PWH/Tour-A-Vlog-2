@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:tour_a_vlog/1_common/widgets/column_builder.dart';
-import 'package:tour_a_vlog/5_pages/detail/detail.dart';
-import 'package:tour_a_vlog/5_pages/international_destination/international_destination.dart';
-import 'package:tour_a_vlog/5_pages/latest_collection/latest_collection.dart';
-import 'package:tour_a_vlog/5_pages/notification/notification.dart';
-import 'package:tour_a_vlog/5_pages/search/search.dart';
-import 'package:tour_a_vlog/5_pages/top_indonesia_destination/top_indonesia_destination.dart';
+import 'package:tour_a_vlog/5_pages/1_detail/detail.dart';
+import 'package:tour_a_vlog/5_pages/1_international_destination/international_destination.dart';
+import 'package:tour_a_vlog/5_pages/1_latest_collection/latest_collection.dart';
+import 'package:tour_a_vlog/5_pages/1_notification/notification.dart';
+import 'package:tour_a_vlog/5_pages/1_search/search.dart';
+import 'package:tour_a_vlog/5_pages/1_top_indonesia_destination/top_indonesia_destination.dart';
 
 final cityList = [
   {"name": "Medan", "id": 0},

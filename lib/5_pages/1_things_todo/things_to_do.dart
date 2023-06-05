@@ -3,6 +3,8 @@ import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:tour_a_vlog/1_common/widgets/column_builder.dart';
 import 'package:tour_a_vlog/4_home_navigation/1_home/home.dart';
+import 'package:tour_a_vlog/5_pages/2_flights/flights.dart';
+import 'package:tour_a_vlog/5_pages/3_place_detail/place_detail.dart';
 
 final thingsToDoList = [
   {
@@ -33,12 +35,11 @@ final thingsToDoList = [
 
 // ignore: must_be_immutable
 class ThingsToDo extends StatefulWidget {
-  ThingsToDo({
-    Key? key,
-    this.selectedPage,
-  }) : super(key: key);
+  static const routeName = '/things_todo';
 
   int? selectedPage;
+
+  ThingsToDo({super.key, this.selectedPage});
 
   @override
   State<ThingsToDo> createState() => _ThingsToDoState();
@@ -332,7 +333,7 @@ class _ThingsToDoState extends State<ThingsToDo> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/placedetail');
+              Navigator.pushNamed(context, PlaceDetail.routeName);
             },
             child: Container(
               margin: const EdgeInsets.symmetric(
@@ -433,7 +434,7 @@ class _ThingsToDoState extends State<ThingsToDo> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/placedetail');
+              Navigator.pushNamed(context, PlaceDetail.routeName);
             },
             child: Container(
               margin: const EdgeInsets.symmetric(
@@ -594,7 +595,7 @@ class _ThingsToDoState extends State<ThingsToDo> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/flights');
+                      Navigator.pushNamed(context, Flights.routeName);
                     },
                     child: Text(
                       getTranslate(context, 'things_to_do.view_detail'),
@@ -994,7 +995,7 @@ class _ThingsToDoState extends State<ThingsToDo> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/placedetail');
+              Navigator.pushNamed(context, PlaceDetail.routeName);
             },
             child: Container(
               margin: const EdgeInsets.symmetric(

@@ -1,11 +1,13 @@
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:tour_a_vlog/5_pages/3_place_detail/place_detail.dart';
 
 class FavoriteScreen extends StatefulWidget {
   static const routeName = '/favorites';
 
   const FavoriteScreen({super.key});
+
   @override
   State<FavoriteScreen> createState() => _FavoriteScreenState();
 }
@@ -70,7 +72,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context, '/placedetail');
+            Navigator.pushNamed(context, PlaceDetail.routeName);
           },
           child: Container(
             decoration: BoxDecoration(

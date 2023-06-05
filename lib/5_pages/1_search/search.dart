@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:tour_a_vlog/1_common/widgets/column_builder.dart';
+import 'package:tour_a_vlog/5_pages/1_detail/detail.dart';
 
 class SearchScreen extends StatefulWidget {
   static const routeName = '/search';
@@ -164,7 +165,7 @@ class _SearchScreenState extends State<SearchScreen> {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, '/detail');
+                Navigator.pushNamed(context, DetailScreen.routeName);
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: fixPadding / 2),
