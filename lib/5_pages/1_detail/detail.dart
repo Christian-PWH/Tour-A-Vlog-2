@@ -131,7 +131,19 @@ class _DetailScreenState extends State<DetailScreen>
               ),
               InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, Packages.routeName);
+                  Map<String, dynamic> newMapBasedOnCity = {};
+                  rawMap.forEach(
+                        (key, value) {
+                      Map<String, dynamic> newRawMap = rawMap[key];
+                      if (newRawMap["city"]
+                          .toString()
+                          .contains(cityMap["title"])) {
+                        newMapBasedOnCity
+                            .addEntries({key: value}.entries);
+                      }
+                    },
+                  );
+                  Navigator.pushNamed(context, Packages.routeName, arguments: newMapBasedOnCity,);
                 },
                 child: Text(
                   getTranslate(context, 'detail.see_all'),

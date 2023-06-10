@@ -77,8 +77,9 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           child: DetailScreen(detailMap: detailMap, cityMap: cityMap),
           type: PageTransitionType.leftToRight);
     case '/packages':
+      final packageMap = routeSettings.arguments as Map<String, dynamic>;
       return PageTransition(
-          child: const Packages(), type: PageTransitionType.leftToRight);
+          child: Packages(packageMap: packageMap), type: PageTransitionType.leftToRight);
     case '/packages_detail':
       final tourPackageDetail = routeSettings.arguments as Map<String, dynamic>;
       return PageTransition(

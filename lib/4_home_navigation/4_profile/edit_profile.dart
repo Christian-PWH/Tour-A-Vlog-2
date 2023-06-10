@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
+import 'package:tour_a_vlog/1_common/widgets/show_snackbar.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/languages.dart';
 import 'package:tour_a_vlog/5_pages/4_pick_location/pick_location.dart';
 
@@ -19,6 +23,10 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController locationController = TextEditingController();
 
+  bool userImageUpdated = false;
+  String userImagePath =
+      "https://images.pexels.com/photos/2726111/pexels-photo-2726111.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500";
+  File? userImageFile;
   @override
   void initState() {
     nameController.text = "Teresaki";
@@ -142,7 +150,7 @@ class _EditProfileState extends State<EditProfile> {
             ),
             child: TextField(
               onTap: () {
-                picklocation(context);
+                pickLocation(context);
               },
               controller: locationController,
               readOnly: true,
@@ -296,12 +304,51 @@ class _EditProfileState extends State<EditProfile> {
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
               ),
-              child: Image.asset(
-                "assets/profile/User Image.jpg",
-                fit: BoxFit.cover,
-              ),
+              child: userImageUpdated
+                  ? ClipOval(
+                      child: Image.file(
+                        userImageFile!,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : ClipOval(
+                      child: Image.network(
+                        userImagePath,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
             ),
             GestureDetector(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: size.height * 0.035,
+                  width: size.height * 0.13,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    gradient: const LinearGradient(
+                        colors: gradient,
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter),
+                  ),
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.camera_alt_outlined,
+                        color: whiteColor,
+                        size: 16,
+                      ),
+                      width5Space,
+                      Text(
+                        getTranslate(context, 'edit_profile.change'),
+                        style: medium12black.copyWith(color: whiteColor),
+                      )
+                    ],
+                  ),
+                ),
+              ),
               onTap: () {
                 showModalBottomSheet(
                   barrierColor: blackColor.withOpacity(0.2),
@@ -335,19 +382,19 @@ class _EditProfileState extends State<EditProfile> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              bottonsheetIcon(
+                              bottomSheetGetMedia(
                                   size,
                                   Icons.camera_alt_rounded,
                                   const Color(0xff1E4799),
                                   getTranslate(context, 'edit_profile.camera'),
                                   context),
-                              bottonsheetIcon(
+                              bottomSheetGetMedia(
                                   size,
                                   Icons.photo,
                                   const Color(0xff1E996D),
                                   getTranslate(context, 'edit_profile.gallery'),
                                   context),
-                              bottonsheetIcon(
+                              bottomSheetGetMedia(
                                   size,
                                   Icons.delete_outline_outlined,
                                   const Color(0xffEF1717),
@@ -362,36 +409,6 @@ class _EditProfileState extends State<EditProfile> {
                   },
                 );
               },
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  height: size.height * 0.035,
-                  width: size.height * 0.13,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    gradient: const LinearGradient(
-                        colors: gradient,
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter),
-                  ),
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.camera_alt_outlined,
-                        color: whiteColor,
-                        size: 16,
-                      ),
-                      width5Space,
-                      Text(
-                        getTranslate(context, 'edit_profile.change'),
-                        style: medium12black.copyWith(color: whiteColor),
-                      )
-                    ],
-                  ),
-                ),
-              ),
             ),
           ],
         ),
@@ -399,10 +416,18 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  bottonsheetIcon(Size size, IconData icon, Color color, String text, context) {
+  bottomSheetGetMedia(
+      Size size, IconData icon, Color color, String text, context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.pop(context);
+      onTap: () async {
+        final ImagePicker picker = ImagePicker();
+        final XFile? image = await picker.pickImage(source: ImageSource.camera);
+        debugPrint(image.toString());
+        setState(() {
+          if (image == null) return;
+          userImageUpdated = true;
+          userImageFile = File(image.path);
+        });
       },
       child: Column(
         children: [
@@ -433,7 +458,7 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  void picklocation(BuildContext context) async {
+  void pickLocation(BuildContext context) async {
     final result = await Navigator.pushNamed(context, PickLocation.routeName);
     setState(() {
       locationController.text = result.toString();

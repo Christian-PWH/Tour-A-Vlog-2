@@ -6,47 +6,24 @@ import 'package:tour_a_vlog/5_pages/1_package_detail.dart/package_detail.dart';
 class Packages extends StatefulWidget {
   static const routeName = '/packages';
 
-  const Packages({super.key});
+  final Map<String, dynamic> packageMap;
+
+  const Packages({super.key, required this.packageMap});
 
   @override
   State<Packages> createState() => _PackagesState();
 }
 
 class _PackagesState extends State<Packages> {
-  final packages = [
-    {
-      "name": "Experiance Bali in your Budgets",
-      "days": "4N/5D",
-      "image": "assets/packages/package1.png",
-      "isfavorite": false
-    },
-    {
-      "name": "Bali Supar saver package",
-      "days": "5N/6D",
-      "image": "assets/packages/package2.png",
-      "isfavorite": false
-    },
-    {
-      "name": "Romentic honymoon tour",
-      "days": "5N/6D",
-      "image": "assets/packages/package3.png",
-      "isfavorite": false
-    },
-    {
-      "name": "Pool Villa Special tour",
-      "days": "7N/8D",
-      "image": "assets/packages/package4.png",
-      "isfavorite": false
-    },
-    {
-      "name": "Bali supar vacation tour",
-      "days": "3N/4D",
-      "image": "assets/packages/package5.png",
-      "isfavorite": false
-    }
-  ];
-
   bool? isFavorite;
+
+  Map<String, dynamic> packages = {};
+
+  @override
+  void initState() {
+    packages = widget.packageMap;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,9 +60,17 @@ class _PackagesState extends State<Packages> {
         padding: const EdgeInsets.all(fixPadding * 2),
         physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
+          Map<String, dynamic> detailItem =
+          packages[packages.keys.elementAt(index)];
+          List<String> detailItemImage = detailItem["image"];
+          if (packages.isEmpty) {
+            return const Center(
+              child: Text("Data is Empty!"),
+            );
+          }
           return GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, PackageDetail.routeName);
+              Navigator.pushNamed(context, PackageDetail.routeName, arguments: detailItem,);
             },
             child: Container(
               padding: const EdgeInsets.all(fixPadding),
@@ -102,49 +87,36 @@ class _PackagesState extends State<Packages> {
               ),
               child: Column(
                 children: [
-                  Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: Image.asset(
-                          packages[index]['image'].toString(),
-                          height: size.height * 0.17,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isFavorite =
-                                  packages[index]['isfavorite'] as bool;
-                              packages[index]['isfavorite'] = !isFavorite!;
-                            });
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                backgroundColor: blackColor,
-                                content: packages[index]['isfavorite'] == true
-                                    ? Text(getTranslate(context,
-                                        'favorite_add_remove.added_favorites'))
-                                    : Text(getTranslate(context,
-                                        'favorite_add_remove.removed_favorites')),
-                                duration: const Duration(milliseconds: 1500),
-                                behavior: SnackBarBehavior.floating,
-                              ),
-                            );
-                          },
-                          icon: Icon(
-                            packages[index]['isfavorite'] == true
-                                ? Icons.favorite
-                                : Icons.favorite_border,
-                            size: 20,
-                            color: whiteColor,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: Image.network(
+                      detailItemImage[0].toString(),
+                      height: size.height * 0.17,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, event) {
+                        if (event == null) return child;
+                        return Center(
+                          child: SizedBox(
+                            width: 20.0,
+                            height: 20.0,
+                            child: CircularProgressIndicator(
+                              value: event.cumulativeBytesLoaded /
+                                  (event.expectedTotalBytes ?? 1),
+                            ),
                           ),
-                        ),
-                      )
-                    ],
+                        );
+                      },
+                      errorBuilder: (context, object, stacktrace) {
+                        return const Center(
+                          child: SizedBox(
+                            width: 20.0,
+                            height: 20.0,
+                            child: Icon(Icons.image_not_supported),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   height5Space,
                   Row(
@@ -154,7 +126,7 @@ class _PackagesState extends State<Packages> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              packages[index]['name'].toString(),
+                              detailItem['title'].toString(),
                               style: medium16black.copyWith(
                                   fontWeight: FontWeight.w500),
                               overflow: TextOverflow.ellipsis,
@@ -168,7 +140,7 @@ class _PackagesState extends State<Packages> {
                             heightBox(2.0),
                             RichText(
                               text: TextSpan(
-                                text: "\$11500",
+                                text: "\Rp ${detailItem['price']}",
                                 style: semibold16primary,
                                 children: [
                                   TextSpan(
@@ -201,7 +173,7 @@ class _PackagesState extends State<Packages> {
                         ),
                         alignment: Alignment.center,
                         child: Text(
-                          packages[index]['days'].toString(),
+                          detailItem['details'].toString(),
                           style: medium14primary,
                         ),
                       ),
