@@ -3,6 +3,7 @@ import 'package:flutter_credit_card/credit_card_brand.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
+import 'package:tour_a_vlog/1_common/widgets/show_snackbar.dart';
 import 'package:tour_a_vlog/5_pages/1_success/success.dart';
 
 class CreditCard extends StatefulWidget {
@@ -25,48 +26,56 @@ class _CreditCardState extends State<CreditCard> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            size: 22,
-            color: whiteColor,
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: false,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              size: 22,
+              color: whiteColor,
+            ),
           ),
-        ),
-        titleSpacing: 0,
-        title: Text(
-          getTranslate(context, 'credit_card.credit_card'),
-          style: semibold18white,
-        ),
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: gradient,
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+          titleSpacing: 0,
+          title: Text(
+            getTranslate(context, 'credit_card.credit_card'),
+            style: semibold18white,
+          ),
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: gradient,
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
             ),
           ),
         ),
-      ),
-      body: ListView(
-        physics: const BouncingScrollPhysics(),
-        children: [
-          creditCard(size),
-          Column(
-            children: [
-              creditcardfrom(),
-              heightBox(30),
-              makepaymentButton(size),
-              heightSpace,
-              heightSpace,
-            ],
-          )
-        ],
+        body: ListView(
+          physics: const BouncingScrollPhysics(),
+          children: [
+            creditCard(size),
+            Column(
+              children: [
+                creditcardfrom(),
+                heightBox(30),
+                makePaymentButton(size),
+                heightSpace,
+                heightSpace,
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -156,10 +165,28 @@ class _CreditCardState extends State<CreditCard> {
     );
   }
 
-  makepaymentButton(Size size) {
+  bool validate(context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+    if (cardNumber != '' &&
+        expiryDate != '' &&
+        cardHolderName != '' &&
+        cvvCode != '') {
+      return true;
+    }
+    showSnackBar(context, Icons.cancel_outlined, Colors.red,
+        "There is empty field!", Colors.red);
+    return false;
+  }
+
+  makePaymentButton(Size size) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, SuccessScreen.routeName);
+        if (validate(context)) {
+          Navigator.pushNamed(context, SuccessScreen.routeName);
+        }
       },
       child: Container(
         height: size.height * 0.07,

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:onboarding/onboarding.dart';
 import 'package:tour_a_vlog/2_splash_onBoarding/controller/onboarding_screen_controller.dart';
 import 'package:tour_a_vlog/3_auth/screens/signin.dart';
+import 'package:tour_a_vlog/4_home_navigation/bottom_navigation.dart';
 
 class OnBoardingScreen extends ConsumerStatefulWidget {
   static const routeName = '/on_boarding';
@@ -134,20 +135,28 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
   @override
   void initState() {
     super.initState();
-    Future(
+    Future.delayed(
+      const Duration(seconds: 1),
       () {
-        if (FirebaseAuth.instance.currentUser != null) {
-          ref.read(onBoardingIsLoginProvider.notifier).state = true;
-        } else {
-          ref.read(onBoardingIsLoginProvider.notifier).state = false;
-        }
+        checkHasLogin();
       },
     );
+  }
+
+  void checkHasLogin() async {
+    final user = FirebaseAuth.instance.currentUser;
+    debugPrint(user.toString());
+    if (user != null) {
+      ref.read(onBoardingIsLoginProvider.notifier).state = true;
+    } else {
+      ref.read(onBoardingIsLoginProvider.notifier).state = false;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    bool userHasLogin = ref.watch(onBoardingIsLoginProvider);
     return WillPopScope(
       onWillPop: () async {
         bool backStatus = onWillPop(context);
@@ -196,8 +205,9 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                                 )
                               : TextButton(
                                   onPressed: () {
-                                    if (ref.watch(onBoardingIsLoginProvider)) {
-                                      debugPrint("Has Login");
+                                    if (userHasLogin) {
+                                      Navigator.pushNamed(context,
+                                          BottomNavigationScreen.routeName);
                                     } else {
                                       Navigator.pushNamed(
                                           context, SignInScreen.routeName);
@@ -214,11 +224,13 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
                             onPressed: () {
                               setState(() {
                                 setState(() {
+                                  debugPrint(userHasLogin.toString());
                                   if (selectedPage ==
                                       onBoardingPageList(context, size).length -
                                           1) {
-                                    if (ref.watch(onBoardingIsLoginProvider)) {
-                                      debugPrint("Has Login");
+                                    if (userHasLogin) {
+                                      Navigator.pushNamed(context,
+                                          BottomNavigationScreen.routeName);
                                     } else {
                                       Navigator.pushNamed(
                                           context, SignInScreen.routeName);

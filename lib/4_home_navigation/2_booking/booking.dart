@@ -3,9 +3,9 @@ import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:tour_a_vlog/1_common/widgets/column_builder.dart';
 import 'package:tour_a_vlog/4_home_navigation/1_home/home.dart';
-import 'package:tour_a_vlog/5_pages/2_flights/flights.dart';
+import 'package:tour_a_vlog/4_home_navigation/2_booking/open_trip.dart';
+import 'package:tour_a_vlog/4_home_navigation/2_booking/private_tour.dart';
 import 'package:tour_a_vlog/5_pages/2_holiday_package/holiday_packages.dart';
-import 'package:tour_a_vlog/5_pages/2_hotel/hotel.dart';
 
 class BookingScreen extends StatefulWidget {
   static const routeName = '/booking';
@@ -17,7 +17,90 @@ class BookingScreen extends StatefulWidget {
 }
 
 class _BookingScreenState extends State<BookingScreen> {
+  final Map<String, dynamic> rawTourMap = {
+    "-NV4pZeNKa_1da9VK8xz": {
+      "category": "Beach",
+      "city": "Bengkulu",
+      "code": "BKL1",
+      "customizationForDays": ["default 01", "default 02"],
+      "details": "3d2n",
+      "image": [
+        "https://firebasestorage.googleapis.com/v0/b/skripsi-6bd6c.appspot.com/o/ToursImages%2F1683725111132-bengkulu.jpg?alt=media&token=2a497c86-23cb-496f-bbc7-17b30d2f39a1"
+      ],
+      "newprice": "213",
+      "percent": 100,
+      "price": "1000000",
+      "status1": "recomen",
+      "status2": "deal",
+      "title": "Bengkulu trip",
+      "type": "Open Trip"
+    },
+    "-NVUjdjo-mZNz3qMRe_B": {
+      "category": "Mountain",
+      "city": "Sumatra Barat",
+      "code": "a4",
+      "customizationForDays": ["default"],
+      "details": "asdasd",
+      "image": [
+        "https://firebasestorage.googleapis.com/v0/b/skripsi-6bd6c.appspot.com/o/ToursImages%2F1684159772872-mountain.jpg?alt=media&token=067813de-ba97-494d-a6e7-99431aa947a4",
+        "https://firebasestorage.googleapis.com/v0/b/skripsi-6bd6c.appspot.com/o/ToursImages%2F1684159772870-beach.webp?alt=media&token=577317e1-0d06-4dbc-ad18-c99026dd1e69",
+        "https://firebasestorage.googleapis.com/v0/b/skripsi-6bd6c.appspot.com/o/ToursImages%2F1684159772871-budaya.jpg?alt=media&token=51927a15-40ed-4906-bb07-fa15ed4e1aba"
+      ],
+      "newprice": "213",
+      "percent": 100,
+      "price": "12313",
+      "status1": "recomen",
+      "status2": "deal",
+      "title": "sadsad",
+      "type": "Open Trip"
+    },
+    "-NW2U4zx094I5N4D3Vdc": {
+      "category": "Mountain",
+      "city": "Jawa Timur",
+      "code": "2d",
+      "customizationForDays": ["default"],
+      "details": "sad",
+      "image": [
+        "https://firebasestorage.googleapis.com/v0/b/skripsi-6bd6c.appspot.com/o/ToursImages%2F1684759403334-budaya.jpg?alt=media&token=d81ea24a-6f26-4656-a2e9-14afe21127c1"
+      ],
+      "newprice": "53243",
+      "percent": -22949,
+      "price": "231",
+      "status1": "",
+      "status2": "deal",
+      "title": "sadad",
+      "type": "Private Tour"
+    }
+  };
+
+  final rawTourType = {
+    "-NS_3JtFbWLG8LK0aEi8": {"code": "OT", "title": "Open Trip"},
+    "-NS_3MxHUnXv5nnHUG6j": {"code": "PT", "title": "Private Tour"}
+  };
+
   String selectedCity = cityList[1]['name'].toString();
+
+  Map<String, dynamic> tourMap = {};
+  Map<String, dynamic> tourType = {};
+
+  @override
+  void initState() {
+    int i = 0;
+    rawTourMap.forEach(
+      (key, value) {
+        tourMap.addEntries({"$i": value}.entries);
+        i++;
+      },
+    );
+    int j = 0;
+    rawTourType.forEach(
+      (key, value) {
+        tourType.addEntries({"$j": value}.entries);
+        j++;
+      },
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,12 +206,30 @@ class _BookingScreenState extends State<BookingScreen> {
                     children: [
                       Expanded(
                         child: categoryContainer(
-                            size,
-                            "assets/notification/Group.png",
-                            getTranslate(context, 'Open Trip'),
-                            const Color(0xffF27D65), () {
-                          Navigator.pushNamed(context, Flights.routeName);
-                        }),
+                          size,
+                          "assets/notification/Group.png",
+                          getTranslate(context, 'open_trip.open_trip'),
+                          const Color(0xffF27D65),
+                          () {
+                            Map<String, dynamic> newMapBasedOnType = {};
+                            tourMap.forEach(
+                              (key, value) {
+                                Map<String, dynamic> rawMap = tourMap[key];
+                                if (rawMap["type"]
+                                    .toString()
+                                    .contains(tourType["0"]["title"])) {
+                                  newMapBasedOnType
+                                      .addEntries({key: value}.entries);
+                                }
+                              },
+                            );
+                            Navigator.pushNamed(
+                              context,
+                              OpenTrip.routeName,
+                              arguments: newMapBasedOnType,
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -143,12 +244,30 @@ class _BookingScreenState extends State<BookingScreen> {
                     children: [
                       Expanded(
                         child: categoryContainer(
-                            size,
-                            "assets/notification/ri_hotel-line.png",
-                            getTranslate(context, 'Private Tour'),
-                            const Color(0xffC76E1D), () {
-                          Navigator.pushNamed(context, HotelScreen.routeName);
-                        }),
+                          size,
+                          "assets/notification/ri_hotel-line.png",
+                          getTranslate(context, 'Private Tour'),
+                          const Color(0xffC76E1D),
+                          () {
+                            Map<String, dynamic> newMapBasedOnType = {};
+                            tourMap.forEach(
+                              (key, value) {
+                                Map<String, dynamic> rawMap = tourMap[key];
+                                if (rawMap["type"]
+                                    .toString()
+                                    .contains(tourType["1"]["title"])) {
+                                  newMapBasedOnType
+                                      .addEntries({key: value}.entries);
+                                }
+                              },
+                            );
+                            Navigator.pushNamed(
+                              context,
+                              PrivateTour.routeName,
+                              arguments: newMapBasedOnType,
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),

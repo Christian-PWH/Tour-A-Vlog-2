@@ -24,33 +24,41 @@ class SignUpScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: whiteColor,
-      body: ListView(
-        padding: EdgeInsets.zero,
-        physics: const BouncingScrollPhysics(),
-        children: [
-          Stack(
-            children: [
-              imageContainer(size, context),
-              SafeArea(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    backButton(context),
-                    welcomeText(context),
-                    heightSpace,
-                    registerFields(size, context),
-                    heightSpace,
-                    heightSpace,
-                    height5Space,
-                    arrowButton(size, context, ref),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ],
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: whiteColor,
+        body: ListView(
+          padding: EdgeInsets.zero,
+          physics: const BouncingScrollPhysics(),
+          children: [
+            Stack(
+              children: [
+                imageContainer(size, context),
+                SafeArea(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      backButton(context),
+                      welcomeText(context),
+                      heightSpace,
+                      registerFields(size, context),
+                      heightSpace,
+                      heightSpace,
+                      height5Space,
+                      arrowButton(size, context, ref),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -215,6 +223,10 @@ class SignUpScreen extends ConsumerWidget {
   }
 
   bool validate(context, ref) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
     if (nameController.text.trim() != '' &&
         emailController.text.trim() != '' &&
         phoneController.text.trim() != '' &&

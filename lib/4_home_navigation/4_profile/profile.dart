@@ -5,7 +5,6 @@ import 'package:tour_a_vlog/4_home_navigation/4_profile/about_us.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/profile_booking.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/edit_profile.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/feed_back.dart';
-import 'package:tour_a_vlog/4_home_navigation/4_profile/legal_information.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/settings.dart';
 import 'package:tour_a_vlog/5_pages/1_notification/notification.dart';
 
@@ -28,43 +27,53 @@ class ProfileScreen extends StatelessWidget {
                   horizontal: fixPadding * 2, vertical: fixPadding * 2),
               physics: const BouncingScrollPhysics(),
               children: [
-                imageOptions("assets/profile/Shopicon.png",
-                    getTranslate(context, 'profile.edit_profile'), 17.0, () {
-                  Navigator.pushNamed(context, EditProfile.routeName);
-                }),
+                imageOptions(
+                  "assets/profile/Shopicon.png",
+                  getTranslate(context, 'profile.edit_profile'),
+                  17.0,
+                  () {
+                    Navigator.pushNamed(context, EditProfile.routeName);
+                  },
+                ),
                 divider(),
-                iconOptions(Icons.notifications_rounded,
-                    getTranslate(context, 'profile.notification'), () {
-                  Navigator.pushNamed(context, NotificationScreen.routeName);
-                }),
+                iconOptions(
+                  Icons.notifications_rounded,
+                  getTranslate(context, 'profile.notification'),
+                  () {
+                    Navigator.pushNamed(context, NotificationScreen.routeName);
+                  },
+                ),
                 divider(),
                 imageOptions(
-                    "assets/profile/fluent_ticket-diagonal-16-filled.png",
-                    getTranslate(context, 'profile.my_booking'),
-                    20, () {
-                  Navigator.pushNamed(context, ProfileBookingScreen.routeName);
-                }),
+                  "assets/profile/fluent_ticket-diagonal-16-filled.png",
+                  getTranslate(context, 'profile.my_booking'),
+                  20,
+                  () {
+                    Navigator.pushNamed(
+                        context, ProfileBookingScreen.routeName);
+                  },
+                ),
                 divider(),
                 iconOptions(
-                    Icons.settings, getTranslate(context, 'profile.settings'),
-                    () {
-                  Navigator.pushNamed(context, SettingScreen.routeName);
-                }),
-                divider(),
-                imageOptions("assets/profile/Medical record.png",
-                    getTranslate(context, 'profile.legal_information'), 20, () {
-                  Navigator.pushNamed(context, LegalInformation.routeName);
-                }),
+                  Icons.settings,
+                  getTranslate(context, 'profile.settings'),
+                  () {
+                    Navigator.pushNamed(context, SettingScreen.routeName);
+                  },
+                ),
                 divider(),
                 iconOptions(
-                    Icons.info, getTranslate(context, 'profile.about_us'), () {
-                  Navigator.pushNamed(context, AboutUs.routeName);
-                }),
+                  Icons.info,
+                  getTranslate(context, 'profile.about_us'),
+                  () {
+                    Navigator.pushNamed(context, AboutUs.routeName);
+                  },
+                ),
                 divider(),
-                iconOptions(Icons.thumb_up_alt,
-                    getTranslate(context, 'profile.feedback'), () {
-                  Navigator.pushNamed(context, FeedbackScreen.routeName);
-                }),
+                // iconOptions(Icons.thumb_up_alt,
+                //     getTranslate(context, 'profile.feedback'), () {
+                //   Navigator.pushNamed(context, FeedbackScreen.routeName);
+                // }),
               ],
             ),
           )

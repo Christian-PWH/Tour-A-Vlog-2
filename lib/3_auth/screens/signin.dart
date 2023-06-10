@@ -33,37 +33,45 @@ class SignInScreen extends ConsumerWidget {
           return false;
         }
       },
-      child: Scaffold(
-        backgroundColor: whiteColor,
-        body: ListView(
-          physics: const BouncingScrollPhysics(),
-          padding: EdgeInsets.zero,
-          children: [
-            Stack(
-              children: [
-                imageContainer(size),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: fixPadding * 2),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      heightBox(size.height * 0.1),
-                      welcomeText(context),
-                      heightSpace,
-                      heightSpace,
-                      heightSpace,
-                      signInFields(size, context),
-                      heightSpace,
-                      heightSpace,
-                      height5Space,
-                      bottomContainer(size, isLoading, context, ref),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ],
+      child: GestureDetector(
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: Scaffold(
+          backgroundColor: whiteColor,
+          body: ListView(
+            physics: const BouncingScrollPhysics(),
+            padding: EdgeInsets.zero,
+            children: [
+              Stack(
+                children: [
+                  imageContainer(size),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: fixPadding * 2),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        heightBox(size.height * 0.1),
+                        welcomeText(context),
+                        heightSpace,
+                        heightSpace,
+                        heightSpace,
+                        signInFields(size, context),
+                        heightSpace,
+                        heightSpace,
+                        height5Space,
+                        bottomContainer(size, isLoading, context, ref),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -123,6 +131,10 @@ class SignInScreen extends ConsumerWidget {
   }
 
   bool validate(context, ref) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
     if (emailController.text.trim() != '' &&
         passwordController.text.trim() != '') {
       return true;

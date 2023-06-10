@@ -1,45 +1,14 @@
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:tour_a_vlog/5_pages/1_international_destination/international_destination.dart';
+import 'package:tour_a_vlog/5_pages/1_package_detail.dart/package_detail.dart';
 
-class LatestCollection extends StatelessWidget {
-  static const routeName = '/latest_collection';
+class Recommendation extends StatelessWidget {
+  static const routeName = '/recommendation';
 
-  LatestCollection({super.key});
+  final Map<String, dynamic> recommendationTour;
 
-  final latestCollectionList = [
-    {
-      "image": "assets/home/latestCollection1.png",
-      "name": "Stay like a celebrity at 5 maldives resorts",
-      "places": 5,
-    },
-    {
-      "image": "assets/home/latestCollection4.png",
-      "name": "Most Booked inter'l destination",
-      "places": 5,
-    },
-    {
-      "image": "assets/home/latestCollection2.png",
-      "name": "Hill hideaways for summer break",
-      "places": 4,
-    },
-    {
-      "image": "assets/home/latestCollection6.png",
-      "name": "Topromentic place for couple",
-      "places": 4,
-    },
-    {
-      "image": "assets/home/latestCollection3.png",
-      "name": "Luxury  villas with stunning pools",
-      "places": 8,
-    },
-    {
-      "image": "assets/home/latestCollection5.png",
-      "name": "Top indian destination for family trip",
-      "places": 5,
-    },
-  ];
+  const Recommendation({super.key, required this.recommendationTour});
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +28,7 @@ class LatestCollection extends StatelessWidget {
         ),
         titleSpacing: 0,
         title: Text(
-          getTranslate(context, 'latest_collection.latest_collection'),
+          getTranslate(context, 'recommendation.recommendation'),
           style: semibold18white.copyWith(fontWeight: FontWeight.w600),
         ),
         flexibleSpace: Container(
@@ -79,14 +48,20 @@ class LatestCollection extends StatelessWidget {
             crossAxisCount: 2,
             mainAxisSpacing: fixPadding * 2,
             crossAxisSpacing: fixPadding * 2,
-            childAspectRatio: size.width / (size.height / 1.55),
+            childAspectRatio: size.width / (size.height / 2),
           ),
-          itemCount: latestCollectionList.length,
+          itemCount: recommendationTour.length,
           itemBuilder: (context, index) {
+            Map<String, dynamic> tourItem =
+                recommendationTour[recommendationTour.keys.elementAt(index)];
+            List<String> tourImage = tourItem["image"];
             return GestureDetector(
               onTap: () {
                 Navigator.pushNamed(
-                    context, InternationalDestination.routeName);
+                  context,
+                  PackageDetail.routeName,
+                  arguments: tourItem,
+                );
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -105,32 +80,42 @@ class LatestCollection extends StatelessWidget {
                     ClipRRect(
                       borderRadius:
                           const BorderRadius.vertical(top: Radius.circular(10)),
-                      child: Image.asset(
-                        latestCollectionList[index]['image'].toString(),
+                      child: Image.network(
+                        tourImage[0],
                         height: size.height * 0.15,
                         width: double.infinity,
                         fit: BoxFit.cover,
+                        loadingBuilder: (context, child, event) {
+                          if (event == null) return child;
+                          return Center(
+                            child: SizedBox(
+                              width: 20.0,
+                              height: 20.0,
+                              child: CircularProgressIndicator(
+                                value: event.cumulativeBytesLoaded /
+                                    (event.expectedTotalBytes ?? 1),
+                              ),
+                            ),
+                          );
+                        },
+                        errorBuilder: (context, object, stacktrace) {
+                          return const Center(
+                            child: SizedBox(
+                              width: 20.0,
+                              height: 20.0,
+                              child: Icon(Icons.image_not_supported),
+                            ),
+                          );
+                        },
                       ),
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: fixPadding / 2, horizontal: fixPadding),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(latestCollectionList[index]['name'].toString(),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                style: medium14black33),
-                            Text(
-                              "${latestCollectionList[index]['places']} ${getTranslate(context, 'latest_collection.places')}",
-                              style: medium14grey94,
-                            )
-                          ],
-                        ),
-                      ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: fixPadding / 2, horizontal: fixPadding),
+                      child: Text(tourItem["title"].toString(),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          style: medium14black33),
                     )
                   ],
                 ),

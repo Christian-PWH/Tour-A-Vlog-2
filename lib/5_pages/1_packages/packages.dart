@@ -66,7 +66,7 @@ class _PackagesState extends State<Packages> {
         ),
         titleSpacing: 0,
         title: Text(
-          getTranslate(context, 'packages.bali_packages'),
+          getTranslate(context, 'packages.package'),
           style: semibold18white,
         ),
         flexibleSpace: Container(

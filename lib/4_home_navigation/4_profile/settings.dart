@@ -14,11 +14,6 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  bool isbooking = true;
-  bool ismessages = true;
-  bool issupport = true;
-  bool isprivacy = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,139 +53,8 @@ class _SettingScreenState extends State<SettingScreen> {
           heightSpace,
           divider(),
           heightSpace,
-          notification()
         ],
       ),
-    );
-  }
-
-  notification() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: fixPadding * 2),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            getTranslate(context, 'settings.notification'),
-            style: semibold18black,
-          ),
-          height5Space,
-          yourTrip(),
-          contentText(),
-          heightSpace,
-          height5Space,
-          divider(),
-          heightSpace,
-          height5Space,
-          yourAccount(),
-        ],
-      ),
-    );
-  }
-
-  yourAccount() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          getTranslate(context, 'settings.your_account'),
-          style: semibold16black,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              getTranslate(context, 'settings.account_support'),
-              style: regular16black,
-            ),
-            CupertinoSwitch(
-              activeColor: primaryColor,
-              value: issupport,
-              onChanged: (newvalue) {
-                setState(() {
-                  issupport = newvalue;
-                });
-              },
-            )
-          ],
-        ),
-        contentText(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              getTranslate(context, 'settings.policy_community'),
-              style: regular16black,
-            ),
-            CupertinoSwitch(
-              activeColor: primaryColor,
-              value: isprivacy,
-              onChanged: (newvalue) {
-                setState(() {
-                  isprivacy = newvalue;
-                });
-              },
-            )
-          ],
-        ),
-        contentText(),
-      ],
-    );
-  }
-
-  yourTrip() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          getTranslate(context, 'settings.your_trip'),
-          style: semibold16black,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              getTranslate(context, 'settings.bookings'),
-              style: regular16black,
-            ),
-            CupertinoSwitch(
-              activeColor: primaryColor,
-              value: isbooking,
-              onChanged: (newvalue) {
-                setState(() {
-                  isbooking = newvalue;
-                });
-              },
-            )
-          ],
-        ),
-        contentText(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              getTranslate(context, 'settings.messages'),
-              style: regular16black,
-            ),
-            CupertinoSwitch(
-              activeColor: primaryColor,
-              value: ismessages,
-              onChanged: (newvalue) {
-                setState(() {
-                  ismessages = newvalue;
-                });
-              },
-            )
-          ],
-        ),
-      ],
-    );
-  }
-
-  contentText() {
-    return const Text(
-      "Lorem ipsum dolor sit amet, consectetur adipiscing Senectus pellentesque justo, quis varius dictumst ",
-      style: regular14grey,
     );
   }
 

@@ -5,20 +5,66 @@ import 'package:tour_a_vlog/5_pages/1_detail/detail.dart';
 
 class TopIndonesiaDestination extends StatelessWidget {
   static const routeName = '/top_indonesia_destination';
-  TopIndonesiaDestination({super.key});
 
-  final topDestination = [
-    {"image": "assets/topindiandestination/tid1.png", "name": "Jakarta"},
-    {"image": "assets/topindiandestination/tid2.png", "name": "Medan"},
-    {"image": "assets/topindiandestination/tid3.png", "name": "Bali"},
-    {"image": "assets/topindiandestination/tid4.png", "name": "Palembang"},
-    {"image": "assets/topindiandestination/tid5.png", "name": "Lampung"},
-    {"image": "assets/topindiandestination/tid6.png", "name": "Pontianak"},
-    {"image": "assets/topindiandestination/tid7.png", "name": "Manado"},
-    {"image": "assets/topindiandestination/tid8.png", "name": "Makassar"},
-    {"image": "assets/topindiandestination/tid9.png", "name": "Ambon"},
-    {"image": "assets/topindiandestination/tid10.png", "name": "NTB"},
-  ];
+  final Map<String, dynamic> indonesiaCity;
+
+  TopIndonesiaDestination({super.key, required this.indonesiaCity});
+
+  final Map<String, dynamic> recommendationMap = {
+    "-NV4pZeNKa_1da9VK8xz": {
+      "category": "Beach",
+      "city": "Bengkulu",
+      "code": "BKL1",
+      "customizationForDays": ["default 01", "default 02"],
+      "details": "3d2n",
+      "image": [
+        "https://firebasestorage.googleapis.com/v0/b/skripsi-6bd6c.appspot.com/o/ToursImages%2F1683725111132-bengkulu.jpg?alt=media&token=2a497c86-23cb-496f-bbc7-17b30d2f39a1"
+      ],
+      "newprice": "213",
+      "percent": 100,
+      "price": "1000000",
+      "status1": "recomen",
+      "status2": "deal",
+      "title": "Bengkulu trip",
+      "type": "Open Trip"
+    },
+    "-NVUjdjo-mZNz3qMRe_B": {
+      "category": "Mountain",
+      "city": "Sumatra Barat",
+      "code": "a4",
+      "customizationForDays": ["default"],
+      "details": "asdasd",
+      "image": [
+        "https://firebasestorage.googleapis.com/v0/b/skripsi-6bd6c.appspot.com/o/ToursImages%2F1684159772872-mountain.jpg?alt=media&token=067813de-ba97-494d-a6e7-99431aa947a4",
+        "https://firebasestorage.googleapis.com/v0/b/skripsi-6bd6c.appspot.com/o/ToursImages%2F1684159772870-beach.webp?alt=media&token=577317e1-0d06-4dbc-ad18-c99026dd1e69",
+        "https://firebasestorage.googleapis.com/v0/b/skripsi-6bd6c.appspot.com/o/ToursImages%2F1684159772871-budaya.jpg?alt=media&token=51927a15-40ed-4906-bb07-fa15ed4e1aba"
+      ],
+      "newprice": "213",
+      "percent": 100,
+      "price": "12313",
+      "status1": "recomen",
+      "status2": "deal",
+      "title": "sadsad",
+      "type": "Open Trip"
+    },
+    "-NW2U4zx094I5N4D3Vdc": {
+      "category": "Mountain",
+      "city": "Jawa Timur",
+      "code": "2d",
+      "customizationForDays": ["default"],
+      "details": "sad",
+      "image": [
+        "https://firebasestorage.googleapis.com/v0/b/skripsi-6bd6c.appspot.com/o/ToursImages%2F1684759403334-budaya.jpg?alt=media&token=d81ea24a-6f26-4656-a2e9-14afe21127c1"
+      ],
+      "newprice": "53243",
+      "percent": -22949,
+      "price": "231",
+      "status1": "",
+      "status2": "deal",
+      "title": "sadad",
+      "type": "Private Tour"
+    }
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +84,7 @@ class TopIndonesiaDestination extends StatelessWidget {
         ),
         titleSpacing: 0,
         title: Text(
-          getTranslate(context, 'Top Indonesia destination'),
+          getTranslate(context, 'home.indonesia_destination'),
           style: semibold18white,
         ),
         flexibleSpace: Container(
@@ -60,19 +106,38 @@ class TopIndonesiaDestination extends StatelessWidget {
           crossAxisSpacing: fixPadding * 2,
           childAspectRatio: 1.3,
         ),
-        itemCount: topDestination.length,
+        itemCount: indonesiaCity.length,
         itemBuilder: (context, index) {
+          Map<String, dynamic> indonesiaCityItem =
+              indonesiaCity[indonesiaCity.keys.elementAt(index)];
           return GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, DetailScreen.routeName);
+              Map<String, dynamic> newMapBasedOnCity = {};
+              recommendationMap.forEach(
+                (key, value) {
+                  Map<String, dynamic> rawMap = recommendationMap[key];
+                  if (rawMap["city"]
+                      .toString()
+                      .contains(indonesiaCityItem["title"])) {
+                    newMapBasedOnCity.addEntries({key: value}.entries);
+                  }
+                },
+              );
+              Navigator.pushNamed(
+                context,
+                DetailScreen.routeName,
+                arguments: {
+                  "arg_1": newMapBasedOnCity,
+                  "arg_2": indonesiaCityItem,
+                },
+              );
             },
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
                     fit: BoxFit.cover,
-                    image:
-                        AssetImage(topDestination[index]['image'].toString())),
+                    image: NetworkImage(indonesiaCityItem["image"].toString())),
               ),
               child: Container(
                 padding: const EdgeInsets.only(bottom: fixPadding),
@@ -94,7 +159,7 @@ class TopIndonesiaDestination extends StatelessWidget {
                 ),
                 alignment: Alignment.bottomCenter,
                 child: Text(
-                  topDestination[index]['name'].toString(),
+                  indonesiaCityItem['title'].toString(),
                   style: semibold18white,
                 ),
               ),
