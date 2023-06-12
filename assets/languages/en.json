@@ -117,7 +117,7 @@
     "upcoming_event": "Plan travel for upcoming events",
     "places": "places",
     "recommendation": "Recommendation for you",
-    "travel_text": "Hi, Ready to tour?",
+    "travel_text": " Ready to tour?",
     "search_destination": "Search your destination",
     "select_city": "Select city"
   },
@@ -214,7 +214,8 @@
     "camera": "Camera",
     "gallery": "Gallery",
     "remove_image": "Remove image",
-    "change": "Change"
+    "change": "Change",
+    "password_verification": "Enter your password for verification"
   },
   "help_support": {
     "help_support": "Help & support",

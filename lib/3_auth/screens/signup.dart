@@ -1,12 +1,11 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:tour_a_vlog/1_common/widgets/show_snackbar.dart';
+import 'package:tour_a_vlog/3_auth/controller/user_controller.dart';
 import 'package:tour_a_vlog/3_auth/screens/signin.dart';
 
 import '../controller/auth_screen_controller.dart';
@@ -239,37 +238,24 @@ class SignUpScreen extends ConsumerWidget {
     return false;
   }
 
-  void firebaseSignUp(context, ref) async {
+  void firebaseSignUp(context, WidgetRef ref) async {
     ref.read(signUpLoadingProvider.notifier).state = true;
     if (validate(context, ref)) {
-      try {
-        final credential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim(),
-        );
-        DatabaseReference dbRef =
-            FirebaseDatabase.instance.ref("Users/${credential.user?.uid}");
-        await dbRef.set({
-          "email": emailController.text.trim(),
-          "fullName": nameController.text.trim(),
-          "phoneNumber": phoneController.text.trim(),
-          "password": passwordController.text.trim(),
-        });
+      final res = await ref.read(userControllerProvider.notifier).registerUser(
+            fullName: nameController.text.trim(),
+            phoneNumber: phoneController.text.trim(),
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
+          );
+      if (res['success']) {
         ref.read(signInLoadingProvider.notifier).state = false;
-        showSnackBar(context, Icons.done, Colors.greenAccent, "Sign up success",
-            Colors.greenAccent);
-        Navigator.pushNamed(context, SignInScreen.routeName);
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'weak-password') {
-          ref.read(signInLoadingProvider.notifier).state = false;
-          showSnackBar(context, Icons.cancel_outlined, Colors.red,
-              "The password provided is too weak.", Colors.red);
-        } else if (e.code == 'email-already-in-use') {
-          ref.read(signInLoadingProvider.notifier).state = false;
-          showSnackBar(context, Icons.cancel_outlined, Colors.red,
-              "The account already exists for that email.", Colors.red);
-        }
+        Navigator.popAndPushNamed(context, SignInScreen.routeName);
+        showSnackBar(context, Icons.done, Colors.greenAccent,
+            "Sign Up Success.", Colors.greenAccent);
+      } else {
+        ref.read(signInLoadingProvider.notifier).state = false;
+        showSnackBar(context, Icons.cancel_outlined, Colors.red,
+            res["message"].toString(), Colors.red);
       }
     }
   }

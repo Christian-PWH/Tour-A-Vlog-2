@@ -117,7 +117,7 @@
     "upcoming_event": "Rencanakan perjalanan untuk acara mendatang",
     "places": "tempat",
     "recommendation": "Rekomendasi untuk Anda",
-    "travel_text": "Hai, siap tour?",
+    "travel_text": " siap tour?",
     "search_destination": "Cari tujuan Anda",
     "select_city": "Pilih Kota"
   },
@@ -214,7 +214,8 @@
     "camera": "Kamera",
     "gallery": "Galeri",
     "remove_image": "Hapus gambar",
-    "change": "Mengubah"
+    "change": "Mengubah",
+    "password_verification": "Masukan password untuk verifikasi"
   },
   "help_support": {
     "help_support": "Bantuan & Dukungan",

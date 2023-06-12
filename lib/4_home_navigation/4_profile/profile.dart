@@ -1,84 +1,88 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
+import 'package:tour_a_vlog/1_common/models/user_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
+import 'package:tour_a_vlog/3_auth/controller/user_controller.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/about_us.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/profile_booking.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/edit_profile.dart';
-import 'package:tour_a_vlog/4_home_navigation/4_profile/feed_back.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/settings.dart';
 import 'package:tour_a_vlog/5_pages/1_notification/notification.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerWidget {
   static const routeName = '/profile';
 
-  const ProfileScreen({super.key});
+  const ProfileScreen({super.key, required this.userModel});
+
+  final UserModel? userModel;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: whiteColor,
-      body: Column(
-        children: [
-          topImageContainer(size, context),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: fixPadding * 2, vertical: fixPadding * 2),
-              physics: const BouncingScrollPhysics(),
-              children: [
-                imageOptions(
-                  "assets/profile/Shopicon.png",
-                  getTranslate(context, 'profile.edit_profile'),
-                  17.0,
-                  () {
-                    Navigator.pushNamed(context, EditProfile.routeName);
-                  },
-                ),
-                divider(),
-                iconOptions(
-                  Icons.notifications_rounded,
-                  getTranslate(context, 'profile.notification'),
-                  () {
-                    Navigator.pushNamed(context, NotificationScreen.routeName);
-                  },
-                ),
-                divider(),
-                imageOptions(
-                  "assets/profile/fluent_ticket-diagonal-16-filled.png",
-                  getTranslate(context, 'profile.my_booking'),
-                  20,
-                  () {
-                    Navigator.pushNamed(
-                        context, ProfileBookingScreen.routeName);
-                  },
-                ),
-                divider(),
-                iconOptions(
-                  Icons.settings,
-                  getTranslate(context, 'profile.settings'),
-                  () {
-                    Navigator.pushNamed(context, SettingScreen.routeName);
-                  },
-                ),
-                divider(),
-                iconOptions(
-                  Icons.info,
-                  getTranslate(context, 'profile.about_us'),
-                  () {
-                    Navigator.pushNamed(context, AboutUs.routeName);
-                  },
-                ),
-                divider(),
-                // iconOptions(Icons.thumb_up_alt,
-                //     getTranslate(context, 'profile.feedback'), () {
-                //   Navigator.pushNamed(context, FeedbackScreen.routeName);
-                // }),
-              ],
-            ),
-          )
-        ],
-      ),
+      body: profileBody(size, context, ref),
+    );
+  }
+
+  Widget profileBody(Size size, context, ref) {
+    return Column(
+      children: [
+        topImageContainer(size, context, ref),
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.symmetric(
+                horizontal: fixPadding * 2, vertical: fixPadding * 2),
+            physics: const BouncingScrollPhysics(),
+            children: [
+              imageOptions(
+                "assets/profile/Shopicon.png",
+                getTranslate(context, 'profile.edit_profile'),
+                17.0,
+                () {
+                  Navigator.pushNamed(context, EditProfile.routeName,
+                      arguments: userModel);
+                },
+              ),
+              divider(),
+              iconOptions(
+                Icons.notifications_rounded,
+                getTranslate(context, 'profile.notification'),
+                () {
+                  Navigator.pushNamed(context, NotificationScreen.routeName);
+                },
+              ),
+              divider(),
+              imageOptions(
+                "assets/profile/fluent_ticket-diagonal-16-filled.png",
+                getTranslate(context, 'profile.my_booking'),
+                20,
+                () {
+                  Navigator.pushNamed(context, ProfileBookingScreen.routeName);
+                },
+              ),
+              divider(),
+              iconOptions(
+                Icons.settings,
+                getTranslate(context, 'profile.settings'),
+                () {
+                  Navigator.pushNamed(context, SettingScreen.routeName);
+                },
+              ),
+              divider(),
+              iconOptions(
+                Icons.info,
+                getTranslate(context, 'profile.about_us'),
+                () {
+                  Navigator.pushNamed(context, AboutUs.routeName);
+                },
+              ),
+              divider()
+            ],
+          ),
+        )
+      ],
     );
   }
 
@@ -163,7 +167,9 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  topImageContainer(Size size, BuildContext context) {
+  topImageContainer(Size size, BuildContext context, WidgetRef ref) {
+    String userName = userModel!.fullName!;
+    String? profilePicture = userModel!.profilePicture;
     return SizedBox(
       height: size.height * 0.3,
       width: double.infinity,
@@ -194,7 +200,7 @@ class ProfileScreen extends StatelessWidget {
                           style: semibold20white),
                       GestureDetector(
                         onTap: () {
-                          logout(context);
+                          logout(context, ref);
                         },
                         child: Container(
                           height: size.height * 0.04,
@@ -228,13 +234,44 @@ class ProfileScreen extends StatelessWidget {
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                   ),
-                  child: Image.asset(
-                    "assets/profile/User Image.jpg",
-                    fit: BoxFit.cover,
-                  ),
+                  child: profilePicture == null
+                      ? ClipOval(
+                          child: Image.asset(
+                            "assets/profile/User Image.png",
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : ClipOval(
+                          child: Image.network(
+                            profilePicture,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, event) {
+                              if (event == null) return child;
+                              return Center(
+                                child: SizedBox(
+                                  width: 20.0,
+                                  height: 20.0,
+                                  child: CircularProgressIndicator(
+                                    value: event.cumulativeBytesLoaded /
+                                        (event.expectedTotalBytes ?? 1),
+                                  ),
+                                ),
+                              );
+                            },
+                            errorBuilder: (context, object, stacktrace) {
+                              return const Center(
+                                child: SizedBox(
+                                  width: 20.0,
+                                  height: 20.0,
+                                  child: Icon(Icons.image_not_supported),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
                 ),
-                const Text(
-                  "Terasaki",
+                Text(
+                  userName,
                   style: semibold16black,
                 )
               ],
@@ -245,7 +282,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  logout(BuildContext context) {
+  logout(BuildContext context, WidgetRef ref) {
     return showDialog(
       context: context,
       builder: (context) {
@@ -290,7 +327,9 @@ class ProfileScreen extends StatelessWidget {
                   widthSpace,
                   Expanded(
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        ref.read(userControllerProvider.notifier).logout();
+                      },
                       child: Container(
                           padding:
                               const EdgeInsets.symmetric(vertical: fixPadding),

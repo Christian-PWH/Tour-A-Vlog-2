@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:tour_a_vlog/1_common/models/user_model.dart';
 import 'package:tour_a_vlog/2_splash_onBoarding/screens/onboarding.dart';
 import 'package:tour_a_vlog/3_auth/screens/signin.dart';
 import 'package:tour_a_vlog/3_auth/screens/signup.dart';
@@ -54,8 +55,10 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
 
     //home screen
     case '/home':
+      final userModel = routeSettings.arguments as UserModel?;
       return PageTransition(
-          child: const HomeScreen(), type: PageTransitionType.leftToRight);
+          child: HomeScreen(userModel: userModel),
+          type: PageTransitionType.leftToRight);
     //home - 1
     case '/top_indonesia_destination':
       final indonesiaCity = routeSettings.arguments as Map<String, dynamic>;
@@ -79,7 +82,8 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case '/packages':
       final packageMap = routeSettings.arguments as Map<String, dynamic>;
       return PageTransition(
-          child: Packages(packageMap: packageMap), type: PageTransitionType.leftToRight);
+          child: Packages(packageMap: packageMap),
+          type: PageTransitionType.leftToRight);
     case '/packages_detail':
       final tourPackageDetail = routeSettings.arguments as Map<String, dynamic>;
       return PageTransition(
@@ -152,12 +156,16 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
 
     //profile
     case '/profile':
+      final userModel = routeSettings.arguments as UserModel?;
       return PageTransition(
-          child: const ProfileScreen(), type: PageTransitionType.leftToRight);
+          child: ProfileScreen(userModel: userModel),
+          type: PageTransitionType.leftToRight);
     //profile - 1
     case '/edit_profile':
+      final userModel = routeSettings.arguments as UserModel?;
       return PageTransition(
-          child: const EditProfile(), type: PageTransitionType.leftToRight);
+          child: EditProfile(userModel: userModel),
+          type: PageTransitionType.leftToRight);
     case '/pick_location':
       return PageTransition(
           child: const PickLocation(), type: PageTransitionType.leftToRight);

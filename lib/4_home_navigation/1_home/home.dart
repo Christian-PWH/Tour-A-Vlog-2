@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
+import 'package:tour_a_vlog/1_common/models/user_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:tour_a_vlog/1_common/widgets/column_builder.dart';
 import 'package:tour_a_vlog/5_pages/1_detail/detail.dart';
@@ -30,7 +31,9 @@ final cityList = [
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
 
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, required this.userModel});
+
+  final UserModel? userModel;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -322,6 +325,14 @@ class _HomeScreenState extends State<HomeScreen> {
       "title": "Culture"
     }
   };
+
+  late UserModel userModel;
+
+  @override
+  void initState() {
+    userModel = widget.userModel!;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -722,7 +733,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       FittedBox(
                         child: Text(
-                          getTranslate(context, 'home.travel_text'),
+                          "Hi, ${userModel.fullName} ${getTranslate(context, "home.travel_text")}",
                           style: semibold18white,
                         ),
                       ),
