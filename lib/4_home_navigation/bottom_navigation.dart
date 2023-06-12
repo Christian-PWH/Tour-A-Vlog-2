@@ -70,19 +70,15 @@ class _BottomNavigationScreenState
   Widget pages(int selectedIndex, UserModel? userModel) {
     switch (selectedIndex) {
       case 0:
-        return HomeScreen(
-          userModel: userModel,
-        );
+        return const HomeScreen();
       case 1:
         return const BookingScreen();
       case 2:
         return const FavoriteScreen();
       case 3:
-        return ProfileScreen(userModel: userModel);
+        return const ProfileScreen();
       default:
-        return HomeScreen(
-          userModel: userModel,
-        );
+        return const HomeScreen();
     }
   }
 

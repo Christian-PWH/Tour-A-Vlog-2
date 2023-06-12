@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/models/user_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:tour_a_vlog/1_common/widgets/column_builder.dart';
+import 'package:tour_a_vlog/1_common/widgets/error_screen.dart';
+import 'package:tour_a_vlog/3_auth/controller/user_controller.dart';
 import 'package:tour_a_vlog/5_pages/1_detail/detail.dart';
 import 'package:tour_a_vlog/5_pages/1_discover_by_categories/discover_by_categories.dart';
 import 'package:tour_a_vlog/5_pages/1_package_detail.dart/package_detail.dart';
@@ -28,18 +31,16 @@ final cityList = [
   {"name": "NTT", "id": 14},
 ];
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   static const routeName = '/home';
 
-  const HomeScreen({super.key, required this.userModel});
-
-  final UserModel? userModel;
+  const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   String selectedCityName = cityList[1]['name'].toString();
 
   Map<String, dynamic> recommendationMap = {
@@ -326,25 +327,29 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   };
 
-  late UserModel userModel;
-
-  @override
-  void initState() {
-    userModel = widget.userModel!;
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: whiteColor,
-      body: Column(
-        children: [
-          topImageContainer(size, context),
-          bottomView(size),
-        ],
-      ),
+    final currentUser = ref.watch(userControllerProvider);
+    debugPrint('Main Home - build scaffold');
+    return currentUser.when(
+      data: (userModel) {
+        return Scaffold(
+          backgroundColor: whiteColor,
+          body: Column(
+            children: [
+              topImageContainer(size, context, userModel),
+              bottomView(size),
+            ],
+          ),
+        );
+      },
+      error: (error, stackTrace) {
+        return const ErrorScreen(text: 'Navigator Screen - Call Developer');
+      },
+      loading: () {
+        return const Center(child: CircularProgressIndicator());
+      },
     );
   }
 
@@ -705,7 +710,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  topImageContainer(Size size, BuildContext context) {
+  topImageContainer(Size size, BuildContext context, UserModel? userModel) {
     return Container(
       height: size.height * 0.21,
       width: double.infinity,
@@ -733,7 +738,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       FittedBox(
                         child: Text(
-                          "Hi, ${userModel.fullName} ${getTranslate(context, "home.travel_text")}",
+                          "Hi, ${userModel?.fullName ?? 'User'} ${getTranslate(context, "home.travel_text")}",
                           style: semibold18white,
                         ),
                       ),

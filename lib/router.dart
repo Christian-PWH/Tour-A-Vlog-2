@@ -55,10 +55,8 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
 
     //home screen
     case '/home':
-      final userModel = routeSettings.arguments as UserModel?;
       return PageTransition(
-          child: HomeScreen(userModel: userModel),
-          type: PageTransitionType.leftToRight);
+          child: const HomeScreen(), type: PageTransitionType.leftToRight);
     //home - 1
     case '/top_indonesia_destination':
       final indonesiaCity = routeSettings.arguments as Map<String, dynamic>;
@@ -156,10 +154,8 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
 
     //profile
     case '/profile':
-      final userModel = routeSettings.arguments as UserModel?;
       return PageTransition(
-          child: ProfileScreen(userModel: userModel),
-          type: PageTransitionType.leftToRight);
+          child: const ProfileScreen(), type: PageTransitionType.leftToRight);
     //profile - 1
     case '/edit_profile':
       final userModel = routeSettings.arguments as UserModel?;

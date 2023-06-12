@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/models/user_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
+import 'package:tour_a_vlog/1_common/widgets/error_screen.dart';
 import 'package:tour_a_vlog/3_auth/controller/user_controller.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/about_us.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/profile_booking.dart';
@@ -13,23 +14,33 @@ import 'package:tour_a_vlog/5_pages/1_notification/notification.dart';
 class ProfileScreen extends ConsumerWidget {
   static const routeName = '/profile';
 
-  const ProfileScreen({super.key, required this.userModel});
-
-  final UserModel? userModel;
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: whiteColor,
-      body: profileBody(size, context, ref),
+    final currentUser = ref.watch(userControllerProvider);
+    debugPrint('profile - build scaffold');
+    return currentUser.when(
+      data: (userModel) {
+        return Scaffold(
+          backgroundColor: whiteColor,
+          body: profileBody(size, context, ref, userModel),
+        );
+      },
+      error: (error, stackTrace) {
+        return const ErrorScreen(text: 'Navigator Screen - Call Developer');
+      },
+      loading: () {
+        return const Center(child: CircularProgressIndicator());
+      },
     );
   }
 
-  Widget profileBody(Size size, context, ref) {
+  Widget profileBody(Size size, context, ref, UserModel? userModel) {
     return Column(
       children: [
-        topImageContainer(size, context, ref),
+        topImageContainer(size, context, ref, userModel),
         Expanded(
           child: ListView(
             padding: const EdgeInsets.symmetric(
@@ -167,9 +178,10 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  topImageContainer(Size size, BuildContext context, WidgetRef ref) {
-    String userName = userModel!.fullName!;
-    String? profilePicture = userModel!.profilePicture;
+  topImageContainer(
+      Size size, BuildContext context, WidgetRef ref, UserModel? userModel) {
+    String userName = userModel?.fullName ?? 'User';
+    String? profilePicture = userModel?.profilePicture;
     return SizedBox(
       height: size.height * 0.3,
       width: double.infinity,
