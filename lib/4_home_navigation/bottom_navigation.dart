@@ -11,6 +11,7 @@ import 'package:tour_a_vlog/4_home_navigation/1_home/home.dart';
 import 'package:tour_a_vlog/4_home_navigation/2_booking/booking.dart';
 import 'package:tour_a_vlog/4_home_navigation/3_favorites/favorites.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/profile.dart';
+import 'package:tour_a_vlog/4_home_navigation/controller/home_navigation_controller.dart';
 
 class BottomNavigationScreen extends ConsumerStatefulWidget {
   static const routeName = '/bottom_navigation';
@@ -24,8 +25,6 @@ class BottomNavigationScreen extends ConsumerStatefulWidget {
 
 class _BottomNavigationScreenState
     extends ConsumerState<BottomNavigationScreen> {
-  int selectedIndex = 0;
-
   DateTime? backPressTime;
 
   @override
@@ -54,7 +53,9 @@ class _BottomNavigationScreenState
             }
           },
           child: Scaffold(
-            body: pages(selectedIndex, user),
+            body: pages(
+              ref.watch(selectedIndexBottomNavigation),
+            ),
             bottomNavigationBar: bottomNavigationBar(),
           ),
         );
@@ -68,7 +69,7 @@ class _BottomNavigationScreenState
     );
   }
 
-  Widget pages(int selectedIndex, UserModel? userModel) {
+  Widget pages(int selectedIndex) {
     switch (selectedIndex) {
       case 0:
         return const HomeScreen();
@@ -100,11 +101,11 @@ class _BottomNavigationScreenState
         fontSize: 14,
       ),
       onTap: (index) {
-        setState(() {
-          selectedIndex = index;
-        });
+        ref
+            .read(selectedIndexBottomNavigation.notifier)
+            .update((state) => index);
       },
-      currentIndex: selectedIndex,
+      currentIndex: ref.watch(selectedIndexBottomNavigation),
       items: [
         BottomNavigationBarItem(
           icon: const Icon(Icons.home_rounded),
