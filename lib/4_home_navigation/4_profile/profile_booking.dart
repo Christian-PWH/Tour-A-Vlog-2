@@ -356,9 +356,11 @@ class _ProfileBookingScreenState extends State<ProfileBookingScreen> {
               },
               child: Column(
                 children: [
-                  Text(
-                    tabList[index]['name'].toString(),
-                    style: medium16grey,
+                  Flexible(
+                    child: Text(
+                      tabList[index]['name'].toString(),
+                      style: medium16grey,
+                    ),
                   ),
                   height5Space,
                   selectedIndex == index

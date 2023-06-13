@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/models/user_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
+import 'package:tour_a_vlog/1_common/widgets/error_screen.dart';
 import 'package:tour_a_vlog/1_common/widgets/show_alert_dialog.dart';
 import 'package:tour_a_vlog/1_common/widgets/show_loading_dialog.dart';
 import 'package:tour_a_vlog/1_common/widgets/show_snackbar.dart';
@@ -19,9 +20,7 @@ import 'package:tour_a_vlog/4_home_navigation/bottom_navigation.dart';
 class EditProfile extends ConsumerStatefulWidget {
   static const routeName = '/edit_profile';
 
-  const EditProfile({super.key, required this.userModel});
-
-  final UserModel? userModel;
+  const EditProfile({super.key});
 
   @override
   ConsumerState<EditProfile> createState() => _EditProfileState();
@@ -46,11 +45,6 @@ class _EditProfileState extends ConsumerState<EditProfile> {
 
   @override
   void initState() {
-    userModel = widget.userModel!;
-    userImageFromUrl = userModel.profilePicture ?? '-';
-    nameController.text = userModel.fullName!;
-    emailController.text = userModel.email!;
-    phoneController.text = userModel.phoneNumber!;
     super.initState();
     _getDateLocation(context);
   }
@@ -126,6 +120,66 @@ class _EditProfileState extends ConsumerState<EditProfile> {
     userImageDeleted = ref.watch(editProfileImageDeletedProvider);
     userImageFilePath = ref.watch(editProfileImageFilePathProvider);
     locationController.text = ref.watch(editProfileLocationProvider);
+    final currentUser = ref.watch(userControllerProvider);
+    debugPrint('edit profile - build scaffold');
+    return currentUser.when(
+      data: (userModel) {
+        userImageFromUrl = userModel?.profilePicture ?? '-';
+        nameController.text = userModel?.fullName ?? 'user';
+        emailController.text = userModel?.email ?? 'email';
+        phoneController.text = userModel?.phoneNumber ?? 'phone';
+        return Scaffold(
+          backgroundColor: whiteColor,
+          body: editProfileBody(size, context, userModel),
+        );
+      },
+      error: (error, stackTrace) {
+        return const ErrorScreen(text: 'Navigator Screen - Call Developer');
+      },
+      loading: () {
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+
+  updateButton(Size size) {
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          barrierDismissible: true,
+          builder: (BuildContext dialogContext) {
+            return passwordConfirmation(context, size);
+          },
+        );
+      },
+      child: Container(
+        height: size.height * 0.07,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          gradient: const LinearGradient(
+            colors: gradient,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: primaryColor.withOpacity(0.25),
+              blurRadius: 5,
+            )
+          ],
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          getTranslate(context, 'edit_profile.update'),
+          style: semibold18white,
+        ),
+      ),
+    );
+  }
+
+  Widget editProfileBody(Size size, context, UserModel? userModel) {
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -178,43 +232,6 @@ class _EditProfileState extends ConsumerState<EditProfile> {
             heightBox(40.0),
             updateButton(size),
           ],
-        ),
-      ),
-    );
-  }
-
-  updateButton(Size size) {
-    return GestureDetector(
-      onTap: () {
-        showDialog(
-          context: context,
-          barrierDismissible: true,
-          builder: (BuildContext dialogContext) {
-            return passwordConfirmation(context, size);
-          },
-        );
-      },
-      child: Container(
-        height: size.height * 0.07,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          gradient: const LinearGradient(
-            colors: gradient,
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: primaryColor.withOpacity(0.25),
-              blurRadius: 5,
-            )
-          ],
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          getTranslate(context, 'edit_profile.update'),
-          style: semibold18white,
         ),
       ),
     );

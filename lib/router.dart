@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:tour_a_vlog/1_common/models/user_model.dart';
 import 'package:tour_a_vlog/2_splash_onBoarding/screens/onboarding.dart';
 import 'package:tour_a_vlog/3_auth/screens/signin.dart';
 import 'package:tour_a_vlog/3_auth/screens/signup.dart';
@@ -158,10 +157,8 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           child: const ProfileScreen(), type: PageTransitionType.leftToRight);
     //profile - 1
     case '/edit_profile':
-      final userModel = routeSettings.arguments as UserModel?;
       return PageTransition(
-          child: EditProfile(userModel: userModel),
-          type: PageTransitionType.leftToRight);
+          child: const EditProfile(), type: PageTransitionType.leftToRight);
     case '/pick_location':
       return PageTransition(
           child: const PickLocation(), type: PageTransitionType.leftToRight);

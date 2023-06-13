@@ -43,6 +43,7 @@ class _BottomNavigationScreenState
     debugPrint('Main navigation - build scaffold');
     return currentUser.when(
       data: (user) {
+        debugPrint("main navigation = $user");
         return WillPopScope(
           onWillPop: () async {
             bool backStatus = onWillPop(context);

@@ -17,7 +17,7 @@ class UserController extends _$UserController {
   @override
   FutureOr<UserModel?> build() async {
     auth = FirebaseAuth.instance;
-    return _getCurrentUser();
+    return await _getCurrentUser();
   }
 
   FutureOr<UserModel?> _getCurrentUser() async {

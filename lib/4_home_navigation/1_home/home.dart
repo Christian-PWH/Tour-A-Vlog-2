@@ -334,6 +334,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     debugPrint('Main Home - build scaffold');
     return currentUser.when(
       data: (userModel) {
+        debugPrint("main home = $userModel");
         return Scaffold(
           backgroundColor: whiteColor,
           body: Column(

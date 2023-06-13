@@ -23,6 +23,7 @@ class ProfileScreen extends ConsumerWidget {
     debugPrint('profile - build scaffold');
     return currentUser.when(
       data: (userModel) {
+        debugPrint(userModel.toString());
         return Scaffold(
           backgroundColor: whiteColor,
           body: profileBody(size, context, ref, userModel),
