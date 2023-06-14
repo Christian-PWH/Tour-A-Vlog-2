@@ -13,10 +13,15 @@ part 'user_controller.g.dart';
 @Riverpod(keepAlive: true)
 class UserController extends _$UserController {
   late final FirebaseAuth auth;
+  late final FirebaseDatabase dbInstance;
+
+  late final FirebaseStorage storageInstance;
 
   @override
   FutureOr<UserModel?> build() async {
     auth = FirebaseAuth.instance;
+    dbInstance = FirebaseDatabase.instance;
+    storageInstance = FirebaseStorage.instance;
     return await _getCurrentUser();
   }
 
@@ -31,8 +36,7 @@ class UserController extends _$UserController {
   }
 
   Future<UserModel?> getCurrentUserInRTDB(String userId) async {
-    final dbRef = FirebaseDatabase.instance.ref();
-    final snapshot = await dbRef.child("Users/$userId").get();
+    final snapshot = await dbInstance.ref().child("Users/$userId").get();
     if (snapshot.exists) {
       return UserModel.fromMap(snapshot.value as Map);
     } else {
@@ -60,8 +64,7 @@ class UserController extends _$UserController {
         email: email,
         password: password,
       );
-      final dbRef =
-          FirebaseDatabase.instance.ref("Users/${credential.user?.uid}");
+      final dbRef = dbInstance.ref("Users/${credential.user?.uid}");
       await dbRef.set({
         "email": email,
         "fullName": fullName,
@@ -138,9 +141,9 @@ class UserController extends _$UserController {
 
       String newProfilePicturePath = profilePicture;
       if (profilePictureUpdated) {
-        final storageRef = FirebaseStorage.instance.ref();
-        final userRef =
-            storageRef.child("UsersImages/${newAuthCredential.user?.uid}/");
+        final userRef = storageInstance
+            .ref()
+            .child("UsersImages/${newAuthCredential.user?.uid}/");
         File file = File(profilePicture);
 
         try {
@@ -163,8 +166,7 @@ class UserController extends _$UserController {
         'longitude': longitude,
         'latitude': latitude,
       };
-      final dbRef =
-          FirebaseDatabase.instance.ref("Users/${newAuthCredential.user?.uid}");
+      final dbRef = dbInstance.ref("Users/${newAuthCredential.user?.uid}");
       dbRef.update(updatedUserData);
       await refreshUser();
       return {
