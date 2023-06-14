@@ -10,7 +10,6 @@ import 'package:tour_a_vlog/4_home_navigation/1_home/home.dart';
 import 'package:tour_a_vlog/4_home_navigation/2_booking/booking.dart';
 import 'package:tour_a_vlog/4_home_navigation/3_favorites/favorites.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/profile.dart';
-import 'package:tour_a_vlog/4_home_navigation/controller/tour_controller.dart';
 import 'package:tour_a_vlog/4_home_navigation/controller/vm_home_navigation_controller.dart';
 
 class BottomNavigationScreen extends ConsumerStatefulWidget {
@@ -29,27 +28,6 @@ class _BottomNavigationScreenState
 
   @override
   Widget build(BuildContext context) {
-    ref
-        .watch(tourControllerProvider.notifier)
-        .getTourByRecommendation()
-        .then((value) {
-      debugPrint(value.toString());
-    });
-    // res.when(
-    //   data: (val) {
-    //     debugPrint(val.toString());
-    //     return Container(
-    //       child: Text(val.toString()),
-    //     );
-    //   },
-    //   error: (a, b) {
-    //     debugPrint("error");
-    //     return Container(
-    //       child: Center(child: Text("error")),
-    //     );
-    //   },
-    //   loading: () => debugPrint("loading"),
-    // );
     ref.listen(userControllerProvider, (previous, next) {
       debugPrint('Employee Home Screen - ref listen profileControllerProvider');
       if (!next.hasValue || next.value == null) {
