@@ -10,7 +10,7 @@ import 'package:tour_a_vlog/4_home_navigation/1_home/home.dart';
 import 'package:tour_a_vlog/4_home_navigation/2_booking/booking.dart';
 import 'package:tour_a_vlog/4_home_navigation/3_favorites/favorites.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/profile.dart';
-import 'package:tour_a_vlog/4_home_navigation/controller/vm_home_navigation_controller.dart';
+import 'package:tour_a_vlog/4_home_navigation/controller/bottom_navigation_vm.dart';
 
 class BottomNavigationScreen extends ConsumerStatefulWidget {
   static const routeName = '/bottom_navigation';

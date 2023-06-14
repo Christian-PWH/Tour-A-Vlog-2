@@ -1,4 +1,5 @@
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
+import 'package:tour_a_vlog/1_common/models/tour_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:tour_a_vlog/5_pages/1_package_detail.dart/package_detail.dart';
@@ -6,9 +7,9 @@ import 'package:tour_a_vlog/5_pages/1_package_detail.dart/package_detail.dart';
 class Recommendation extends StatelessWidget {
   static const routeName = '/recommendation';
 
-  final Map<String, dynamic> recommendationTour;
+  final List<TourModel> tours;
 
-  const Recommendation({super.key, required this.recommendationTour});
+  const Recommendation({super.key, required this.tours});
 
   @override
   Widget build(BuildContext context) {
@@ -50,17 +51,14 @@ class Recommendation extends StatelessWidget {
             crossAxisSpacing: fixPadding * 2,
             childAspectRatio: size.width / (size.height / 2),
           ),
-          itemCount: recommendationTour.length,
+          itemCount: tours.length,
           itemBuilder: (context, index) {
-            Map<String, dynamic> tourItem =
-                recommendationTour[recommendationTour.keys.elementAt(index)];
-            List<String> tourImage = tourItem["image"];
             return GestureDetector(
               onTap: () {
                 Navigator.pushNamed(
                   context,
                   PackageDetail.routeName,
-                  arguments: tourItem,
+                  arguments: tours[index],
                 );
               },
               child: Container(
@@ -81,7 +79,7 @@ class Recommendation extends StatelessWidget {
                       borderRadius:
                           const BorderRadius.vertical(top: Radius.circular(10)),
                       child: Image.network(
-                        tourImage[0],
+                        tours[index].image[0],
                         height: size.height * 0.15,
                         width: double.infinity,
                         fit: BoxFit.cover,
@@ -112,7 +110,7 @@ class Recommendation extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: fixPadding / 2, horizontal: fixPadding),
-                      child: Text(tourItem["title"].toString(),
+                      child: Text(tours[index].title,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                           style: medium14black33),

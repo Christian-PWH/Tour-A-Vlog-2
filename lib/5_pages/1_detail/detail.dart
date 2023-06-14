@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
+import 'package:tour_a_vlog/1_common/models/city_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
+import 'package:tour_a_vlog/4_home_navigation/controller/tour_controller.dart';
 import 'package:tour_a_vlog/5_pages/1_package_detail.dart/package_detail.dart';
 import 'package:tour_a_vlog/5_pages/1_packages/packages.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DetailScreen extends StatefulWidget {
+class DetailScreen extends ConsumerStatefulWidget {
   static const routeName = '/detail';
 
-  final Map<String, dynamic> detailMap, cityMap;
+  final CityModel city;
 
-  const DetailScreen(
-      {super.key, required this.detailMap, required this.cityMap});
+  const DetailScreen({super.key, required this.city});
 
   @override
-  State<DetailScreen> createState() => _DetailScreenState();
+  ConsumerState<DetailScreen> createState() => _DetailScreenState();
 }
 
-class _DetailScreenState extends State<DetailScreen>
+class _DetailScreenState extends ConsumerState<DetailScreen>
     with SingleTickerProviderStateMixin {
+  CityModel get city => widget.city;
   bool isFavorite = false;
 
   TabController? tabController;
@@ -26,16 +29,8 @@ class _DetailScreenState extends State<DetailScreen>
 
   bool? packageFavorite;
 
-  Map<String, dynamic> rawMap = {};
-
-  Map<String, dynamic> cityMap = {};
-
   @override
   void initState() {
-    setState(() {
-      rawMap = widget.detailMap;
-      cityMap = widget.cityMap;
-    });
     tabController = TabController(length: 1, vsync: this);
     super.initState();
   }
@@ -116,194 +111,202 @@ class _DetailScreenState extends State<DetailScreen>
   }
 
   firstTabView(Size size) {
-    return Padding(
-      padding: const EdgeInsets.all(fixPadding * 2),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    // final List<TourModel> data = [];
+    // int index = 0;
+    final tours = ref.watch(getTourByCityProvider(cityTitle: city.title));
+
+    return tours.when(
+      data: (data) {
+        return Padding(
+          padding: const EdgeInsets.all(fixPadding * 2),
+          child: Column(
             children: [
-              Flexible(
-                child: Text(
-                  "${cityMap["title"]} ${getTranslate(context, 'packages.package')} (${rawMap.length})",
-                  style: semibold16black,
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  Map<String, dynamic> newMapBasedOnCity = {};
-                  rawMap.forEach(
-                        (key, value) {
-                      Map<String, dynamic> newRawMap = rawMap[key];
-                      if (newRawMap["city"]
-                          .toString()
-                          .contains(cityMap["title"])) {
-                        newMapBasedOnCity
-                            .addEntries({key: value}.entries);
-                      }
-                    },
-                  );
-                  Navigator.pushNamed(context, Packages.routeName, arguments: newMapBasedOnCity,);
-                },
-                child: Text(
-                  getTranslate(context, 'detail.see_all'),
-                  style: medium14black.copyWith(fontWeight: FontWeight.w500),
-                ),
-              )
-            ],
-          ),
-          ListView.builder(
-            shrinkWrap: true,
-            padding: const EdgeInsets.symmetric(vertical: fixPadding),
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: rawMap.length,
-            itemBuilder: (context, index) {
-              Map<String, dynamic> detailItem =
-                  rawMap[rawMap.keys.elementAt(index)];
-              List<String> detailItemImage = detailItem["image"];
-              if (rawMap.isEmpty) {
-                return const Center(
-                  child: Text("Data is Empty!"),
-                );
-              }
-              return GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, PackageDetail.routeName,
-                      arguments: detailItem);
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(fixPadding),
-                  margin: const EdgeInsets.symmetric(vertical: fixPadding),
-                  decoration: BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: grey94Color.withOpacity(0.5),
-                        blurRadius: 5,
-                      ),
-                    ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      "${city.title} ${getTranslate(context, 'packages.package')} (${data.length})",
+                      style: semibold16black,
+                    ),
                   ),
-                  child: Column(
-                    children: [
-                      Stack(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: Image.network(
-                              detailItemImage[0],
-                              height: size.height * 0.17,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                              loadingBuilder: (context, child, event) {
-                                if (event == null) return child;
-                                return Center(
-                                  child: SizedBox(
-                                    width: 20.0,
-                                    height: 20.0,
-                                    child: CircularProgressIndicator(
-                                      value: event.cumulativeBytesLoaded /
-                                          (event.expectedTotalBytes ?? 1),
-                                    ),
-                                  ),
-                                );
-                              },
-                              errorBuilder: (context, object, stacktrace) {
-                                return const Center(
-                                  child: SizedBox(
-                                    width: 20.0,
-                                    height: 20.0,
-                                    child: Icon(Icons.image_not_supported),
-                                  ),
-                                );
-                              },
-                            ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        Packages.routeName,
+                        arguments: data,
+                      );
+                    },
+                    child: Text(
+                      getTranslate(context, 'detail.see_all'),
+                      style:
+                          medium14black.copyWith(fontWeight: FontWeight.w500),
+                    ),
+                  )
+                ],
+              ),
+              ListView.builder(
+                shrinkWrap: true,
+                padding: const EdgeInsets.symmetric(vertical: fixPadding),
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: data.length,
+                itemBuilder: (context, index) {
+                  if (data.isEmpty) {
+                    return const Center(
+                      child: Text("Data is Empty!"),
+                    );
+                  }
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        PackageDetail.routeName,
+                        arguments: data[index],
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(fixPadding),
+                      margin: const EdgeInsets.symmetric(vertical: fixPadding),
+                      decoration: BoxDecoration(
+                        color: whiteColor,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: grey94Color.withOpacity(0.5),
+                            blurRadius: 5,
                           ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                isFavorite == true
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                                size: 20,
-                                color: whiteColor,
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Image.network(
+                                  data[index].image[0],
+                                  height: size.height * 0.17,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                  loadingBuilder: (context, child, event) {
+                                    if (event == null) return child;
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 20.0,
+                                        height: 20.0,
+                                        child: CircularProgressIndicator(
+                                          value: event.cumulativeBytesLoaded /
+                                              (event.expectedTotalBytes ?? 1),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  errorBuilder: (context, object, stacktrace) {
+                                    return const Center(
+                                      child: SizedBox(
+                                        width: 20.0,
+                                        height: 20.0,
+                                        child: Icon(Icons.image_not_supported),
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
-                            ),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    isFavorite == true
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
+                                    size: 20,
+                                    color: whiteColor,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          height5Space,
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      data[index].title,
+                                      style: medium16black.copyWith(
+                                          fontWeight: FontWeight.w500),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    heightBox(2.0),
+                                    Text(
+                                      getTranslate(
+                                          context, 'detail.detail_text'),
+                                      style: medium14grey94,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    heightBox(2.0),
+                                    RichText(
+                                      text: TextSpan(
+                                        text: "Rp ${data[index].price}",
+                                        style: semibold16primary,
+                                        children: [
+                                          TextSpan(
+                                            text: getTranslate(
+                                                context, 'detail.per_person'),
+                                            style: medium14black.copyWith(
+                                              color: const Color(0xff585656),
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: fixPadding,
+                                    vertical: fixPadding / 2),
+                                decoration: BoxDecoration(
+                                  color: whiteColor,
+                                  borderRadius: BorderRadius.circular(5),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: primaryColor.withOpacity(0.3),
+                                      blurRadius: 5,
+                                    )
+                                  ],
+                                  border: Border.all(color: primaryColor),
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  data[index].details,
+                                  style: medium14primary,
+                                ),
+                              ),
+                            ],
                           )
                         ],
                       ),
-                      height5Space,
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  detailItem['title'].toString(),
-                                  style: medium16black.copyWith(
-                                      fontWeight: FontWeight.w500),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                heightBox(2.0),
-                                Text(
-                                  getTranslate(context, 'detail.detail_text'),
-                                  style: medium14grey94,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                heightBox(2.0),
-                                RichText(
-                                  text: TextSpan(
-                                    text: "\Rp ${detailItem['price']}",
-                                    style: semibold16primary,
-                                    children: [
-                                      TextSpan(
-                                        text: getTranslate(
-                                            context, 'detail.per_person'),
-                                        style: medium14black.copyWith(
-                                          color: const Color(0xff585656),
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: fixPadding,
-                                vertical: fixPadding / 2),
-                            decoration: BoxDecoration(
-                              color: whiteColor,
-                              borderRadius: BorderRadius.circular(5),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: primaryColor.withOpacity(0.3),
-                                  blurRadius: 5,
-                                )
-                              ],
-                              border: Border.all(color: primaryColor),
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              detailItem['details'].toString(),
-                              style: medium14primary,
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              );
-            },
-          )
-        ],
-      ),
+                    ),
+                  );
+                },
+              )
+            ],
+          ),
+        );
+      },
+      error: (error, stackTrace) {
+        return const Center(child: Text('Error'));
+      },
+      loading: () {
+        return const Center(child: CircularProgressIndicator());
+      },
     );
   }
 
@@ -342,7 +345,7 @@ class _DetailScreenState extends State<DetailScreen>
                 Flexible(
                   child: Tab(
                     text:
-                        "${cityMap["title"]} ${getTranslate(context, 'packages.package')}",
+                        "${city.title} ${getTranslate(context, 'packages.package')}",
                   ),
                 ),
               ],

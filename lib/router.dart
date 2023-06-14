@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:tour_a_vlog/1_common/models/tour_model.dart';
+import 'package:tour_a_vlog/1_common/models/city_model.dart';
 import 'package:tour_a_vlog/2_splash_onBoarding/screens/onboarding.dart';
 import 'package:tour_a_vlog/3_auth/screens/signin.dart';
 import 'package:tour_a_vlog/3_auth/screens/signup.dart';
@@ -58,23 +60,15 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           child: const HomeScreen(), type: PageTransitionType.leftToRight);
     //home - 1
     case '/top_indonesia_destination':
-      final indonesiaCity = routeSettings.arguments as Map<String, dynamic>;
+      final cities = routeSettings.arguments as List<CityModel>;
       return PageTransition(
-          child: TopIndonesiaDestination(indonesiaCity: indonesiaCity),
+          child: TopIndonesiaDestination(cities: cities),
           type: PageTransitionType.leftToRight);
     //home - 2 - detail screen
     case '/detail':
-      final args = routeSettings.arguments as Map;
-      Map<String, dynamic> detailMap = {};
-      Map<String, dynamic> cityMap = {};
-      args.forEach(
-        (key, value) {
-          if (key == "arg_1") detailMap = args[key];
-          if (key == "arg_2") cityMap = args[key];
-        },
-      );
+      final city = routeSettings.arguments as CityModel;
       return PageTransition(
-          child: DetailScreen(detailMap: detailMap, cityMap: cityMap),
+          child: DetailScreen(city: city),
           type: PageTransitionType.leftToRight);
     case '/packages':
       final packageMap = routeSettings.arguments as Map<String, dynamic>;
@@ -82,9 +76,9 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           child: Packages(packageMap: packageMap),
           type: PageTransitionType.leftToRight);
     case '/packages_detail':
-      final tourPackageDetail = routeSettings.arguments as Map<String, dynamic>;
+      final tour = routeSettings.arguments as TourModel;
       return PageTransition(
-          child: PackageDetail(tourPackageDetail: tourPackageDetail),
+          child: PackageDetail(tour: tour),
           type: PageTransitionType.leftToRight);
     case '/travel_detail':
       return PageTransition(
@@ -100,15 +94,14 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           child: ReviewScreen(), type: PageTransitionType.leftToRight);
     //home - 3
     case '/recommendation':
-      final recommendationTour =
-          routeSettings.arguments as Map<String, dynamic>;
+      final tours = routeSettings.arguments as List<TourModel>;
       return PageTransition(
-          child: Recommendation(recommendationTour: recommendationTour),
+          child: Recommendation(tours: tours),
           type: PageTransitionType.leftToRight);
     case '/discover_by_category':
-      final tourByCategory = routeSettings.arguments as Map<String, dynamic>;
+      final categoryTitle = routeSettings.arguments as String;
       return PageTransition(
-          child: DiscoverByCategories(tourByCategory: tourByCategory),
+          child: DiscoverByCategories(categoryTitle: categoryTitle),
           type: PageTransitionType.leftToRight);
     //home - 4
     case '/notification':
@@ -130,15 +123,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           child: const HolidayPackages(), type: PageTransitionType.leftToRight);
     //booking - 2
     case '/open_trip':
-      final openTripMap = routeSettings.arguments as Map<String, dynamic>;
       return PageTransition(
-          child: OpenTrip(openTripMap: openTripMap),
-          type: PageTransitionType.leftToRight);
+          child: const OpenTrip(), type: PageTransitionType.leftToRight);
     case '/private_tour':
-      final privateTourMap = routeSettings.arguments as Map<String, dynamic>;
       return PageTransition(
-          child: PrivateTour(privateTourMap: privateTourMap),
-          type: PageTransitionType.leftToRight);
+          child: const PrivateTour(), type: PageTransitionType.leftToRight);
 
     //favorite
     case '/favorites':

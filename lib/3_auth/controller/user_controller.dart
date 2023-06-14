@@ -100,10 +100,11 @@ class UserController extends _$UserController {
   }) async {
     debugPrint('user_controller - loginUser');
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+      await refreshUser();
       return {"success": true, "message": "Sign In Success."};
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

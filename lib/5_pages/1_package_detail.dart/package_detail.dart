@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
+import 'package:tour_a_vlog/1_common/models/tour_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:tour_a_vlog/1_common/widgets/column_builder.dart';
 import 'package:tour_a_vlog/5_pages/1_review/review.dart';
@@ -9,15 +10,18 @@ import 'package:tour_a_vlog/5_pages/1_travel_detail/travel_detail.dart';
 class PackageDetail extends StatefulWidget {
   static const routeName = '/packages_detail';
 
-  final Map<String, dynamic> tourPackageDetail;
+  // final Map<String, dynamic> tourPackageDetail;
+  final TourModel tour;
 
-  const PackageDetail({super.key, required this.tourPackageDetail});
+  const PackageDetail({super.key, required this.tour});
 
   @override
   State<PackageDetail> createState() => _PackageDetailState();
 }
 
 class _PackageDetailState extends State<PackageDetail> {
+  TourModel get tour => widget.tour;
+
   CarouselController imageController = CarouselController();
   bool isFavorite = false;
 
@@ -42,8 +46,7 @@ class _PackageDetailState extends State<PackageDetail> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final packageItem = widget.tourPackageDetail;
-    List<String> packageImage = packageItem["image"];
+    List<String> packageImage = tour.image;
     bool multipleImage = false;
     if (packageImage.length > 1) {
       multipleImage = true;
@@ -70,9 +73,7 @@ class _PackageDetailState extends State<PackageDetail> {
             actions: [
               IconButton(
                 onPressed: () {
-                  setState(() {
-                    isFavorite = !isFavorite;
-                  });
+                  /// TODO Favorite
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       backgroundColor: blackColor,
@@ -149,24 +150,23 @@ class _PackageDetailState extends State<PackageDetail> {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                detailInfo(packageItem),
-                about(packageItem),
+                detailInfo(tour),
+                about(tour),
                 heightSpace,
-                activityInfo(packageItem, size),
+                activityInfo(tour, size),
                 heightSpace,
               ],
             ),
           )
         ],
       ),
-      bottomNavigationBar: bottomNavigationBar(packageItem, size),
+      bottomNavigationBar: bottomNavigationBar(tour, size),
     );
   }
 
   List<Widget> imageItemSlider() {
-    if (widget.tourPackageDetail["image"] != null) {
-      List<String> tourImages = widget.tourPackageDetail["image"];
-      return tourImages
+    if (tour.image.isNotEmpty) {
+      return tour.image
           .map(
             (item) => Image.network(
               item,
@@ -207,7 +207,7 @@ class _PackageDetailState extends State<PackageDetail> {
         .toList();
   }
 
-  detailInfo(Map<String, dynamic> packageItem) {
+  detailInfo(TourModel tour) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: fixPadding,
@@ -221,7 +221,7 @@ class _PackageDetailState extends State<PackageDetail> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  packageItem["title"].toString(),
+                  tour.title,
                   style: semibold18primary,
                 ),
                 height5Space,
@@ -269,7 +269,7 @@ class _PackageDetailState extends State<PackageDetail> {
             ),
             alignment: Alignment.center,
             child: Text(
-              packageItem["details"].toString(),
+              tour.details,
               style: medium14primary,
             ),
           ),
@@ -278,7 +278,7 @@ class _PackageDetailState extends State<PackageDetail> {
     );
   }
 
-  about(Map<String, dynamic> packageItem) {
+  about(TourModel tour) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: fixPadding * 2),
       child: Column(
@@ -306,19 +306,19 @@ class _PackageDetailState extends State<PackageDetail> {
     );
   }
 
-  activityInfo(Map<String, dynamic> packageItem, Size size) {
+  activityInfo(TourModel tour, Size size) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // hotelContainer(size),
         heightSpace,
-        daysInfo(packageItem, size),
+        daysInfo(tour, size),
       ],
     );
   }
 
-  daysInfo(Map<String, dynamic> packageItem, Size size) {
-    List<String> customizationForDays = packageItem["customizationForDays"];
+  daysInfo(TourModel tour, Size size) {
+    List<String> customizationForDays = tour.customizationForDays;
     return ColumnBuilder(
       itemBuilder: (context, index) {
         return Column(
@@ -380,7 +380,7 @@ class _PackageDetailState extends State<PackageDetail> {
                                 ),
                                 widthSpace,
                                 Text(
-                                  packageItem["city"].toString(),
+                                  tour.city,
                                   style: regular14black,
                                 )
                               ],
@@ -446,7 +446,7 @@ class _PackageDetailState extends State<PackageDetail> {
     );
   }
 
-  bottomNavigationBar(Map<String, dynamic> packageItem, Size size) {
+  bottomNavigationBar(TourModel tour, Size size) {
     return Container(
       height: size.height * 0.1,
       width: double.infinity,
@@ -480,7 +480,7 @@ class _PackageDetailState extends State<PackageDetail> {
               alignment: Alignment.center,
               child: FittedBox(
                 child: Text(
-                  "\Rp ${packageItem["price"]}/${getTranslate(context, 'package_detail.per_person')}",
+                  "Rp ${tour.price}/${getTranslate(context, 'package_detail.per_person')}",
                   style: semibold16black,
                   textAlign: TextAlign.center,
                 ),

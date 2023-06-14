@@ -166,6 +166,7 @@ class _CreditCardState extends State<CreditCard> {
   }
 
   bool validate(context) {
+    return true;
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (!currentFocus.hasPrimaryFocus) {
       currentFocus.unfocus();

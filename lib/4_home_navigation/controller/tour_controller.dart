@@ -5,18 +5,51 @@ import 'package:tour_a_vlog/1_common/models/tour_model.dart';
 
 part 'tour_controller.g.dart';
 
+@riverpod
+FutureOr<List<TourModel>> getTourByCity(
+  GetTourByCityRef ref, {
+  required String cityTitle,
+}) async {
+  final tourController = ref.watch(tourControllerProvider);
+  return tourController.getTourByCity(cityTitle);
+}
+
+@riverpod
+FutureOr<List<TourModel>> recommendation(RecommendationRef ref) async {
+  final tourController = ref.watch(tourControllerProvider);
+  return tourController.getTourByRecommendation();
+}
+
+@riverpod
+FutureOr<List<TourModel>> discoverByCategoryController(
+  DiscoverByCategoryControllerRef ref, {
+  required String categorTitle,
+}) async {
+  final tourController = ref.watch(tourControllerProvider);
+  return tourController.getTourByCategories(categorTitle);
+}
+
+@riverpod
+FutureOr<List<TourModel>> getTourByType(
+  GetTourByTypeRef ref, {
+  required String type,
+}) async {
+  final tourController = ref.watch(tourControllerProvider);
+  return tourController.getTourByType(type);
+}
+
 @Riverpod(keepAlive: true)
-class TourController extends _$TourController {
-  late final FirebaseDatabase dbInstance;
+TourController tourController(TourControllerRef ref) {
+  return TourController(FirebaseDatabase.instance);
+}
 
-  @override
-  FutureOr<List<TourModel>> build() async {
-    dbInstance = FirebaseDatabase.instance;
-    return await _getTour();
-  }
+class TourController {
+  final FirebaseDatabase dbInstance;
 
-  FutureOr<List<TourModel>> _getTour() async {
-    final snapshot = await dbInstance.ref().child("Items/").get();
+  TourController(this.dbInstance);
+
+  FutureOr<List<TourModel>> get() async {
+    final snapshot = await dbInstance.ref().child("Items").get();
 
     if (snapshot.exists) {
       Map newMap = snapshot.value as Map;
@@ -46,6 +79,7 @@ class TourController extends _$TourController {
       List<TourModel> extractedListOfTourByCategory = [];
       newMap.forEach((key, value) {
         Map extractedMap = newMap[key];
+        extractedMap['id'] = key;
         extractedListOfTourByCategory.add(TourModel.fromMap(extractedMap));
       });
       return extractedListOfTourByCategory;
@@ -67,6 +101,7 @@ class TourController extends _$TourController {
       List<TourModel> extractedListOfTourByRecommendation = [];
       newMap.forEach((key, value) {
         Map extractedMap = newMap[key];
+        extractedMap['id'] = key;
         extractedListOfTourByRecommendation
             .add(TourModel.fromMap(extractedMap));
       });
@@ -76,12 +111,12 @@ class TourController extends _$TourController {
     }
   }
 
-  Future<List<TourModel>> getTourByCity(String title) async {
+  Future<List<TourModel>> getTourByCity(String type) async {
     final snapshot = await dbInstance
         .ref()
         .child("Items")
         .orderByChild("city")
-        .equalTo(title.trim())
+        .equalTo(type.trim())
         .get();
 
     if (snapshot.exists) {
@@ -89,6 +124,7 @@ class TourController extends _$TourController {
       List<TourModel> extractedListOfTourByCity = [];
       newMap.forEach((key, value) {
         Map extractedMap = newMap[key];
+        extractedMap['id'] = key;
         extractedListOfTourByCity.add(TourModel.fromMap(extractedMap));
       });
       return extractedListOfTourByCity;
@@ -110,6 +146,7 @@ class TourController extends _$TourController {
       List<TourModel> extractedListOfTourByType = [];
       newMap.forEach((key, value) {
         Map extractedMap = newMap[key];
+        extractedMap['id'] = key;
         extractedListOfTourByType.add(TourModel.fromMap(extractedMap));
       });
       return extractedListOfTourByType;

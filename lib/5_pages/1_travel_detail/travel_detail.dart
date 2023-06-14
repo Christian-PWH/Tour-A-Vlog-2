@@ -15,11 +15,11 @@ class TravelDetail extends StatefulWidget {
 }
 
 class _TravelDetailState extends State<TravelDetail> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController noOfTravellersController = TextEditingController();
-  TextEditingController dateController = TextEditingController();
+  final nameController = TextEditingController();
+  final phoneController = TextEditingController();
+  final emailController = TextEditingController();
+  final noOfTravellersController = TextEditingController();
+  final dateController = TextEditingController();
 
   bool value = false;
 
@@ -281,6 +281,7 @@ class _TravelDetailState extends State<TravelDetail> {
   }
 
   bool validate(context) {
+    return true;
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (!currentFocus.hasPrimaryFocus) {
       currentFocus.unfocus();

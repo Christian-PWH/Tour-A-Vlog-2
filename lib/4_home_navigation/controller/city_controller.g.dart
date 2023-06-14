@@ -6,7 +6,25 @@ part of 'city_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$cityControllerHash() => r'756d031b37df1e05c1aa41fecb97c93190faeec5';
+String _$indonesiaDestinationControllerHash() =>
+    r'd732f68bac036fb43532276a551ebd366bdfc229';
+
+/// See also [indonesiaDestinationController].
+@ProviderFor(indonesiaDestinationController)
+final indonesiaDestinationControllerProvider =
+    AutoDisposeFutureProvider<List<CityModel>>.internal(
+  indonesiaDestinationController,
+  name: r'indonesiaDestinationControllerProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$indonesiaDestinationControllerHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef IndonesiaDestinationControllerRef
+    = AutoDisposeFutureProviderRef<List<CityModel>>;
+String _$cityControllerHash() => r'00c66f049507d88571afc176d4ad477f005038a6';
 
 /// See also [CityController].
 @ProviderFor(CityController)

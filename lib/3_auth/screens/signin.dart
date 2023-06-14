@@ -13,8 +13,8 @@ import 'package:tour_a_vlog/4_home_navigation/bottom_navigation.dart';
 
 class SignInScreen extends ConsumerWidget {
   static const routeName = '/sign_in';
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final emailController = TextEditingController();
 
   DateTime? backPressTime;
 

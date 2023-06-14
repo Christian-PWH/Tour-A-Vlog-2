@@ -13,7 +13,7 @@ import 'package:tour_a_vlog/1_common/widgets/show_alert_dialog.dart';
 import 'package:tour_a_vlog/1_common/widgets/show_loading_dialog.dart';
 import 'package:tour_a_vlog/1_common/widgets/show_snackbar.dart';
 import 'package:tour_a_vlog/3_auth/controller/user_controller.dart';
-import 'package:tour_a_vlog/4_home_navigation/4_profile/controller/edit_profile_controller.dart';
+import 'package:tour_a_vlog/4_home_navigation/4_profile/controller/edit_profile_vm.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/languages.dart';
 import 'package:tour_a_vlog/4_home_navigation/bottom_navigation.dart';
 

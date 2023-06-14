@@ -15,13 +15,14 @@ class CategoryController extends _$CategoryController {
   }
 
   FutureOr<List<CategoryModel>> _getCategory() async {
-    final snapshot = await dbInstance.ref().child("Categories/").get();
+    final snapshot = await dbInstance.ref().child("Categories").get();
 
     if (snapshot.exists) {
-      Map newMap = snapshot.value as Map;
+      final newMap = snapshot.value as Map;
       List<CategoryModel> extractedListOfCategory = [];
       newMap.forEach((key, value) {
-        Map extractedMap = newMap[key];
+        final extractedMap = newMap[key];
+        extractedMap['id'] = key;
         extractedListOfCategory.add(CategoryModel.fromMap(extractedMap));
       });
       return extractedListOfCategory;

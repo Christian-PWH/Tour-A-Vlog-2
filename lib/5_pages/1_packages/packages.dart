@@ -61,7 +61,7 @@ class _PackagesState extends State<Packages> {
         physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           Map<String, dynamic> detailItem =
-          packages[packages.keys.elementAt(index)];
+              packages[packages.keys.elementAt(index)];
           List<String> detailItemImage = detailItem["image"];
           if (packages.isEmpty) {
             return const Center(
@@ -70,7 +70,11 @@ class _PackagesState extends State<Packages> {
           }
           return GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, PackageDetail.routeName, arguments: detailItem,);
+              Navigator.pushNamed(
+                context,
+                PackageDetail.routeName,
+                arguments: detailItem,
+              );
             },
             child: Container(
               padding: const EdgeInsets.all(fixPadding),
@@ -140,7 +144,7 @@ class _PackagesState extends State<Packages> {
                             heightBox(2.0),
                             RichText(
                               text: TextSpan(
-                                text: "\Rp ${detailItem['price']}",
+                                text: "Rp ${detailItem['price']}",
                                 style: semibold16primary,
                                 children: [
                                   TextSpan(
