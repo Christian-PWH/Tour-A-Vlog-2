@@ -1,25 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_controller.dart';
+part of 'type_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userControllerHash() => r'38e77610dc0accbd68ffda57a900b6c8b31711a8';
+String _$typeControllerHash() => r'c453acfb0dbeb4c8d0a3d5ab0100d661424ae2fe';
 
-/// See also [UserController].
-@ProviderFor(UserController)
-final userControllerProvider =
-    AsyncNotifierProvider<UserController, UserModel?>.internal(
-  UserController.new,
-  name: r'userControllerProvider',
+/// See also [TypeController].
+@ProviderFor(TypeController)
+final typeControllerProvider =
+    AsyncNotifierProvider<TypeController, List<TypeModel>>.internal(
+  TypeController.new,
+  name: r'typeControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$userControllerHash,
+      : _$typeControllerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$UserController = AsyncNotifier<UserModel?>;
+typedef _$TypeController = AsyncNotifier<List<TypeModel>>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
