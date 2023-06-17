@@ -207,7 +207,7 @@ class _PackageDetailState extends State<PackageDetail> {
         .toList();
   }
 
-  detailInfo(TourModel tour) {
+  Widget detailInfo(TourModel tour) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: fixPadding,
@@ -278,7 +278,7 @@ class _PackageDetailState extends State<PackageDetail> {
     );
   }
 
-  about(TourModel tour) {
+  Widget about(TourModel tour) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: fixPadding * 2),
       child: Column(
@@ -306,7 +306,7 @@ class _PackageDetailState extends State<PackageDetail> {
     );
   }
 
-  activityInfo(TourModel tour, Size size) {
+  Widget activityInfo(TourModel tour, Size size) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -317,7 +317,7 @@ class _PackageDetailState extends State<PackageDetail> {
     );
   }
 
-  daysInfo(TourModel tour, Size size) {
+  Widget daysInfo(TourModel tour, Size size) {
     List<String> customizationForDays = tour.customizationForDays;
     return ColumnBuilder(
       itemBuilder: (context, index) {
@@ -403,7 +403,7 @@ class _PackageDetailState extends State<PackageDetail> {
     );
   }
 
-  textRow(String text) {
+  Widget textRow(String text) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -425,7 +425,7 @@ class _PackageDetailState extends State<PackageDetail> {
     );
   }
 
-  informationText(String firstText, String secondText) {
+  Widget informationText(String firstText, String secondText) {
     return RichText(
       text: TextSpan(
         text: firstText,
@@ -446,7 +446,7 @@ class _PackageDetailState extends State<PackageDetail> {
     );
   }
 
-  bottomNavigationBar(TourModel tour, Size size) {
+  Widget bottomNavigationBar(TourModel tour, Size size) {
     return Container(
       height: size.height * 0.1,
       width: double.infinity,
@@ -492,7 +492,11 @@ class _PackageDetailState extends State<PackageDetail> {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, TravelDetail.routeName);
+                Navigator.pushNamed(
+                  context,
+                  TravelDetail.routeName,
+                  arguments: tour,
+                );
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: fixPadding / 2),

@@ -54,17 +54,19 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           child: const BottomNavigationScreen(),
           type: PageTransitionType.leftToRight);
 
-    //home screen
+    ///home screen
     case '/home':
       return PageTransition(
           child: const HomeScreen(), type: PageTransitionType.leftToRight);
-    //home - 1
+
+    ///home - 1
     case '/top_indonesia_destination':
       final cities = routeSettings.arguments as List<CityModel>;
       return PageTransition(
           child: TopIndonesiaDestination(cities: cities),
           type: PageTransitionType.leftToRight);
-    //home - 2 - detail screen
+
+    ///home - 2 - detail screen
     case '/detail':
       final city = routeSettings.arguments as CityModel;
       return PageTransition(
@@ -81,8 +83,10 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           child: PackageDetail(tour: tour),
           type: PageTransitionType.leftToRight);
     case '/travel_detail':
+      final tour = routeSettings.arguments as TourModel;
       return PageTransition(
-          child: const TravelDetail(), type: PageTransitionType.leftToRight);
+          child: TravelDetail(tour: tour),
+          type: PageTransitionType.leftToRight);
     case '/credit_card':
       return PageTransition(
           child: const CreditCard(), type: PageTransitionType.leftToRight);
@@ -92,7 +96,8 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case '/review':
       return PageTransition(
           child: ReviewScreen(), type: PageTransitionType.leftToRight);
-    //home - 3
+
+    ///home - 3
     case '/recommendation':
       final tours = routeSettings.arguments as List<TourModel>;
       return PageTransition(
@@ -103,25 +108,29 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return PageTransition(
           child: DiscoverByCategories(categoryTitle: categoryTitle),
           type: PageTransitionType.leftToRight);
-    //home - 4
+
+    ///home - 4
     case '/notification':
       return PageTransition(
           child: const NotificationScreen(),
           type: PageTransitionType.leftToRight);
-    //home - 5
+
+    ///home - 5
     case '/search':
       return PageTransition(
           child: const SearchScreen(), type: PageTransitionType.leftToRight);
 
-    //booking screen
+    ///booking screen
     case '/booking':
       return PageTransition(
           child: const BookingScreen(), type: PageTransitionType.leftToRight);
-    //booking - 1
+
+    ///booking - 1
     case '/holiday_packages':
       return PageTransition(
           child: const HolidayPackages(), type: PageTransitionType.leftToRight);
-    //booking - 2
+
+    ///booking - 2
     case '/open_trip':
       return PageTransition(
           child: const OpenTrip(), type: PageTransitionType.leftToRight);
@@ -129,7 +138,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return PageTransition(
           child: const PrivateTour(), type: PageTransitionType.leftToRight);
 
-    //favorite
+    ///favorite
     case '/favorites':
       return PageTransition(
           child: const FavoriteScreen(), type: PageTransitionType.leftToRight);
@@ -140,18 +149,20 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return PageTransition(
           child: const SimilarPlace(), type: PageTransitionType.leftToRight);
 
-    //profile
+    ///profile
     case '/profile':
       return PageTransition(
           child: const ProfileScreen(), type: PageTransitionType.leftToRight);
-    //profile - 1
+
+    ///profile - 1
     case '/edit_profile':
       return PageTransition(
           child: const EditProfile(), type: PageTransitionType.leftToRight);
     case '/pick_location':
       return PageTransition(
           child: const PickLocation(), type: PageTransitionType.leftToRight);
-    //profile - 2
+
+    ///profile - 2
     case '/profile_booking':
       return PageTransition(
           child: const ProfileBookingScreen(),
@@ -162,18 +173,21 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case '/holiday_history':
       return PageTransition(
           child: const HolidayHistory(), type: PageTransitionType.leftToRight);
-    //profile - 3
+
+    ///profile - 3
     case '/setting':
       return PageTransition(
           child: const SettingScreen(), type: PageTransitionType.leftToRight);
     case '/language':
       return PageTransition(
           child: const LanguagesScreen(), type: PageTransitionType.leftToRight);
-    //profile - 4
+
+    ///profile - 4
     case '/about_us':
       return PageTransition(
           child: const AboutUs(), type: PageTransitionType.leftToRight);
-    //profile - 5
+
+    ///profile - 5
     case '/feedback':
       return PageTransition(
           child: const FeedbackScreen(), type: PageTransitionType.leftToRight);

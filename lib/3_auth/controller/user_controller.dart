@@ -22,10 +22,10 @@ class UserController extends _$UserController {
     auth = FirebaseAuth.instance;
     dbInstance = FirebaseDatabase.instance;
     storageInstance = FirebaseStorage.instance;
-    return await _getCurrentUser();
+    return await getCurrentUser();
   }
 
-  FutureOr<UserModel?> _getCurrentUser() async {
+  FutureOr<UserModel?> getCurrentUser() async {
     final checkCurrentUser = auth.currentUser;
     if (checkCurrentUser == null) return null;
 
@@ -38,7 +38,9 @@ class UserController extends _$UserController {
   Future<UserModel?> getCurrentUserInRTDB(String userId) async {
     final snapshot = await dbInstance.ref().child("Users/$userId").get();
     if (snapshot.exists) {
-      return UserModel.fromMap(snapshot.value as Map);
+      Map newMap = snapshot.value as Map;
+      newMap['uid'] = snapshot.key.toString();
+      return UserModel.fromMap(newMap);
     } else {
       return null;
     }
@@ -48,7 +50,7 @@ class UserController extends _$UserController {
     debugPrint('user_controller - refreshUser');
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      return _getCurrentUser();
+      return getCurrentUser();
     });
   }
 

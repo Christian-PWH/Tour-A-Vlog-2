@@ -465,6 +465,7 @@ class _HolidayPackagesState extends ConsumerState<HolidayPackages> {
                         Navigator.pushNamed(
                           context,
                           PackageDetail.routeName,
+                          arguments: data[index],
                         );
                       },
                       child: Container(

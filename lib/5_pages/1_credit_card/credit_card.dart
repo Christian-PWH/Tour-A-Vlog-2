@@ -80,7 +80,7 @@ class _CreditCardState extends State<CreditCard> {
     );
   }
 
-  creditCard(Size size) {
+  Widget creditCard(Size size) {
     return CreditCardWidget(
       height: size.height * 0.28,
       cardNumber: cardNumber,
@@ -107,7 +107,7 @@ class _CreditCardState extends State<CreditCard> {
     );
   }
 
-  creditcardfrom() {
+  Widget creditcardfrom() {
     return CreditCardForm(
       obscureCvv: true,
       cardNumber: cardNumber,

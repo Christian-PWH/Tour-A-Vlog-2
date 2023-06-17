@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
+import 'package:tour_a_vlog/1_common/models/tour_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:tour_a_vlog/1_common/widgets/show_snackbar.dart';
+import 'package:tour_a_vlog/3_auth/controller/user_controller.dart';
+import 'package:tour_a_vlog/4_home_navigation/controller/order_controller.dart';
 import 'package:tour_a_vlog/5_pages/1_credit_card/credit_card.dart';
+import 'package:tour_a_vlog/5_pages/1_success/success.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TravelDetail extends StatefulWidget {
+class TravelDetail extends ConsumerStatefulWidget {
   static const routeName = '/travel_detail';
 
-  const TravelDetail({super.key});
+  final TourModel tour;
+
+  const TravelDetail({super.key, required this.tour});
 
   @override
-  State<TravelDetail> createState() => _TravelDetailState();
+  ConsumerState<TravelDetail> createState() => _TravelDetailState();
 }
 
-class _TravelDetailState extends State<TravelDetail> {
+class _TravelDetailState extends ConsumerState<TravelDetail> {
+  TourModel get tour => widget.tour;
+
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
@@ -76,6 +85,7 @@ class _TravelDetailState extends State<TravelDetail> {
               TextInputType.name,
               Icons.person_outline,
               getTranslate(context, 'travel_detail.full_name'),
+              false,
               true,
               getTranslate(context, 'travel_detail.name_suggestion_text'),
             ),
@@ -88,6 +98,7 @@ class _TravelDetailState extends State<TravelDetail> {
               TextInputType.phone,
               Icons.phone_android_rounded,
               getTranslate(context, 'travel_detail.mobile_number'),
+              false,
               true,
               getTranslate(context, 'travel_detail.mobile_suggestion_text'),
             ),
@@ -100,6 +111,7 @@ class _TravelDetailState extends State<TravelDetail> {
               TextInputType.emailAddress,
               Icons.mail_outline,
               getTranslate(context, 'travel_detail.email_address'),
+              false,
               false,
               '',
             ),
@@ -114,6 +126,7 @@ class _TravelDetailState extends State<TravelDetail> {
               TextInputType.number,
               Icons.person_outline,
               getTranslate(context, 'travel_detail.no_travellers'),
+              true,
               false,
               '',
             ),
@@ -128,6 +141,7 @@ class _TravelDetailState extends State<TravelDetail> {
               TextInputType.text,
               Icons.calendar_month_outlined,
               getTranslate(context, 'travel_detail.booking_date'),
+              true,
               false,
               '',
             ),
@@ -135,7 +149,7 @@ class _TravelDetailState extends State<TravelDetail> {
             agreeBox(),
             heightSpace,
             heightSpace,
-            continueButton(size),
+            continueButton(context, size),
           ],
         ),
       ),
@@ -218,13 +232,14 @@ class _TravelDetailState extends State<TravelDetail> {
     }
   }
 
-  textField(
+  Widget textField(
     context,
     TextEditingController textEditingController,
     void Function()? onTap,
     TextInputType textInputType,
     IconData icon,
     String hintText,
+    bool readOnly,
     bool fieldAlert,
     String fieldAlertText,
   ) {
@@ -250,6 +265,7 @@ class _TravelDetailState extends State<TravelDetail> {
               onTap: onTap,
               controller: textEditingController,
               keyboardType: textInputType,
+              readOnly: readOnly,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: hintText,
@@ -281,7 +297,6 @@ class _TravelDetailState extends State<TravelDetail> {
   }
 
   bool validate(context) {
-    return true;
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (!currentFocus.hasPrimaryFocus) {
       currentFocus.unfocus();
@@ -298,12 +313,28 @@ class _TravelDetailState extends State<TravelDetail> {
     return false;
   }
 
-  continueButton(Size size) {
+  Widget continueButton(context, Size size) {
     return GestureDetector(
-      onTap: () {
-        if (validate(context)) {
-          Navigator.pushNamed(context, CreditCard.routeName);
-        }
+      onTap: () async {
+        if (!validate(context)) return;
+        final tourController = ref.watch(orderControllerProvider);
+        final user =
+            await ref.read(userControllerProvider.notifier).getCurrentUser();
+        if (user == null) return;
+        tourController.save(
+          tourId: tour.id,
+          userId: user.uid!,
+          status: 'new',
+          fullName: nameController.text.trim(),
+          email: emailController.text.trim(),
+          quantity: int.parse(noOfTravellersController.text),
+          price: double.parse(tour.price),
+          totalPrice: double.parse(tour.price) *
+              int.parse(noOfTravellersController.text),
+          bookingDate: dateController.text,
+        );
+        // Navigator.pushNamed(context, CreditCard.routeName);
+        Navigator.pushNamed(context, SuccessScreen.routeName);
       },
       child: Container(
         height: size.height * 0.07,
@@ -323,15 +354,16 @@ class _TravelDetailState extends State<TravelDetail> {
           ],
         ),
         alignment: Alignment.center,
-        child: Text(
-          getTranslate(context, 'travel_detail.continue'),
+        child: const Text(
+          // getTranslate(context, 'travel_detail.continue'),
+          'Make a Payment',
           style: semibold18white,
         ),
       ),
     );
   }
 
-  agreeBox() {
+  Widget agreeBox() {
     return Row(
       children: [
         Checkbox(
@@ -357,7 +389,7 @@ class _TravelDetailState extends State<TravelDetail> {
     );
   }
 
-  kidsContainer(Size size, StateSetter state) {
+  Widget kidsContainer(Size size, StateSetter state) {
     return Container(
       padding: const EdgeInsets.symmetric(
           horizontal: fixPadding * 2, vertical: fixPadding),
@@ -470,7 +502,7 @@ class _TravelDetailState extends State<TravelDetail> {
     );
   }
 
-  adultContainer(Size size, StateSetter state) {
+  Widget adultContainer(Size size, StateSetter state) {
     return Container(
       padding: const EdgeInsets.symmetric(
           horizontal: fixPadding * 2, vertical: fixPadding),
