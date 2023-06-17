@@ -197,7 +197,8 @@
     "per_night": "(per malam)",
     "seater": "kursi",
     "ongoing": "Sedang berlangsung",
-    "history": "Sejarah"
+    "history": "Sejarah",
+    "new": "menunggu"
   },
   "edit_profile": {
     "edit_profile": "Ubah profil",

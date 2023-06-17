@@ -6,7 +6,6 @@ import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:tour_a_vlog/1_common/widgets/show_snackbar.dart';
 import 'package:tour_a_vlog/3_auth/controller/user_controller.dart';
 import 'package:tour_a_vlog/4_home_navigation/controller/order_controller.dart';
-import 'package:tour_a_vlog/5_pages/1_credit_card/credit_card.dart';
 import 'package:tour_a_vlog/5_pages/1_success/success.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -29,6 +28,7 @@ class _TravelDetailState extends ConsumerState<TravelDetail> {
   final emailController = TextEditingController();
   final noOfTravellersController = TextEditingController();
   final dateController = TextEditingController();
+  DateTime? bookingDate;
 
   bool value = false;
 
@@ -219,17 +219,14 @@ class _TravelDetailState extends ConsumerState<TravelDetail> {
             child: child!);
       },
     );
-    if (pickedDate != null) {
-      String formattedDate = DateFormat(
-              'dd MMMM yyyy',
-              // ignore: use_build_context_synchronously
-              Localizations.localeOf(context).toString())
-          .format(pickedDate);
-
-      setState(() {
-        dateController.text = formattedDate;
-      });
-    }
+    if (pickedDate == null) return;
+    bookingDate = pickedDate;
+    String formattedDate = DateFormat(
+            'dd MMMM yyyy',
+            // ignore: use_build_context_synchronously
+            Localizations.localeOf(context).toString())
+        .format(pickedDate);
+    dateController.text = formattedDate;
   }
 
   Widget textField(
@@ -305,7 +302,8 @@ class _TravelDetailState extends ConsumerState<TravelDetail> {
         phoneController.text.trim() != '' &&
         emailController.text.trim() != '' &&
         noOfTravellersController.text.trim() != '' &&
-        dateController.text.trim() != '') {
+        dateController.text.trim() != '' &&
+        bookingDate != null) {
       return true;
     }
     showSnackBar(context, Icons.cancel_outlined, Colors.red,
@@ -317,21 +315,23 @@ class _TravelDetailState extends ConsumerState<TravelDetail> {
     return GestureDetector(
       onTap: () async {
         if (!validate(context)) return;
-        final tourController = ref.watch(orderControllerProvider);
+        final orderController = ref.watch(orderControllerProvider);
         final user =
             await ref.read(userControllerProvider.notifier).getCurrentUser();
         if (user == null) return;
-        tourController.save(
-          tourId: tour.id,
+        orderController.save(
+          // tourId: tour.id,
+          tour: tour,
           userId: user.uid!,
           status: 'new',
           fullName: nameController.text.trim(),
+          numberPhone: phoneController.text.trim(),
           email: emailController.text.trim(),
           quantity: int.parse(noOfTravellersController.text),
           price: double.parse(tour.price),
           totalPrice: double.parse(tour.price) *
               int.parse(noOfTravellersController.text),
-          bookingDate: dateController.text,
+          bookingDate: bookingDate!,
         );
         // Navigator.pushNamed(context, CreditCard.routeName);
         Navigator.pushNamed(context, SuccessScreen.routeName);

@@ -197,7 +197,8 @@
     "per_night": "(per night)",
     "seater": "seater",
     "ongoing": "Ongoing",
-    "history": "History"
+    "history": "History",
+    "new": "pending"
   },
   "edit_profile": {
     "edit_profile": "Edit profile",

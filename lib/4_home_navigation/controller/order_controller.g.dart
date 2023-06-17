@@ -6,7 +6,23 @@ part of 'order_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$orderControllerHash() => r'4f4a4022ab654a015af96d2e046531f0ce682be7';
+String _$getBookingHistoryHash() => r'd97be586b7d18b5efb25ac7a14f5375fb032c679';
+
+/// See also [getBookingHistory].
+@ProviderFor(getBookingHistory)
+final getBookingHistoryProvider =
+    AutoDisposeFutureProvider<List<OrderModel>>.internal(
+  getBookingHistory,
+  name: r'getBookingHistoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$getBookingHistoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef GetBookingHistoryRef = AutoDisposeFutureProviderRef<List<OrderModel>>;
+String _$orderControllerHash() => r'bc56a2630746c48e3641d04f0afb71b11898286b';
 
 /// See also [orderController].
 @ProviderFor(orderController)

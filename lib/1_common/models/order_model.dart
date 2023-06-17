@@ -3,10 +3,12 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
+import 'package:tour_a_vlog/1_common/models/tour_model.dart';
+
 @immutable
 class OrderModel {
   final String id;
-  final String tourId;
+  final TourModel tour;
   final String userId;
   final String status;
   final String fullName;
@@ -19,7 +21,7 @@ class OrderModel {
 
   const OrderModel({
     required this.id,
-    required this.tourId,
+    required this.tour,
     required this.userId,
     required this.status,
     required this.fullName,
@@ -33,7 +35,7 @@ class OrderModel {
 
   OrderModel copyWith({
     String? id,
-    String? tourId,
+    TourModel? tour,
     String? userId,
     String? status,
     String? fullName,
@@ -46,7 +48,7 @@ class OrderModel {
   }) {
     return OrderModel(
       id: id ?? this.id,
-      tourId: tourId ?? this.tourId,
+      tour: tour ?? this.tour,
       userId: userId ?? this.userId,
       status: status ?? this.status,
       fullName: fullName ?? this.fullName,
@@ -62,7 +64,7 @@ class OrderModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'tourId': tourId,
+      'tour': tour.toMap(),
       'userId': userId,
       'status': status,
       'fullName': fullName,
@@ -75,20 +77,19 @@ class OrderModel {
     };
   }
 
-  factory OrderModel.fromMap(Map<String, dynamic> map) {
+  factory OrderModel.fromMap(Map<dynamic, dynamic> map) {
     return OrderModel(
-      id: map['id'] as String,
-      tourId: map['tourId'] as String,
-      userId: map['userId'] as String,
-      status: map['status'] as String,
-      fullName: map['fullName'] as String,
-      numberPhone: map['numberPhone'] as String,
-      email: map['email'] as String,
-      quantity: map['quantity'] as int,
-      price: map['price'] as double,
-      totalPrice: map['totalPrice'] as double,
-      bookingDate: DateTime.parse(map['bookingDate']),
-    );
+        id: map['id'] as String,
+        tour: TourModel.fromMap(map['tour'] as Map<dynamic, dynamic>),
+        userId: map['userId'] as String,
+        status: map['status'] as String,
+        fullName: map['fullName'] as String,
+        numberPhone: map['numberPhone'] as String,
+        email: map['email'] as String,
+        quantity: map['quantity'] as int,
+        price: (map['price'] as int).toDouble(),
+        totalPrice: (map['totalPrice'] as int).toDouble(),
+        bookingDate: DateTime.parse(map['bookingDate']));
   }
 
   String toJson() => json.encode(toMap());
@@ -98,7 +99,7 @@ class OrderModel {
 
   @override
   String toString() {
-    return 'OrderModel(id: $id, tourId: $tourId, userId: $userId, status: $status, fullName: $fullName, numberPhone: $numberPhone, email: $email, quantity: $quantity, price: $price, totalPrice: $totalPrice, bookingDate: $bookingDate)';
+    return 'OrderModel(id: $id, tour: $tour, userId: $userId, status: $status, fullName: $fullName, numberPhone: $numberPhone, email: $email, quantity: $quantity, price: $price, totalPrice: $totalPrice, bookingDate: $bookingDate)';
   }
 
   @override
@@ -106,7 +107,7 @@ class OrderModel {
     if (identical(this, other)) return true;
 
     return other.id == id &&
-        other.tourId == tourId &&
+        other.tour == tour &&
         other.userId == userId &&
         other.status == status &&
         other.fullName == fullName &&
@@ -121,7 +122,7 @@ class OrderModel {
   @override
   int get hashCode {
     return id.hashCode ^
-        tourId.hashCode ^
+        tour.hashCode ^
         userId.hashCode ^
         status.hashCode ^
         fullName.hashCode ^

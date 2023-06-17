@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
+import 'package:tour_a_vlog/1_common/models/order_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
+import 'package:tour_a_vlog/4_home_navigation/controller/order_controller.dart';
+import 'package:tour_a_vlog/4_home_navigation/controller/profile_booking_vm.dart';
 import 'package:tour_a_vlog/5_pages/5_holiday_history/holiday_history.dart';
 import 'package:tour_a_vlog/5_pages/5_holiday_ongoing/holiday_ongoing.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final holidayOngoingPackages = [
   {
@@ -12,16 +16,17 @@ final holidayOngoingPackages = [
   },
 ];
 
-class ProfileBookingScreen extends StatefulWidget {
+class ProfileBookingScreen extends ConsumerStatefulWidget {
   static const routeName = '/profile_booking';
 
   const ProfileBookingScreen({super.key});
 
   @override
-  State<ProfileBookingScreen> createState() => _ProfileBookingScreenState();
+  ConsumerState<ProfileBookingScreen> createState() =>
+      _ProfileBookingScreenState();
 }
 
-class _ProfileBookingScreenState extends State<ProfileBookingScreen> {
+class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
   int selectedIndex = 0;
 
   final tabList = [
@@ -41,8 +46,7 @@ class _ProfileBookingScreenState extends State<ProfileBookingScreen> {
     },
   ];
 
-  String? appbarName;
-  int holidaySelected = 0;
+  String appbarName = '';
 
   @override
   void initState() {
@@ -92,69 +96,118 @@ class _ProfileBookingScreenState extends State<ProfileBookingScreen> {
   }
 
   holidayTabView(Size size) {
+    final orders = ref.watch(getBookingHistoryProvider);
+    final holidaySelected = ref.watch(profileBookingHolidaySelectedProvider);
     return Expanded(
       child: Column(
         children: [
           holidayTabContainer(size),
-          if (holidaySelected == 0) holidayOngoingList(size),
-          if (holidaySelected == 1) holidayHistoryList(size),
+          Expanded(
+              child: orders.when(
+            data: (data) {
+              if (data.isEmpty) return emptyBooking(size);
+              // for (int i = 0; i < data.length; i++)
+              //   debugPrint(data[i].toString());
+              if (holidaySelected == 0) {
+                final newOrders = data.where((e) => e.status == 'new').toList();
+                return holidayNewList(size, newOrders);
+              }
+              if (holidaySelected == 1) {
+                final ongoingOrders =
+                    data.where((e) => e.status == 'ongoing').toList();
+                return holidayOngoingList(size, ongoingOrders);
+              }
+              if (holidaySelected == 2) {
+                final completedOrders =
+                    data.where((e) => e.status == 'completed').toList();
+                return holidayHistoryList(size, completedOrders);
+              }
+              return emptyBooking(size);
+            },
+            error: (error, stackTrace) {
+              return const Center(child: Text('Error'));
+            },
+            loading: () {
+              return const Center(child: CircularProgressIndicator());
+            },
+          ))
         ],
       ),
     );
   }
 
-  holidayOngoingList(Size size) {
-    return Expanded(
-      child: holidayOngoingPackages.isEmpty
-          ? emptyBooking(size)
-          : ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.symmetric(
-                  horizontal: fixPadding * 2, vertical: fixPadding),
-              itemCount: holidayOngoingPackages.length,
-              itemBuilder: (context, index) {
-                return holidayListContent(
-                    size,
-                    holidayOngoingPackages[index]['image'],
-                    holidayOngoingPackages[index]['name'],
-                    holidayOngoingPackages[index]['days'], () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HolidayOngoing(
-                        index: index,
-                      ),
-                    ),
-                  ).then((value) {
-                    setState(() {});
-                  });
-                });
-              },
+  Widget holidayNewList(Size size, List<OrderModel> newOrders) {
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.symmetric(
+          horizontal: fixPadding * 2, vertical: fixPadding),
+      itemCount: newOrders.length,
+      itemBuilder: (context, index) {
+        return holidayListContent(size, newOrders[index].tour.image[0],
+            newOrders[index].tour.title, newOrders[index].tour.details, () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HolidayOngoing(
+                index: index,
+              ),
             ),
+          );
+        });
+      },
     );
   }
 
-  holidayHistoryList(Size size) {
-    return Expanded(
-      child: ListView.builder(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.symmetric(
-            horizontal: fixPadding * 2, vertical: fixPadding),
-        itemCount: holidayHistoryPackages.length,
-        itemBuilder: (context, index) {
-          return holidayListContent(
-              size,
-              holidayHistoryPackages[index]['image'],
-              holidayHistoryPackages[index]['name'],
-              holidayHistoryPackages[index]['days'], () {
-            Navigator.pushNamed(context, HolidayHistory.routeName);
-          });
-        },
-      ),
+  Widget holidayOngoingList(Size size, List<OrderModel> ongoingOrders) {
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.symmetric(
+          horizontal: fixPadding * 2, vertical: fixPadding),
+      itemCount: ongoingOrders.length,
+      itemBuilder: (context, index) {
+        return holidayListContent(
+            size,
+            ongoingOrders[index].tour.image[0],
+            ongoingOrders[index].tour.title,
+            ongoingOrders[index].tour.details, () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HolidayOngoing(
+                index: index,
+              ),
+            ),
+          );
+        });
+      },
     );
   }
 
-  holidayListContent(Size size, image, name, days, Function() onTap) {
+  Widget holidayHistoryList(Size size, List<OrderModel> completedOrders) {
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.symmetric(
+          horizontal: fixPadding * 2, vertical: fixPadding),
+      itemCount: completedOrders.length,
+      itemBuilder: (context, index) {
+        return holidayListContent(
+            size,
+            completedOrders[index].tour.image[0],
+            completedOrders[index].tour.title,
+            completedOrders[index].tour.details, () {
+          Navigator.pushNamed(context, HolidayHistory.routeName);
+        });
+      },
+    );
+  }
+
+  Widget holidayListContent(
+    Size size,
+    String image,
+    String name,
+    String days,
+    Function() onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -174,11 +227,33 @@ class _ProfileBookingScreenState extends State<ProfileBookingScreen> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(5),
-              child: Image.asset(
+              child: Image.network(
                 image,
                 height: size.height * 0.17,
                 width: double.infinity,
                 fit: BoxFit.cover,
+                loadingBuilder: (context, child, event) {
+                  if (event == null) return child;
+                  return Center(
+                    child: SizedBox(
+                      width: 20.0,
+                      height: 20.0,
+                      child: CircularProgressIndicator(
+                        value: event.cumulativeBytesLoaded /
+                            (event.expectedTotalBytes ?? 1),
+                      ),
+                    ),
+                  );
+                },
+                errorBuilder: (context, object, stacktrace) {
+                  return const Center(
+                    child: SizedBox(
+                      width: 20.0,
+                      height: 20.0,
+                      child: Icon(Icons.image_not_supported),
+                    ),
+                  );
+                },
               ),
             ),
             height5Space,
@@ -242,7 +317,7 @@ class _ProfileBookingScreenState extends State<ProfileBookingScreen> {
     );
   }
 
-  emptyBooking(Size size) {
+  Widget emptyBooking(Size size) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -264,7 +339,7 @@ class _ProfileBookingScreenState extends State<ProfileBookingScreen> {
     );
   }
 
-  holidayTabContainer(Size size) {
+  Widget holidayTabContainer(Size size) {
     return Padding(
       padding: const EdgeInsets.only(
           top: fixPadding,
@@ -276,15 +351,46 @@ class _ProfileBookingScreenState extends State<ProfileBookingScreen> {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                setState(() {
-                  holidaySelected = 0;
-                });
+                ref
+                    .read(profileBookingHolidaySelectedProvider.notifier)
+                    .update((state) => 0);
               },
               child: Container(
                 height: size.height * 0.06,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  color: holidaySelected == 0 ? primaryColor : whiteColor,
+                  color: ref.watch(profileBookingHolidaySelectedProvider) == 0
+                      ? primaryColor
+                      : whiteColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: grey94Color.withOpacity(0.5),
+                      blurRadius: 5,
+                    )
+                  ],
+                ),
+                alignment: Alignment.center,
+                child: Text(getTranslate(context, 'booking.new'),
+                    style: ref.watch(profileBookingHolidaySelectedProvider) == 0
+                        ? semibold16white
+                        : semibold16grey),
+              ),
+            ),
+          ),
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                ref
+                    .read(profileBookingHolidaySelectedProvider.notifier)
+                    .update((state) => 1);
+              },
+              child: Container(
+                height: size.height * 0.06,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: ref.watch(profileBookingHolidaySelectedProvider) == 1
+                      ? primaryColor
+                      : whiteColor,
                   boxShadow: [
                     BoxShadow(
                       color: grey94Color.withOpacity(0.5),
@@ -294,26 +400,26 @@ class _ProfileBookingScreenState extends State<ProfileBookingScreen> {
                 ),
                 alignment: Alignment.center,
                 child: Text(getTranslate(context, 'booking.ongoing'),
-                    style: holidaySelected == 0
+                    style: ref.watch(profileBookingHolidaySelectedProvider) == 1
                         ? semibold16white
                         : semibold16grey),
               ),
             ),
           ),
-          widthSpace,
-          widthSpace,
           Expanded(
             child: GestureDetector(
               onTap: () {
-                setState(() {
-                  holidaySelected = 1;
-                });
+                ref
+                    .read(profileBookingHolidaySelectedProvider.notifier)
+                    .update((state) => 2);
               },
               child: Container(
                 height: size.height * 0.06,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  color: holidaySelected == 1 ? primaryColor : whiteColor,
+                  color: ref.watch(profileBookingHolidaySelectedProvider) == 2
+                      ? primaryColor
+                      : whiteColor,
                   boxShadow: [
                     BoxShadow(
                       color: grey94Color.withOpacity(0.5),
@@ -324,8 +430,9 @@ class _ProfileBookingScreenState extends State<ProfileBookingScreen> {
                 alignment: Alignment.center,
                 child: Text(
                   getTranslate(context, 'booking.history'),
-                  style:
-                      holidaySelected == 1 ? semibold16white : semibold16grey,
+                  style: ref.watch(profileBookingHolidaySelectedProvider) == 2
+                      ? semibold16white
+                      : semibold16grey,
                 ),
               ),
             ),
@@ -335,7 +442,7 @@ class _ProfileBookingScreenState extends State<ProfileBookingScreen> {
     );
   }
 
-  tabs(Size size) {
+  Widget tabs(Size size) {
     return SizedBox(
       height: size.height * 0.075,
       child: ListView.builder(
@@ -349,10 +456,8 @@ class _ProfileBookingScreenState extends State<ProfileBookingScreen> {
             padding: const EdgeInsets.all(fixPadding),
             child: GestureDetector(
               onTap: () {
-                setState(() {
-                  selectedIndex = index;
-                  appbarName = tabList[index]['title'].toString();
-                });
+                //   selectedIndex = index;
+                //   appbarName = tabList[index]['title'].toString();
               },
               child: Column(
                 children: [

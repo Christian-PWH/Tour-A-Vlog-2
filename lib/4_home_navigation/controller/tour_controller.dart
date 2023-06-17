@@ -78,7 +78,7 @@ class TourController {
       Map newMap = snapshot.value as Map;
       List<TourModel> extractedListOfTourByCategory = [];
       newMap.forEach((key, value) {
-        Map extractedMap = newMap[key];
+        Map<String, dynamic> extractedMap = newMap[key];
         extractedMap['id'] = key;
         extractedListOfTourByCategory.add(TourModel.fromMap(extractedMap));
       });
