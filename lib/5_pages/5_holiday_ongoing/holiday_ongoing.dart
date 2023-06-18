@@ -35,7 +35,7 @@ class _HolidayOngoingState extends State<HolidayOngoing> {
         ),
         titleSpacing: 0,
         title: Text(
-          getTranslate(context, 'holiday_ongoing_histroy.holiday_package'),
+          getTranslate(context, 'holiday_ongoing_history.holiday_package'),
           style: semibold18white,
         ),
         flexibleSpace: Container(
@@ -55,12 +55,12 @@ class _HolidayOngoingState extends State<HolidayOngoing> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              detailText(getTranslate(context, 'holiday_ongoing_histroy.date'),
+              detailText(getTranslate(context, 'holiday_ongoing_history.date'),
                   "11 dec 2022 - 15 dec 2022"),
               divider(size),
               detailText(
                   getTranslate(
-                      context, 'holiday_ongoing_histroy.no_travellers'),
+                      context, 'holiday_ongoing_history.no_travellers'),
                   "2 person"),
             ],
           ),
@@ -76,7 +76,7 @@ class _HolidayOngoingState extends State<HolidayOngoing> {
   cancelButton(Size size, context) {
     return GestureDetector(
       onTap: () {
-        cancleDailog(context);
+        cancelDialog(context);
       },
       child: Container(
         width: double.infinity,
@@ -97,14 +97,14 @@ class _HolidayOngoingState extends State<HolidayOngoing> {
         ),
         alignment: Alignment.center,
         child: Text(
-          getTranslate(context, 'holiday_ongoing_histroy.cancel_booking'),
+          getTranslate(context, 'holiday_ongoing_history.cancel_booking'),
           style: semibold18white,
         ),
       ),
     );
   }
 
-  cancleDailog(BuildContext context) {
+  cancelDialog(BuildContext context) {
     return showDialog(
       context: context,
       builder: (context) {
@@ -114,7 +114,7 @@ class _HolidayOngoingState extends State<HolidayOngoing> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                getTranslate(context, 'holiday_ongoing_histroy.cancle_content'),
+                getTranslate(context, 'holiday_ongoing_history.cancel_content'),
                 style: semibold16black,
               ),
               heightSpace,
@@ -140,7 +140,7 @@ class _HolidayOngoingState extends State<HolidayOngoing> {
                               ]),
                           alignment: Alignment.center,
                           child: Text(
-                            getTranslate(context, 'holiday_ongoing_histroy.no'),
+                            getTranslate(context, 'holiday_ongoing_history.no'),
                             style: semibold16black.copyWith(color: grey94Color),
                           )),
                     ),
@@ -175,7 +175,7 @@ class _HolidayOngoingState extends State<HolidayOngoing> {
                           alignment: Alignment.center,
                           child: Text(
                             getTranslate(
-                                context, 'holiday_ongoing_histroy.cancel'),
+                                context, 'holiday_ongoing_history.cancel'),
                             style: semibold16white,
                           )),
                     ),
@@ -227,13 +227,13 @@ class _HolidayOngoingState extends State<HolidayOngoing> {
                     children: [
                       Text(
                         getTranslate(
-                            context, 'holiday_ongoing_histroy.experiance_text'),
+                            context, 'holiday_ongoing_history.experience_text'),
                         style:
                             medium16black.copyWith(fontWeight: FontWeight.w500),
                       ),
                       height5Space,
                       Text(
-                        getTranslate(context, 'holiday_ongoing_histroy.text'),
+                        getTranslate(context, 'holiday_ongoing_history.text'),
                         style: medium14grey94,
                       ),
                       height5Space,
@@ -244,7 +244,7 @@ class _HolidayOngoingState extends State<HolidayOngoing> {
                           children: [
                             TextSpan(
                               text: getTranslate(context,
-                                  'holiday_ongoing_histroy.per_person'),
+                                  'holiday_ongoing_history.per_person'),
                               style: medium14grey94.copyWith(
                                 fontWeight: FontWeight.w400,
                               ),
@@ -292,17 +292,20 @@ class _HolidayOngoingState extends State<HolidayOngoing> {
   }
 
   detailText(title, text) {
-    return Column(
-      children: [
-        Text(
-          title,
-          style: medium14black,
-        ),
-        Text(
-          text,
-          style: medium12grey94,
-        )
-      ],
+    return Flexible(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Text(
+            title,
+            style: medium14black,
+          ),
+          Text(
+            text,
+            style: medium12grey94,
+          )
+        ],
+      ),
     );
   }
 }

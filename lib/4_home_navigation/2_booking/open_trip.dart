@@ -55,6 +55,9 @@ class OpenTrip extends ConsumerWidget {
               ),
               itemCount: data.length,
               itemBuilder: (context, index) {
+                if (data.isEmpty) {
+                  return const Center(child: Text('NO DATA'));
+                }
                 return GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(

@@ -53,6 +53,9 @@ class Recommendation extends StatelessWidget {
           ),
           itemCount: tours.length,
           itemBuilder: (context, index) {
+            if (tours.isEmpty) {
+              return const Center(child: Text('NO DATA'));
+            }
             return GestureDetector(
               onTap: () {
                 Navigator.pushNamed(

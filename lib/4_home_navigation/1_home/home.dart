@@ -102,6 +102,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
+                    if (data.isEmpty) {
+                      return const Center(child: Text('NO DATA'));
+                    }
                     return Padding(
                       padding:
                           const EdgeInsets.symmetric(horizontal: fixPadding),
@@ -210,11 +213,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               width: double.maxFinite,
               child: ListView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: fixPadding),
-                itemCount: data.length < 5 ? data.length : 5, // Tampilin top 5
+                itemCount: data.length < 5 ? data.length : 5,
+                // only view top 5 item
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
+                  if (data.isEmpty) {
+                    return const Center(child: Text('NO DATA'));
+                  }
                   return GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(
@@ -349,6 +356,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
+                  if (data.isEmpty) {
+                    return const Center(child: Text('NO DATA'));
+                  }
                   return GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(
@@ -382,13 +392,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           borderRadius: BorderRadius.circular(10),
                           gradient: LinearGradient(
                             colors: [
-                              blackColor.withOpacity(0),
-                              blackColor.withOpacity(0.02),
                               blackColor.withOpacity(0.07),
                               blackColor.withOpacity(0.1),
                               blackColor.withOpacity(0.2),
-                              blackColor.withOpacity(0.5),
+                              blackColor.withOpacity(0.3),
                               blackColor.withOpacity(0.6),
+                              blackColor.withOpacity(0.9),
                             ],
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
@@ -398,6 +407,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         child: Text(
                           data[index].title,
                           style: semibold18white,
+                          textAlign: TextAlign.center,
+                          softWrap: true,
                         ),
                       ),
                     ),
@@ -596,6 +607,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   itemCount: data.length,
                   itemBuilder: (context, index) {
                     debugPrint(data[index].toString());
+                    if (data.isEmpty) {
+                      return const Center(child: Text('NO DATA'));
+                    }
                     return ListTile(
                       onTap: () {
                         ref

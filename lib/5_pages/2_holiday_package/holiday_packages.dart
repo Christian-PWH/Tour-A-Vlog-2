@@ -97,6 +97,9 @@ class _HolidayPackagesState extends ConsumerState<HolidayPackages> {
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
+                    if (data.isEmpty) {
+                      return const Center(child: Text('NO DATA'));
+                    }
                     return Padding(
                       padding:
                           const EdgeInsets.symmetric(horizontal: fixPadding),
@@ -214,6 +217,9 @@ class _HolidayPackagesState extends ConsumerState<HolidayPackages> {
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
+                  if (data.isEmpty) {
+                    return const Center(child: Text('NO DATA'));
+                  }
                   return GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(
@@ -247,13 +253,12 @@ class _HolidayPackagesState extends ConsumerState<HolidayPackages> {
                           borderRadius: BorderRadius.circular(10),
                           gradient: LinearGradient(
                             colors: [
-                              blackColor.withOpacity(0),
-                              blackColor.withOpacity(0.02),
                               blackColor.withOpacity(0.07),
                               blackColor.withOpacity(0.1),
                               blackColor.withOpacity(0.2),
-                              blackColor.withOpacity(0.5),
+                              blackColor.withOpacity(0.3),
                               blackColor.withOpacity(0.6),
+                              blackColor.withOpacity(0.9),
                             ],
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
@@ -263,6 +268,8 @@ class _HolidayPackagesState extends ConsumerState<HolidayPackages> {
                         child: Text(
                           data[index].title,
                           style: semibold18white,
+                          textAlign: TextAlign.center,
+                          softWrap: true,
                         ),
                       ),
                     ),
@@ -327,6 +334,9 @@ class _HolidayPackagesState extends ConsumerState<HolidayPackages> {
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
+                  if (data.isEmpty) {
+                    return const Center(child: Text('NO DATA'));
+                  }
                   return GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(
@@ -460,6 +470,9 @@ class _HolidayPackagesState extends ConsumerState<HolidayPackages> {
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
+                    if (data.isEmpty) {
+                      return const Center(child: Text('NO DATA'));
+                    }
                     return GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(

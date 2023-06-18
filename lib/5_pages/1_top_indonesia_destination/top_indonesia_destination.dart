@@ -53,6 +53,9 @@ class TopIndonesiaDestination extends StatelessWidget {
         ),
         itemCount: cities.length,
         itemBuilder: (context, index) {
+          if (cities.isEmpty) {
+            return const Center(child: Text('NO DATA'));
+          }
           return GestureDetector(
             onTap: () {
               Navigator.pushNamed(
@@ -72,15 +75,15 @@ class TopIndonesiaDestination extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: fixPadding),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
+                  color: Colors.red,
                   gradient: LinearGradient(
                     colors: [
-                      blackColor.withOpacity(0),
-                      blackColor.withOpacity(0.02),
                       blackColor.withOpacity(0.07),
                       blackColor.withOpacity(0.1),
                       blackColor.withOpacity(0.2),
-                      blackColor.withOpacity(0.5),
+                      blackColor.withOpacity(0.3),
                       blackColor.withOpacity(0.6),
+                      blackColor.withOpacity(0.9),
                     ],
                     begin: Alignment.center,
                     end: Alignment.bottomCenter,
@@ -90,6 +93,8 @@ class TopIndonesiaDestination extends StatelessWidget {
                 child: Text(
                   cities[index].title,
                   style: semibold18white,
+                  textAlign: TextAlign.center,
+                  softWrap: true,
                 ),
               ),
             ),

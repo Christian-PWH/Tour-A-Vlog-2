@@ -14,6 +14,7 @@ class DiscoverByCategories extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    debugPrint("category title = $categoryTitle");
     final size = MediaQuery.of(context).size;
     final tours = ref.watch(discoverByCategoryControllerProvider(
       categorTitle: categoryTitle,
@@ -60,6 +61,9 @@ class DiscoverByCategories extends ConsumerWidget {
             ),
             itemCount: data.length,
             itemBuilder: (context, index) {
+              if (data.isEmpty) {
+                return const Center(child: Text('NO DATA'));
+              }
               List<String> tourImage = data[index].image;
               return GestureDetector(
                 onTap: () {
