@@ -145,14 +145,14 @@ class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
       itemBuilder: (context, index) {
         return holidayListContent(size, newOrders[index].tour.image[0],
             newOrders[index].tour.title, newOrders[index].tour.details, () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HolidayOngoing(
-                index: index,
-              ),
-            ),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => HolidayOngoing(
+          //       index: index,
+          //     ),
+          //   ),
+          // );
         });
       },
     );
@@ -170,14 +170,12 @@ class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
             ongoingOrders[index].tour.image[0],
             ongoingOrders[index].tour.title,
             ongoingOrders[index].tour.details, () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HolidayOngoing(
-                index: index,
-              ),
-            ),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => HolidayOngoing(index: index),
+          //   ),
+          // );
         });
       },
     );
@@ -195,7 +193,7 @@ class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
             completedOrders[index].tour.image[0],
             completedOrders[index].tour.title,
             completedOrders[index].tour.details, () {
-          Navigator.pushNamed(context, HolidayHistory.routeName);
+          // Navigator.pushNamed(context, HolidayHistory.routeName);
         });
       },
     );

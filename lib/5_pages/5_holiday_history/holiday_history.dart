@@ -28,7 +28,7 @@ class HolidayHistory extends StatelessWidget {
         ),
         titleSpacing: 0,
         title: Text(
-          getTranslate(context, 'holiday_ongoing_histroy.holiday_package'),
+          getTranslate(context, 'holiday_ongoing_history.holiday_package'),
           style: semibold18white,
         ),
         flexibleSpace: Container(
@@ -48,13 +48,13 @@ class HolidayHistory extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              detailText(getTranslate(context, 'holiday_ongoing_histroy.date'),
+              detailText(getTranslate(context, 'holiday_ongoing_history.date'),
                   "11 dec 2022 - 15 dec 2022"),
               divider(size),
               detailText(
                   getTranslate(
-                      context, 'holiday_ongoing_histroy.no_travellers'),
-                  "2 ${getTranslate(context, 'holiday_ongoing_histroy.person')}"),
+                      context, 'holiday_ongoing_history.no_travellers'),
+                  "2 ${getTranslate(context, 'holiday_ongoing_history.person')}"),
             ],
           ),
           heightSpace,
@@ -94,7 +94,7 @@ class HolidayHistory extends StatelessWidget {
         ),
         alignment: Alignment.center,
         child: Text(
-          getTranslate(context, 'holiday_ongoing_histroy.give_rate'),
+          getTranslate(context, 'holiday_ongoing_history.give_rate'),
           style: semibold18white,
         ),
       ),
@@ -139,13 +139,13 @@ class HolidayHistory extends StatelessWidget {
                     children: [
                       Text(
                         getTranslate(
-                            context, 'holiday_ongoing_histroy.experiance_text'),
+                            context, 'holiday_ongoing_history.experiance_text'),
                         style:
                             medium16black.copyWith(fontWeight: FontWeight.w500),
                       ),
                       height5Space,
                       Text(
-                        getTranslate(context, 'holiday_ongoing_histroy.text'),
+                        getTranslate(context, 'holiday_ongoing_history.text'),
                         style: medium14grey94,
                       ),
                       height5Space,
@@ -156,7 +156,7 @@ class HolidayHistory extends StatelessWidget {
                           children: [
                             TextSpan(
                               text: getTranslate(context,
-                                  'holiday_ongoing_histroy.per_person'),
+                                  'holiday_ongoing_history.per_person'),
                               style: medium14grey94.copyWith(
                                 fontWeight: FontWeight.w400,
                               ),
