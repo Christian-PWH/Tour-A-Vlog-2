@@ -27,19 +27,17 @@ class EditProfile extends ConsumerStatefulWidget {
 }
 
 class _EditProfileState extends ConsumerState<EditProfile> {
-  late UserModel userModel;
-
-  TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController locationController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
+  final locationController = TextEditingController();
+  final passwordController = TextEditingController();
 
   bool userImageUpdated = false;
   bool userImageDeleted = false;
   String defaultUserImagePath = "assets/profile/User Image.png";
   String userImageFromUrl = '-';
-  String? userImageFilePath;
+  String userImageFilePath = '';
 
   Position? position;
 
@@ -47,6 +45,22 @@ class _EditProfileState extends ConsumerState<EditProfile> {
   void initState() {
     super.initState();
     _getDateLocation(context);
+    final a = ref.read(userControllerProvider);
+    a.whenData((value) {
+      userImageFromUrl = value?.profilePicture ?? '-';
+      nameController.text = value?.fullName ?? 'user';
+      emailController.text = value?.email ?? 'email';
+      phoneController.text = value?.phoneNumber ?? 'phone';
+      // ref.read(editProfileImageFilePathProvider.notifier).update((state) {
+      //   if (value == null ||
+      //       value.profilePicture == null ||
+      //       value.profilePicture! == '-') {
+      //     userImageDeleted = true;
+      //     return defaultUserImagePath;
+      //   }
+      //   return value.profilePicture!;
+      // });
+    });
   }
 
   Future<void> _getDateLocation(context) async {
@@ -123,14 +137,12 @@ class _EditProfileState extends ConsumerState<EditProfile> {
     final currentUser = ref.watch(userControllerProvider);
     debugPrint('edit profile - build scaffold');
     return currentUser.when(
-      data: (userModel) {
-        userImageFromUrl = userModel?.profilePicture ?? '-';
-        nameController.text = userModel?.fullName ?? 'user';
-        emailController.text = userModel?.email ?? 'email';
-        phoneController.text = userModel?.phoneNumber ?? 'phone';
+      data: (data) {
+        debugPrint('BUILD EDIT PROFILE');
+
         return Scaffold(
           backgroundColor: whiteColor,
-          body: editProfileBody(size, context, userModel),
+          body: editProfileBody(size, context, data),
         );
       },
       error: (error, stackTrace) {
@@ -142,7 +154,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
     );
   }
 
-  updateButton(Size size) {
+  updateButton(context, Size size) {
     return GestureDetector(
       onTap: () {
         showDialog(
@@ -230,7 +242,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
             heightSpace,
             locationField(context),
             heightBox(40.0),
-            updateButton(size),
+            updateButton(context, size),
           ],
         ),
       ),
@@ -328,9 +340,10 @@ class _EditProfileState extends ConsumerState<EditProfile> {
   }
 
   void updatingProfile(context) async {
+    if (!userImageUpdated) userImageFilePath = userImageFromUrl;
     final res = await ref.read(userControllerProvider.notifier).updateUser(
           profilePictureUpdated: userImageUpdated,
-          profilePicture: userImageFilePath!,
+          profilePicture: userImageFilePath,
           fullName: nameController.text.trim(),
           phoneNumber: phoneController.text.trim(),
           email: emailController.text.trim(),
@@ -341,9 +354,9 @@ class _EditProfileState extends ConsumerState<EditProfile> {
     if (res['success']) {
       ref.read(editProfileLoadingProvider.notifier).state = false;
       Navigator.pop(context);
-      Navigator.pushNamed(context, BottomNavigationScreen.routeName);
       showSnackBar(context, Icons.done, Colors.greenAccent, "Profile Updated.",
           Colors.greenAccent);
+      Navigator.pushNamed(context, BottomNavigationScreen.routeName);
     } else {
       ref.read(editProfileLoadingProvider.notifier).state = false;
       Navigator.pop(context);
@@ -522,6 +535,52 @@ class _EditProfileState extends ConsumerState<EditProfile> {
   }
 
   userProfile(Size size, BuildContext context) {
+    late final Image renderImage;
+    if (userImageUpdated) {
+      if (userImageDeleted) {
+        renderImage = Image.asset(
+          defaultUserImagePath,
+          fit: BoxFit.cover,
+        );
+      } else {
+        renderImage = Image.file(
+          File(userImageFilePath),
+          fit: BoxFit.cover,
+        );
+      }
+    } else if (userImageFromUrl == '-') {
+      renderImage = Image.asset(
+        defaultUserImagePath,
+        fit: BoxFit.cover,
+      );
+    } else {
+      renderImage = Image.network(
+        userImageFromUrl,
+        fit: BoxFit.cover,
+        loadingBuilder: (context, child, event) {
+          if (event == null) return child;
+          return Center(
+            child: SizedBox(
+              width: 20.0,
+              height: 20.0,
+              child: CircularProgressIndicator(
+                value: event.cumulativeBytesLoaded /
+                    (event.expectedTotalBytes ?? 1),
+              ),
+            ),
+          );
+        },
+        errorBuilder: (context, object, stacktrace) {
+          return const Center(
+            child: SizedBox(
+              width: 20.0,
+              height: 20.0,
+              child: Icon(Icons.image_not_supported),
+            ),
+          );
+        },
+      );
+    }
     return Center(
       child: SizedBox(
         height: size.height * 0.155,
@@ -534,55 +593,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
               ),
-              child: userImageUpdated
-                  ? userImageDeleted
-                      ? ClipOval(
-                          child: Image.asset(
-                            defaultUserImagePath,
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                      : ClipOval(
-                          child: Image.file(
-                            File(userImageFilePath!),
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                  : userImageFromUrl == '-'
-                      ? ClipOval(
-                          child: Image.asset(
-                            defaultUserImagePath,
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                      : ClipOval(
-                          child: Image.network(
-                            userImageFromUrl,
-                            fit: BoxFit.cover,
-                            loadingBuilder: (context, child, event) {
-                              if (event == null) return child;
-                              return Center(
-                                child: SizedBox(
-                                  width: 20.0,
-                                  height: 20.0,
-                                  child: CircularProgressIndicator(
-                                    value: event.cumulativeBytesLoaded /
-                                        (event.expectedTotalBytes ?? 1),
-                                  ),
-                                ),
-                              );
-                            },
-                            errorBuilder: (context, object, stacktrace) {
-                              return const Center(
-                                child: SizedBox(
-                                  width: 20.0,
-                                  height: 20.0,
-                                  child: Icon(Icons.image_not_supported),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
+              child: ClipOval(child: renderImage),
             ),
             GestureDetector(
               child: Align(

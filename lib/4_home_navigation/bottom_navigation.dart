@@ -11,6 +11,7 @@ import 'package:tour_a_vlog/4_home_navigation/2_booking/booking.dart';
 import 'package:tour_a_vlog/4_home_navigation/3_favorites/favorites.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/profile.dart';
 import 'package:tour_a_vlog/4_home_navigation/controller/bottom_navigation_vm.dart';
+import 'package:tour_a_vlog/4_home_navigation/controller/favorite_controller.dart';
 
 class BottomNavigationScreen extends ConsumerStatefulWidget {
   static const routeName = '/bottom_navigation';
@@ -36,6 +37,8 @@ class _BottomNavigationScreenState
         return;
       }
     });
+
+    ref.watch(favoriteControllerProvider).whenData((value) => '');
 
     final currentUser = ref.watch(userControllerProvider);
     debugPrint('Main navigation - build scaffold');

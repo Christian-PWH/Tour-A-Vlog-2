@@ -66,6 +66,15 @@ class TourController {
     }
   }
 
+  Future<TourModel?> getTourById(String tourId) async {
+    final snapshot = await dbInstance.ref().child('Items/$tourId').get();
+
+    if (!snapshot.exists) return null;
+    Map newMap = snapshot.value as Map;
+    newMap['id'] = snapshot.key;
+    return TourModel.fromMap(newMap);
+  }
+
   Future<List<TourModel>> getTourByCategories(String title) async {
     final snapshot = await dbInstance
         .ref()

@@ -1,29 +1,31 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/models/tour_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:tour_a_vlog/1_common/widgets/column_builder.dart';
+import 'package:tour_a_vlog/4_home_navigation/controller/favorite_controller.dart';
 import 'package:tour_a_vlog/5_pages/1_review/review.dart';
 import 'package:tour_a_vlog/5_pages/1_travel_detail/travel_detail.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PackageDetail extends StatefulWidget {
+class PackageDetail extends ConsumerStatefulWidget {
   static const routeName = '/packages_detail';
 
-  // final Map<String, dynamic> tourPackageDetail;
   final TourModel tour;
 
   const PackageDetail({super.key, required this.tour});
 
   @override
-  State<PackageDetail> createState() => _PackageDetailState();
+  ConsumerState<PackageDetail> createState() => _PackageDetailState();
 }
 
-class _PackageDetailState extends State<PackageDetail> {
+class _PackageDetailState extends ConsumerState<PackageDetail> {
   TourModel get tour => widget.tour;
 
   CarouselController imageController = CarouselController();
-  bool isFavorite = false;
 
   final daylist = [
     {
@@ -45,6 +47,8 @@ class _PackageDetailState extends State<PackageDetail> {
 
   @override
   Widget build(BuildContext context) {
+    final isFavorite = ref.watch(isFavoriteProvider(tourId: tour.id));
+
     final size = MediaQuery.of(context).size;
     List<String> packageImage = tour.image;
     bool multipleImage = false;
@@ -72,12 +76,27 @@ class _PackageDetailState extends State<PackageDetail> {
             ),
             actions: [
               IconButton(
-                onPressed: () {
-                  /// TODO Favorite
+                onPressed: () async {
+                  if (isFavorite) {
+                    final errMsg = await ref
+                        .watch(favoriteControllerProvider.notifier)
+                        .remove(tour.id);
+
+                    /// TODO sebelum return, kasih error snackbar
+                    if (errMsg.isNotEmpty) return;
+                  } else {
+                    final errMsg = await ref
+                        .watch(favoriteControllerProvider.notifier)
+                        .save(tour.id);
+
+                    /// TODO sebelum return, kasih error snackbar
+                    if (errMsg.isNotEmpty) return;
+                  }
+
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       backgroundColor: blackColor,
-                      content: isFavorite == true
+                      content: isFavorite == false
                           ? Text(getTranslate(
                               context, 'favorite_add_remove.added_favorites'))
                           : Text(getTranslate(context,
@@ -90,6 +109,7 @@ class _PackageDetailState extends State<PackageDetail> {
                 icon: Icon(
                   isFavorite ? Icons.favorite : Icons.favorite_border,
                   size: 22,
+                  color: isFavorite ? Colors.red : null,
                 ),
               ),
               IconButton(

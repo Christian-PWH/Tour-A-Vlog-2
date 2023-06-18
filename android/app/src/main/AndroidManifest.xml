@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <application
         android:requestLegacyExternalStorage="true"
-        android:label="tour_a_vlog"
+        android:label="Touravelog"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
