@@ -15,10 +15,10 @@ class SignUpScreen extends ConsumerWidget {
 
   SignUpScreen({super.key});
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -239,8 +239,21 @@ class SignUpScreen extends ConsumerWidget {
   }
 
   void firebaseSignUp(context, WidgetRef ref) async {
-    ref.read(signUpLoadingProvider.notifier).state = true;
     if (validate(context, ref)) {
+      /// Direct Request
+      if (phoneController.text.trim()[0] != '0' ||
+          phoneController.text.trim()[1] != '8') {
+        showSnackBar(context, Icons.cancel_outlined, Colors.red,
+            'Phone number not valid'.toString(), Colors.red);
+        return;
+      }
+      if (phoneController.text.trim().length < 9) {
+        showSnackBar(context, Icons.cancel_outlined, Colors.red,
+            'Phone number too short'.toString(), Colors.red);
+        return;
+      }
+
+      ref.read(signUpLoadingProvider.notifier).state = true;
       final res = await ref.read(userControllerProvider.notifier).registerUser(
             fullName: nameController.text.trim(),
             phoneNumber: phoneController.text.trim(),
