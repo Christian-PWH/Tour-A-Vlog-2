@@ -198,7 +198,11 @@
     "seater": "seater",
     "ongoing": "Ongoing",
     "history": "History",
-    "new": "pending"
+    "new": "pending",
+    "cancel": "Cancel",
+    "cancel_dialog_title": "Are you sure?",
+    "cancel_dialog_desc": "are you sure want to cancel this order?",
+    "confirm": "Yes"
   },
   "edit_profile": {
     "edit_profile": "Edit profile",
@@ -303,6 +307,7 @@
     "no_travellers": "No of travellers",
     "kids": "Kids",
     "adult": "Adult",
+    "person": "Person",
     "booking_date": "Booking date"
   },
   "upcoming_event": {

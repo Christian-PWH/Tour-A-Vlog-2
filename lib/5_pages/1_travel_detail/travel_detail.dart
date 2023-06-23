@@ -32,9 +32,7 @@ class _TravelDetailState extends ConsumerState<TravelDetail> {
 
   bool value = false;
 
-  int adultNo = 0;
-
-  int kidsNo = 0;
+  int personNo = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -192,10 +190,7 @@ class _TravelDetailState extends ConsumerState<TravelDetail> {
                   ],
                 ),
                 heightSpace,
-                adultContainer(size, state),
-                heightSpace,
-                heightSpace,
-                kidsContainer(size, state),
+                personContainer(size, state),
                 heightSpace,
               ],
             ),
@@ -389,120 +384,7 @@ class _TravelDetailState extends ConsumerState<TravelDetail> {
     );
   }
 
-  Widget kidsContainer(Size size, StateSetter state) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-          horizontal: fixPadding * 2, vertical: fixPadding),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: const Color(0xffF9F9F9),
-        boxShadow: [
-          BoxShadow(
-            color: grey94Color.withOpacity(0.5),
-            blurRadius: 5,
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            height: size.height * 0.05,
-            width: size.height * 0.05,
-            decoration: BoxDecoration(
-              color: primaryColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            alignment: Alignment.center,
-            child:
-                const Icon(Icons.accessibility_new_rounded, color: whiteColor),
-          ),
-          widthSpace,
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                getTranslate(context, 'travel_detail.kids'),
-                style: medium14grey94,
-              ),
-              height5Space,
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        state(() {
-                          if (kidsNo > 0) {
-                            kidsNo--;
-                          }
-                        });
-                      });
-                      noOfTravellersController.text = "${adultNo + kidsNo}";
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(fixPadding / 3),
-                      decoration: BoxDecoration(
-                        color: whiteColor,
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: grey94Color.withOpacity(0.5),
-                            blurRadius: 5,
-                          )
-                        ],
-                      ),
-                      alignment: Alignment.center,
-                      child: const Icon(
-                        Icons.remove,
-                        color: blackColor,
-                        size: 12,
-                      ),
-                    ),
-                  ),
-                  widthSpace,
-                  Text(
-                    kidsNo.toString(),
-                    style: semibold14black,
-                  ),
-                  widthSpace,
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        state(() {
-                          kidsNo++;
-                        });
-                      });
-                      noOfTravellersController.text = "${adultNo + kidsNo}";
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(fixPadding / 3),
-                      decoration: BoxDecoration(
-                        color: whiteColor,
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: grey94Color.withOpacity(0.5),
-                            blurRadius: 5,
-                          )
-                        ],
-                      ),
-                      alignment: Alignment.center,
-                      child: const Icon(
-                        Icons.add,
-                        color: blackColor,
-                        size: 12,
-                      ),
-                    ),
-                  )
-                ],
-              )
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget adultContainer(Size size, StateSetter state) {
+  Widget personContainer(Size size, StateSetter state) {
     return Container(
       padding: const EdgeInsets.symmetric(
           horizontal: fixPadding * 2, vertical: fixPadding),
@@ -533,7 +415,7 @@ class _TravelDetailState extends ConsumerState<TravelDetail> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                getTranslate(context, 'travel_detail.adult'),
+                getTranslate(context, 'travel_detail.person'),
                 style: medium14grey94,
               ),
               height5Space,
@@ -543,12 +425,12 @@ class _TravelDetailState extends ConsumerState<TravelDetail> {
                     onTap: () {
                       setState(() {
                         state(() {
-                          if (adultNo > 0) {
-                            adultNo--;
+                          if (personNo > 0) {
+                            personNo--;
                           }
                         });
                       });
-                      noOfTravellersController.text = "${adultNo + kidsNo}";
+                      noOfTravellersController.text = "$personNo";
                     },
                     child: Container(
                       padding: const EdgeInsets.all(fixPadding / 3),
@@ -572,7 +454,7 @@ class _TravelDetailState extends ConsumerState<TravelDetail> {
                   ),
                   widthSpace,
                   Text(
-                    adultNo.toString(),
+                    personNo.toString(),
                     style: semibold14black,
                   ),
                   widthSpace,
@@ -580,10 +462,10 @@ class _TravelDetailState extends ConsumerState<TravelDetail> {
                     onTap: () {
                       setState(() {
                         state(() {
-                          adultNo++;
+                          personNo++;
                         });
                       });
-                      noOfTravellersController.text = "${adultNo + kidsNo}";
+                      noOfTravellersController.text = "$personNo";
                     },
                     child: Container(
                       padding: const EdgeInsets.all(fixPadding / 3),

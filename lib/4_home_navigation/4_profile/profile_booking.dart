@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tour_a_vlog/1_common/localization/currency_formatter.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/models/order_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
@@ -7,14 +8,6 @@ import 'package:tour_a_vlog/4_home_navigation/controller/profile_booking_vm.dart
 import 'package:tour_a_vlog/5_pages/5_holiday_history/holiday_history.dart';
 import 'package:tour_a_vlog/5_pages/5_holiday_ongoing/holiday_ongoing.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-final holidayOngoingPackages = [
-  {
-    "name": "Experience Bali in your Budgets",
-    "days": "4N/5D",
-    "image": "assets/packages/package1.png",
-  },
-];
 
 class ProfileBookingScreen extends ConsumerStatefulWidget {
   static const routeName = '/profile_booking';
@@ -31,19 +24,6 @@ class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
 
   final tabList = [
     {"title": "Holiday package", "name": "Holiday package"},
-  ];
-
-  final holidayHistoryPackages = [
-    {
-      "name": "Experiance Bali in your Budgets",
-      "days": "4N/5D",
-      "image": "assets/packages/package1.png",
-    },
-    {
-      "name": "Bali Honeymoon package",
-      "days": "4N/5D",
-      "image": "assets/similarplace/Rectangle 138.png",
-    },
   ];
 
   String appbarName = '';
@@ -143,17 +123,20 @@ class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
           horizontal: fixPadding * 2, vertical: fixPadding),
       itemCount: newOrders.length,
       itemBuilder: (context, index) {
-        return holidayListContent(size, newOrders[index].tour.image[0],
-            newOrders[index].tour.title, newOrders[index].tour.details, () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => HolidayOngoing(
-          //       index: index,
-          //     ),
-          //   ),
-          // );
-        });
+        return holidayListContent(
+          size,
+          newOrders[index],
+          () {
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => HolidayOngoing(
+            //       index: index,
+            //     ),
+            //   ),
+            // );
+          },
+        );
       },
     );
   }
@@ -166,17 +149,17 @@ class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
       itemCount: ongoingOrders.length,
       itemBuilder: (context, index) {
         return holidayListContent(
-            size,
-            ongoingOrders[index].tour.image[0],
-            ongoingOrders[index].tour.title,
-            ongoingOrders[index].tour.details, () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => HolidayOngoing(index: index),
-          //   ),
-          // );
-        });
+          size,
+          ongoingOrders[index],
+          () {
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => HolidayOngoing(index: index),
+            //   ),
+            // );
+          },
+        );
       },
     );
   }
@@ -189,21 +172,19 @@ class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
       itemCount: completedOrders.length,
       itemBuilder: (context, index) {
         return holidayListContent(
-            size,
-            completedOrders[index].tour.image[0],
-            completedOrders[index].tour.title,
-            completedOrders[index].tour.details, () {
-          // Navigator.pushNamed(context, HolidayHistory.routeName);
-        });
+          size,
+          completedOrders[index],
+          () {
+            // Navigator.pushNamed(context, HolidayHistory.routeName);
+          },
+        );
       },
     );
   }
 
   Widget holidayListContent(
     Size size,
-    String image,
-    String name,
-    String days,
+    OrderModel orderItem,
     Function() onTap,
   ) {
     return GestureDetector(
@@ -226,7 +207,7 @@ class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
             ClipRRect(
               borderRadius: BorderRadius.circular(5),
               child: Image.network(
-                image,
+                orderItem.tour.image[0],
                 height: size.height * 0.17,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -262,55 +243,176 @@ class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        name,
+                        orderItem.tour.title,
                         style:
                             medium16black.copyWith(fontWeight: FontWeight.w500),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      RichText(
-                        text: TextSpan(
-                          text: "\$11500",
-                          style: semibold16grey,
-                          children: [
-                            TextSpan(
-                              text: getTranslate(context, 'booking.per_person'),
-                              style: medium14grey94.copyWith(
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
+                      heightBox(2.0),
+                      Visibility(
+                        visible:
+                            orderItem.tour.status2 == "deal" ? true : false,
+                        child: Text(
+                          CurrencyFormat.convertToIdr(
+                              double.parse(orderItem.tour.price), 2),
+                          // "Rp. ${tour.price}",
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: grey94Color,
+                            decoration: TextDecoration.lineThrough,
+                          ),
                         ),
                       ),
-                      Text(
-                        getTranslate(context, 'booking.view_detail'),
-                        style: medium14primary,
-                      )
+                      heightBox(2.0),
+                      orderItem.tour.status2 == "deal"
+                          ? RichText(
+                              text: TextSpan(
+                                text: CurrencyFormat.convertToIdr(
+                                    double.parse(
+                                        orderItem.tour.newprice ?? "0"),
+                                    2),
+                                style: semibold16primary,
+                                children: [
+                                  TextSpan(
+                                    text: getTranslate(
+                                        context, 'booking.per_person'),
+                                    style: medium14black.copyWith(
+                                      color: const Color(0xff585656),
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : RichText(
+                              text: TextSpan(
+                                text: CurrencyFormat.convertToIdr(
+                                    double.parse(orderItem.tour.price), 2),
+                                style: semibold16primary,
+                                children: [
+                                  TextSpan(
+                                    text: getTranslate(
+                                        context, 'booking.per_person'),
+                                    style: medium14black.copyWith(
+                                      color: const Color(0xff585656),
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                     ],
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: fixPadding, vertical: fixPadding / 2),
-                  decoration: BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.circular(5),
-                    boxShadow: [
-                      BoxShadow(
-                        color: primaryColor.withOpacity(0.3),
-                        blurRadius: 5,
-                      )
-                    ],
-                    border: Border.all(color: primaryColor),
+                GestureDetector(
+                  onTap: () {
+                    showCancelDialog(context);
+                  },
+                  child: Container(
+                    width: 100.0,
+                    height: 40.0,
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: primaryColor.withOpacity(0.25),
+                          blurRadius: 5,
+                        )
+                      ],
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      getTranslate(context, 'booking.cancel'),
+                      style: semibold18white,
+                    ),
                   ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    days,
-                    style: medium14primary,
-                  ),
-                ),
+                )
               ],
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Future<void> showCancelDialog(context) async {
+    return await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        icon: const Icon(
+          Icons.warning,
+          size: 75.0,
+          color: starColor,
+        ),
+        title: Text(
+          getTranslate(context, 'booking.cancel_dialog_title'),
+        ),
+        content: SizedBox(
+          height: 100.0,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Text(
+              getTranslate(context, 'booking.cancel_dialog_desc'),
+              style: const TextStyle(fontSize: 14.0),
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ),
+        actionsAlignment: MainAxisAlignment.spaceEvenly,
+        actions: <Widget>[
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Container(
+              width: 100.0,
+              height: 40.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.red,
+                boxShadow: [
+                  BoxShadow(
+                    color: primaryColor.withOpacity(0.25),
+                    blurRadius: 5,
+                  )
+                ],
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                getTranslate(context, 'booking.cancel'),
+                style: semibold18white,
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {},
+            child: Container(
+              width: 100.0,
+              height: 40.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                gradient: const LinearGradient(
+                  colors: gradient,
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: primaryColor.withOpacity(0.25),
+                    blurRadius: 5,
+                  )
+                ],
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                getTranslate(context, 'booking.confirm'),
+                style: semibold18white,
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

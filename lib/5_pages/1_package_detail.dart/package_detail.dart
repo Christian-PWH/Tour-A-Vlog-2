@@ -2,6 +2,7 @@
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:tour_a_vlog/1_common/localization/currency_formatter.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/models/tour_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
@@ -43,11 +44,14 @@ class _PackageDetailState extends ConsumerState<PackageDetail> {
     "assets/packagedetail/day2.png",
     "assets/packagedetail/day3.png",
   ];
+
   bool? isExpanded;
 
   @override
   Widget build(BuildContext context) {
     final isFavorite = ref.watch(isFavoriteProvider(tourId: tour.id));
+
+    debugPrint(tour.toString());
 
     final size = MediaQuery.of(context).size;
     List<String> packageImage = tour.image;
@@ -273,24 +277,29 @@ class _PackageDetailState extends ConsumerState<PackageDetail> {
               ],
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(
-                vertical: fixPadding / 3, horizontal: fixPadding),
-            decoration: BoxDecoration(
-              color: whiteColor,
-              border: Border.all(color: primaryColor),
-              borderRadius: BorderRadius.circular(5),
-              boxShadow: [
-                BoxShadow(
-                  color: primaryColor.withOpacity(0.2),
-                  blurRadius: 5,
-                )
-              ],
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              tour.details,
-              style: medium14primary,
+          Visibility(
+            visible: tour.status2 == "deal" ? true : false,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                  vertical: fixPadding / 3, horizontal: fixPadding),
+              width: 60.0,
+              height: 60.0,
+              decoration: BoxDecoration(
+                color: whiteColor,
+                border: Border.all(color: primaryColor),
+                borderRadius: BorderRadius.circular(50),
+                boxShadow: [
+                  BoxShadow(
+                    color: primaryColor.withOpacity(0.2),
+                    blurRadius: 5,
+                  )
+                ],
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                "${tour.percent}%",
+                style: medium14primary,
+              ),
             ),
           ),
         ],
@@ -313,14 +322,6 @@ class _PackageDetailState extends ConsumerState<PackageDetail> {
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque faucibus nullam accumsan cras nunc viverra pharetra. Natoque blandit pretium, molestie enim, vel. Eget donec arcu vitae aliquet. Hac quis tortor erat augue. Et orci, sit enim lectus. Neque sem quis porta id maecenas ",
             style: medium14grey94,
           ),
-          informationText(getTranslate(context, 'package_detail.duration'),
-              "5 ${getTranslate(context, 'package_detail.days')}, 4 ${getTranslate(context, 'package_detail.nights')}"),
-          height5Space,
-          informationText(getTranslate(context, 'package_detail.start_point'),
-              "Ngurah Rai International Airport"),
-          height5Space,
-          informationText(getTranslate(context, 'package_detail.end_point'),
-              "Ngurah Rai International Airport"),
         ],
       ),
     );
@@ -499,11 +500,31 @@ class _PackageDetailState extends ConsumerState<PackageDetail> {
               ),
               alignment: Alignment.center,
               child: FittedBox(
-                child: Text(
-                  "Rp ${tour.price}/${getTranslate(context, 'package_detail.per_person')}",
-                  style: semibold16black,
-                  textAlign: TextAlign.center,
-                ),
+                child: tour.status2 == "deal"
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            CurrencyFormat.convertToIdr(
+                                double.parse(tour.price), 2),
+                            // "Rp. ${tour.price}",
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: grey94Color,
+                              decoration: TextDecoration.lineThrough,
+                            ),
+                          ),
+                          Text(
+                            "${CurrencyFormat.convertToIdr(double.parse(tour.newprice ?? "0"), 2)}/${getTranslate(context, 'package_detail.per_person')}",
+                            style: semibold16black,
+                          ),
+                        ],
+                      )
+                    : Text(
+                        "Rp. ${tour.price}",
+                        style: semibold16black,
+                      ),
               ),
             ),
           ),

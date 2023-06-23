@@ -153,7 +153,7 @@ class _HolidayOngoingState extends State<HolidayOngoing> {
                         Navigator.pop(context);
                         Navigator.pop(context);
                         setState(() {
-                          holidayOngoingPackages.removeAt(widget.index!);
+                          // holidayOngoingPackages.removeAt(widget.index!);
                         });
                       },
                       child: Container(

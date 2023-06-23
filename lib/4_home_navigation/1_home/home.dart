@@ -173,8 +173,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget recommendationListView(Size size) {
-    final recommedations = ref.watch(recommendationProvider);
-    return recommedations.when(
+    final recommendations = ref.watch(recommendationProvider);
+    return recommendations.when(
       data: (data) {
         return Column(
           children: [

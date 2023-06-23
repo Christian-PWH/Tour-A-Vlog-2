@@ -198,7 +198,11 @@
     "seater": "kursi",
     "ongoing": "Sedang berlangsung",
     "history": "Sejarah",
-    "new": "menunggu"
+    "new": "menunggu",
+    "cancel": "Batal",
+    "cancel_dialog_title": "Apa anda yakin?",
+    "cancel_dialog_desc": "apa anda yakin untuk membatalkan pesanan ini?",
+    "confirm": "Ya"
   },
   "edit_profile": {
     "edit_profile": "Ubah profil",
@@ -303,6 +307,7 @@
     "no_travellers": "Tidak ada pengunjung",
     "kids": "Anak-anak",
     "adult": "Dewasa",
+    "person": "Jumlah Orang",
     "booking_date": "Tanggal pemesanan"
   },
   "upcoming_event": {

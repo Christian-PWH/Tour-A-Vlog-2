@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tour_a_vlog/1_common/localization/currency_formatter.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/models/city_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
@@ -242,51 +243,94 @@ class _DetailScreenState extends ConsumerState<DetailScreen>
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     heightBox(2.0),
-                                    Text(
-                                      getTranslate(
-                                          context, 'detail.detail_text'),
-                                      style: medium14grey94,
-                                      overflow: TextOverflow.ellipsis,
+                                    Visibility(
+                                      visible: data[index].status2 == "deal"
+                                          ? true
+                                          : false,
+                                      child: Text(
+                                        CurrencyFormat.convertToIdr(
+                                            double.parse(data[index].price), 2),
+                                        // "Rp. ${tour.price}",
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: grey94Color,
+                                          decoration:
+                                              TextDecoration.lineThrough,
+                                        ),
+                                      ),
                                     ),
                                     heightBox(2.0),
-                                    RichText(
-                                      text: TextSpan(
-                                        text: "Rp ${data[index].price}",
-                                        style: semibold16primary,
-                                        children: [
-                                          TextSpan(
-                                            text: getTranslate(
-                                                context, 'detail.per_person'),
-                                            style: medium14black.copyWith(
-                                              color: const Color(0xff585656),
-                                              fontWeight: FontWeight.w400,
+                                    data[index].status2 == "deal"
+                                        ? RichText(
+                                            text: TextSpan(
+                                              text: CurrencyFormat.convertToIdr(
+                                                  double.parse(
+                                                      data[index].newprice ??
+                                                          "0"),
+                                                  2),
+                                              style: semibold16primary,
+                                              children: [
+                                                TextSpan(
+                                                  text: getTranslate(context,
+                                                      'detail.per_person'),
+                                                  style: medium14black.copyWith(
+                                                    color:
+                                                        const Color(0xff585656),
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        : RichText(
+                                            text: TextSpan(
+                                              text: CurrencyFormat.convertToIdr(
+                                                  double.parse(
+                                                      data[index].price),
+                                                  2),
+                                              style: semibold16primary,
+                                              children: [
+                                                TextSpan(
+                                                  text: getTranslate(context,
+                                                      'detail.per_person'),
+                                                  style: medium14black.copyWith(
+                                                    color:
+                                                        const Color(0xff585656),
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    )
                                   ],
                                 ),
                               ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: fixPadding,
-                                    vertical: fixPadding / 2),
-                                decoration: BoxDecoration(
-                                  color: whiteColor,
-                                  borderRadius: BorderRadius.circular(5),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: primaryColor.withOpacity(0.3),
-                                      blurRadius: 5,
-                                    )
-                                  ],
-                                  border: Border.all(color: primaryColor),
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  data[index].details,
-                                  style: medium14primary,
+                              Visibility(
+                                visible: data[index].status2 == "deal"
+                                    ? true
+                                    : false,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: fixPadding / 2,
+                                      horizontal: fixPadding),
+                                  width: 60.0,
+                                  height: 60.0,
+                                  decoration: BoxDecoration(
+                                    color: whiteColor,
+                                    border: Border.all(color: primaryColor),
+                                    borderRadius: BorderRadius.circular(50),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: primaryColor.withOpacity(0.2),
+                                        blurRadius: 5,
+                                      )
+                                    ],
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "${data[index].percent}%",
+                                    style: medium14primary,
+                                  ),
                                 ),
                               ),
                             ],

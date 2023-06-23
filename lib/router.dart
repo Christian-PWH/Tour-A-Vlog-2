@@ -13,12 +13,10 @@ import 'package:tour_a_vlog/4_home_navigation/3_favorites/favorites.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/about_us.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/profile_booking.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/edit_profile.dart';
-import 'package:tour_a_vlog/4_home_navigation/4_profile/feed_back.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/languages.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/profile.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/settings.dart';
 import 'package:tour_a_vlog/4_home_navigation/bottom_navigation.dart';
-import 'package:tour_a_vlog/5_pages/1_credit_card/credit_card.dart';
 import 'package:tour_a_vlog/5_pages/1_detail/detail.dart';
 import 'package:tour_a_vlog/5_pages/1_discover_by_categories/discover_by_categories.dart';
 import 'package:tour_a_vlog/5_pages/1_recommendation/recommendation.dart';
@@ -73,7 +71,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           child: DetailScreen(city: city),
           type: PageTransitionType.leftToRight);
     case '/packages':
-      final packageMap = routeSettings.arguments as Map<String, dynamic>;
+      final packageMap = routeSettings.arguments as List<TourModel>;
       return PageTransition(
           child: Packages(packageMap: packageMap),
           type: PageTransitionType.leftToRight);
@@ -87,9 +85,6 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return PageTransition(
           child: TravelDetail(tour: tour),
           type: PageTransitionType.leftToRight);
-    case '/credit_card':
-      return PageTransition(
-          child: const CreditCard(), type: PageTransitionType.leftToRight);
     case '/success':
       return PageTransition(
           child: const SuccessScreen(), type: PageTransitionType.leftToRight);
@@ -186,11 +181,6 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case '/about_us':
       return PageTransition(
           child: const AboutUs(), type: PageTransitionType.leftToRight);
-
-    ///profile - 5
-    case '/feedback':
-      return PageTransition(
-          child: const FeedbackScreen(), type: PageTransitionType.leftToRight);
 
     case '/rate':
       return PageTransition(
