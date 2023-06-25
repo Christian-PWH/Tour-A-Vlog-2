@@ -125,6 +125,7 @@ class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
       itemBuilder: (context, index) {
         return holidayListContent(
           size,
+          'new',
           newOrders[index],
           () {
             // Navigator.push(
@@ -150,6 +151,7 @@ class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
       itemBuilder: (context, index) {
         return holidayListContent(
           size,
+          'ongoing',
           ongoingOrders[index],
           () {
             // Navigator.push(
@@ -173,6 +175,7 @@ class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
       itemBuilder: (context, index) {
         return holidayListContent(
           size,
+          'history',
           completedOrders[index],
           () {
             // Navigator.pushNamed(context, HolidayHistory.routeName);
@@ -184,6 +187,7 @@ class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
 
   Widget holidayListContent(
     Size size,
+    String status,
     OrderModel orderItem,
     Function() onTap,
   ) {
@@ -304,30 +308,32 @@ class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
                     ],
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    showCancelDialog(context);
-                  },
-                  child: Container(
-                    width: 100.0,
-                    height: 40.0,
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: primaryColor.withOpacity(0.25),
-                          blurRadius: 5,
-                        )
-                      ],
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      getTranslate(context, 'booking.cancel'),
-                      style: semibold18white,
-                    ),
-                  ),
-                )
+                (status != 'new')
+                    ? Container()
+                    : GestureDetector(
+                        onTap: () {
+                          showCancelDialog(context, orderItem);
+                        },
+                        child: Container(
+                          width: 100.0,
+                          height: 40.0,
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: primaryColor.withOpacity(0.25),
+                                blurRadius: 5,
+                              )
+                            ],
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            getTranslate(context, 'booking.cancel'),
+                            style: semibold18white,
+                          ),
+                        ),
+                      )
               ],
             )
           ],
@@ -336,7 +342,7 @@ class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
     );
   }
 
-  Future<void> showCancelDialog(context) async {
+  Future<void> showCancelDialog(context, OrderModel order) async {
     return await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -387,7 +393,16 @@ class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
             ),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () async {
+              Navigator.pop(context);
+              // ref.read(orderControllerProvider.)
+              final errMsg = await ref
+                  .read(getBookingHistoryProvider.notifier)
+                  .delete(order);
+              if (errMsg.isEmpty) return;
+
+              /// TODO Show Error
+            },
             child: Container(
               width: 100.0,
               height: 40.0,

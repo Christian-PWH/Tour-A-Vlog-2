@@ -7,10 +7,28 @@ import 'package:tour_a_vlog/3_auth/controller/user_controller.dart';
 
 part 'order_controller.g.dart';
 
+// @riverpod
+// FutureOr<List<OrderModel>> getBookingHistory(GetBookingHistoryRef ref) {
+//   final orderController = ref.watch(orderControllerProvider);
+//   return orderController.getByCurrentUser();
+// }
+
 @riverpod
-FutureOr<List<OrderModel>> getBookingHistory(GetBookingHistoryRef ref) {
-  final orderController = ref.watch(orderControllerProvider);
-  return orderController.getByCurrentUser();
+class GetBookingHistory extends _$GetBookingHistory {
+  late final OrderController _orderController;
+  @override
+  FutureOr<List<OrderModel>> build() {
+    _orderController = ref.watch(orderControllerProvider);
+    return _orderController.getByCurrentUser();
+  }
+
+  FutureOr<String> delete(OrderModel order) async {
+    state = await AsyncValue.guard(() async {
+      await _orderController.delete(order);
+      return _orderController.getByCurrentUser();
+    });
+    return '';
+  }
 }
 
 @Riverpod(keepAlive: true)
@@ -46,6 +64,15 @@ class OrderController {
       extractedListOfOrder.add(OrderModel.fromMap(extractedMap));
     });
     return extractedListOfOrder;
+  }
+
+  Future<String> delete(OrderModel order) async {
+    if (order.status != 'new') {
+      return 'Only new / pending order can be canceled';
+    }
+    final ref = FirebaseDatabase.instance.ref('Orders/${order.id}');
+    await ref.remove();
+    return '';
   }
 
   Future<String> save({

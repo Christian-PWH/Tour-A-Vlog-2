@@ -318,8 +318,8 @@ class _PackageDetailState extends ConsumerState<PackageDetail> {
             style: semibold16black,
           ),
           height5Space,
-          const Text(
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque faucibus nullam accumsan cras nunc viverra pharetra. Natoque blandit pretium, molestie enim, vel. Eget donec arcu vitae aliquet. Hac quis tortor erat augue. Et orci, sit enim lectus. Neque sem quis porta id maecenas ",
+          Text(
+            tour.about ?? '',
             style: medium14grey94,
           ),
         ],

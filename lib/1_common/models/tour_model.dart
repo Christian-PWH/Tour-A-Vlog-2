@@ -10,6 +10,7 @@ class TourModel {
   final String city;
   final String code;
   final List<String> customizationForDays;
+  final String? about;
   final String details;
   final List<String> image;
   final String? newprice;
@@ -26,6 +27,7 @@ class TourModel {
     required this.city,
     required this.code,
     required this.customizationForDays,
+    this.about,
     required this.details,
     required this.image,
     this.newprice,
@@ -44,6 +46,7 @@ class TourModel {
       'city': city,
       'code': code,
       'customizationForDays': customizationForDays,
+      'about': about,
       'details': details,
       'image': image,
       'newprice': newprice,
@@ -73,6 +76,7 @@ class TourModel {
       customizationForDays: (map['customizationForDays'] as List)
           .map((e) => e.toString())
           .toList(),
+      about: map['about'] as String?,
       details: map['details'] as String,
       image: (map['image'] as List).map((e) => e.toString()).toList(),
       newprice: map['newprice'] as String?,
@@ -96,6 +100,7 @@ class TourModel {
     String? city,
     String? code,
     List<String>? customizationForDays,
+    String? about,
     String? details,
     List<String>? image,
     String? newprice,
@@ -112,6 +117,7 @@ class TourModel {
       city: city ?? this.city,
       code: code ?? this.code,
       customizationForDays: customizationForDays ?? this.customizationForDays,
+      about: about ?? this.about,
       details: details ?? this.details,
       image: image ?? this.image,
       newprice: newprice ?? this.newprice,
@@ -126,7 +132,7 @@ class TourModel {
 
   @override
   String toString() {
-    return 'TourModel(id: $id, category: $category, city: $city, code: $code, customizationForDays: $customizationForDays, details: $details, image: $image, newprice: $newprice, percent: $percent, price: $price, status1: $status1, status2: $status2, title: $title, type: $type)';
+    return 'TourModel(id: $id, category: $category, city: $city, code: $code, customizationForDays: $customizationForDays, about: $about, details: $details, image: $image, newprice: $newprice, percent: $percent, price: $price, status1: $status1, status2: $status2, title: $title, type: $type)';
   }
 
   @override
@@ -138,6 +144,7 @@ class TourModel {
         other.city == city &&
         other.code == code &&
         listEquals(other.customizationForDays, customizationForDays) &&
+        other.about == about &&
         other.details == details &&
         listEquals(other.image, image) &&
         other.newprice == newprice &&
@@ -156,6 +163,7 @@ class TourModel {
         city.hashCode ^
         code.hashCode ^
         customizationForDays.hashCode ^
+        about.hashCode ^
         details.hashCode ^
         image.hashCode ^
         newprice.hashCode ^

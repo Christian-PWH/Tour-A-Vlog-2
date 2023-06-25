@@ -6,6 +6,22 @@ part of 'tour_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$getTourByDealHash() => r'713c69672f7a0ee35267d5e7f5c7f2f94361cc82';
+
+/// See also [getTourByDeal].
+@ProviderFor(getTourByDeal)
+final getTourByDealProvider =
+    AutoDisposeFutureProvider<List<TourModel>>.internal(
+  getTourByDeal,
+  name: r'getTourByDealProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$getTourByDealHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef GetTourByDealRef = AutoDisposeFutureProviderRef<List<TourModel>>;
 String _$getTourByCityHash() => r'6625308d9142df32996db2252274c4831552db8f';
 
 /// Copied from Dart SDK

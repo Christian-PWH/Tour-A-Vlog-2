@@ -6,6 +6,12 @@ import 'package:tour_a_vlog/1_common/models/tour_model.dart';
 part 'tour_controller.g.dart';
 
 @riverpod
+FutureOr<List<TourModel>> getTourByDeal(GetTourByDealRef ref) {
+  final tourController = ref.watch(tourControllerProvider);
+  return tourController.getTourByDeal();
+}
+
+@riverpod
 FutureOr<List<TourModel>> getTourByCity(
   GetTourByCityRef ref, {
   required String cityTitle,
@@ -92,6 +98,29 @@ class TourController {
         extractedListOfTourByCategory.add(TourModel.fromMap(extractedMap));
       });
       return extractedListOfTourByCategory;
+    } else {
+      return [];
+    }
+  }
+
+  Future<List<TourModel>> getTourByDeal() async {
+    final snapshot = await dbInstance
+        .ref()
+        .child("Items")
+        .orderByChild("status2")
+        .equalTo("deal")
+        .get();
+
+    if (snapshot.exists) {
+      Map newMap = snapshot.value as Map;
+      List<TourModel> extractedListOfTourByRecommendation = [];
+      newMap.forEach((key, value) {
+        Map extractedMap = newMap[key];
+        extractedMap['id'] = key;
+        extractedListOfTourByRecommendation
+            .add(TourModel.fromMap(extractedMap));
+      });
+      return extractedListOfTourByRecommendation;
     } else {
       return [];
     }

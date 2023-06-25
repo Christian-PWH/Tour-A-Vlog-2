@@ -64,6 +64,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         physics: const BouncingScrollPhysics(),
         children: [
           discoverByCategoriesList(size),
+          dealsForYouList(size),
           recommendationListView(size),
           indonesiaDestinationList(size),
         ],
@@ -169,6 +170,144 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               },
             ))
       ],
+    );
+  }
+
+  Widget dealsForYouList(Size size) {
+    final deals = ref.watch(getTourByDealProvider);
+    return deals.when(
+      data: (data) {
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: fixPadding * 2, vertical: fixPadding),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      getTranslate(context, 'home.deals_for_you'),
+                      style: semibold16white.copyWith(
+                          color: const Color(0xff333333),
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        Recommendation.routeName,
+                        arguments: data,
+                      );
+                    },
+                    child: Text(
+                      getTranslate(context, 'home.see_all'),
+                      style: medium14primary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: size.width * 0.55,
+              width: double.maxFinite,
+              child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: fixPadding),
+                itemCount: data.length < 5 ? data.length : 5,
+                // only view top 5 item
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  if (data.isEmpty) {
+                    return const Center(child: Text('NO DATA'));
+                  }
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        PackageDetail.routeName,
+                        arguments: data[index],
+                      );
+                    },
+                    child: Container(
+                      width: size.width * 0.4,
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: fixPadding, vertical: fixPadding / 2),
+                      decoration: BoxDecoration(
+                        color: whiteColor,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: grey94Color.withOpacity(0.5),
+                            blurRadius: 5,
+                          )
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.vertical(
+                                  top: Radius.circular(10)),
+                              child: Image.network(
+                                data[index].image[0],
+                                width: size.width * 0.4,
+                                fit: BoxFit.cover,
+                                loadingBuilder: (context, child, event) {
+                                  if (event == null) return child;
+                                  return Center(
+                                    child: SizedBox(
+                                      width: 20.0,
+                                      height: 20.0,
+                                      child: CircularProgressIndicator(
+                                        value: event.cumulativeBytesLoaded /
+                                            (event.expectedTotalBytes ?? 1),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                errorBuilder: (context, object, stacktrace) {
+                                  return const Center(
+                                    child: SizedBox(
+                                      width: 20.0,
+                                      height: 20.0,
+                                      child: Icon(Icons.image_not_supported),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: fixPadding / 2,
+                                horizontal: fixPadding),
+                            child: Text(
+                              data[index].title,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: medium14black33,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            )
+          ],
+        );
+      },
+      error: (error, stackTrace) {
+        return const Center(child: Text('Error'));
+      },
+      loading: () {
+        return const Center(child: CircularProgressIndicator());
+      },
     );
   }
 
