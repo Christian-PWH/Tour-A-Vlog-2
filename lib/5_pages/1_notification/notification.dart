@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:tour_a_vlog/1_common/widgets/column_builder.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tour_a_vlog/4_home_navigation/controller/notification_controller.dart';
 
-class NotificationScreen extends StatefulWidget {
+class NotificationScreen extends ConsumerStatefulWidget {
   static const routeName = '/notification';
 
   const NotificationScreen({super.key});
 
   @override
-  State<NotificationScreen> createState() => _NotificationScreenState();
+  ConsumerState<NotificationScreen> createState() => _NotificationScreenState();
 }
 
-class _NotificationScreenState extends State<NotificationScreen> {
+class _NotificationScreenState extends ConsumerState<NotificationScreen> {
   final todayNotification = [
     {
       "icon": "assets/notification/Group.png",
@@ -30,24 +32,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
     },
   ];
 
-  final olderNotification = [
-    {
-      "icon": "assets/notification/icon-park-outline_beach-umbrella.png",
-      "title": "Holiday package",
-      "text1": "Congretulation! your",
-      "text2": "Honymoon in bali",
-      "text3": "package is book successfully.",
-      "time": "Yesterday",
-    },
-    {
-      "icon": "assets/notification/Group.png",
-      "title": "Flight booking",
-      "text1": "Congretulation! your flight",
-      "text2": "Air india's",
-      "text3": "ticket is book successfully.",
-      "time": "12 march 2022",
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    // ref.read(notificationControllerProvider.notifier).add('Kamikaze');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,23 +70,42 @@ class _NotificationScreenState extends State<NotificationScreen> {
           ),
         ),
       ),
-      body: (todayNotification.isEmpty && olderNotification.isEmpty)
+      body: (todayNotification.isEmpty)
           ? emptyNotification()
           : notificationList(size),
     );
   }
 
-  notificationList(Size size) {
-    return ListView(
-      physics: const BouncingScrollPhysics(),
-      children: [
-        todayNotification.isEmpty ? Container() : todayNotificationList(size),
-        olderNotification.isEmpty ? Container() : olderNotificationList(size)
-      ],
+  Widget notificationList(Size size) {
+    final notifications = ref.watch(notificationControllerProvider);
+    return notifications.when(
+      data: (data) {
+        return ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            return ListTile(title: Text(data[index]));
+          },
+        );
+        // return ListView(
+        //   physics: const BouncingScrollPhysics(),
+        //   children: [
+        //     todayNotification.isEmpty
+        //         ? Container()
+        //         : todayNotificationList(size),
+        //     // olderNotification.isEmpty ? Container() : olderNotificationList(size)
+        //   ],
+        // );
+      },
+      loading: () {
+        return const Center(child: CircularProgressIndicator());
+      },
+      error: (error, stackTrace) {
+        return const Center(child: Text('Error'));
+      },
     );
   }
 
-  emptyNotification() {
+  Widget emptyNotification() {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -117,129 +125,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     );
   }
 
-  olderNotificationList(Size size) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            left: fixPadding * 2,
-            right: fixPadding * 2,
-            top: fixPadding * 2,
-          ),
-          child: Text(
-            getTranslate(context, 'notification.older_notification'),
-            style: semibold16black,
-          ),
-        ),
-        ColumnBuilder(
-          itemBuilder: (context, index) {
-            return Dismissible(
-              key: UniqueKey(),
-              onDismissed: (direction) {
-                setState(() {
-                  olderNotification.removeAt(index);
-                });
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(getTranslate(
-                        context, 'notification.remove_notification')),
-                    backgroundColor: blackColor,
-                    duration: const Duration(milliseconds: 1500),
-                    behavior: SnackBarBehavior.floating,
-                  ),
-                );
-              },
-              background: Container(
-                color: Colors.red,
-                margin: const EdgeInsets.symmetric(vertical: fixPadding),
-              ),
-              child: Container(
-                margin: const EdgeInsets.symmetric(
-                    horizontal: fixPadding * 2, vertical: fixPadding),
-                padding: const EdgeInsets.all(fixPadding),
-                decoration: BoxDecoration(
-                  color: whiteColor,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: grey94Color.withOpacity(0.5),
-                      blurRadius: 5,
-                    )
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      height: size.height * 0.065,
-                      width: size.height * 0.065,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                            colors: gradient,
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight),
-                      ),
-                      alignment: Alignment.center,
-                      child: Image.asset(
-                        olderNotification[index]['icon'].toString(),
-                        height: size.height * 0.03,
-                        width: size.height * 0.03,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    widthSpace,
-                    widthSpace,
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            olderNotification[index]['title'].toString(),
-                            style: semibold16black,
-                          ),
-                          heightBox(3),
-                          RichText(
-                            text: TextSpan(
-                              text: olderNotification[index]['text1'],
-                              style: semibold14black.copyWith(
-                                fontWeight: FontWeight.w400,
-                              ),
-                              children: [
-                                const TextSpan(text: " "),
-                                TextSpan(
-                                  text: olderNotification[index]['text2'],
-                                  style: semibold14black.copyWith(
-                                      fontWeight: FontWeight.w400,
-                                      color: primaryColor),
-                                ),
-                                const TextSpan(text: " "),
-                                TextSpan(
-                                  text: olderNotification[index]['text3'],
-                                ),
-                              ],
-                            ),
-                          ),
-                          heightBox(3),
-                          Text(
-                            olderNotification[index]['time'].toString(),
-                            style: regular12grey,
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            );
-          },
-          itemCount: olderNotification.length,
-        ),
-      ],
-    );
-  }
-
-  todayNotificationList(Size size) {
+  Widget todayNotificationList(Size size) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -255,6 +141,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           ),
         ),
         ColumnBuilder(
+          itemCount: todayNotification.length,
           itemBuilder: (context, index) {
             return Dismissible(
               key: UniqueKey(),
@@ -292,26 +179,26 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 ),
                 child: Row(
                   children: [
-                    Container(
-                      height: size.height * 0.065,
-                      width: size.height * 0.065,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                            colors: gradient,
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight),
-                      ),
-                      alignment: Alignment.center,
-                      child: Image.asset(
-                        todayNotification[index]['icon'].toString(),
-                        height: size.height * 0.03,
-                        width: size.height * 0.03,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    widthSpace,
-                    widthSpace,
+                    // Container(
+                    //   height: size.height * 0.065,
+                    //   width: size.height * 0.065,
+                    //   decoration: const BoxDecoration(
+                    //     shape: BoxShape.circle,
+                    //     gradient: LinearGradient(
+                    //         colors: gradient,
+                    //         begin: Alignment.topLeft,
+                    //         end: Alignment.bottomRight),
+                    //   ),
+                    //   alignment: Alignment.center,
+                    //   child: Image.asset(
+                    //     todayNotification[index]['icon'].toString(),
+                    //     height: size.height * 0.03,
+                    //     width: size.height * 0.03,
+                    //     fit: BoxFit.cover,
+                    //   ),
+                    // ),
+                    // widthSpace,
+                    // widthSpace,
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -327,19 +214,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               style: semibold14black.copyWith(
                                 fontWeight: FontWeight.w400,
                               ),
-                              children: [
-                                const TextSpan(text: " "),
-                                TextSpan(
-                                  text: todayNotification[index]['text2'],
-                                  style: semibold14black.copyWith(
-                                      fontWeight: FontWeight.w400,
-                                      color: primaryColor),
-                                ),
-                                const TextSpan(text: " "),
-                                TextSpan(
-                                  text: todayNotification[index]['text3'],
-                                ),
-                              ],
                             ),
                           ),
                           heightBox(3),
@@ -355,7 +229,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
               ),
             );
           },
-          itemCount: todayNotification.length,
         ),
       ],
     );

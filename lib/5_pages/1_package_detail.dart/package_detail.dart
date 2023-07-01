@@ -8,6 +8,7 @@ import 'package:tour_a_vlog/1_common/models/tour_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:tour_a_vlog/1_common/widgets/column_builder.dart';
 import 'package:tour_a_vlog/4_home_navigation/controller/favorite_controller.dart';
+import 'package:tour_a_vlog/4_home_navigation/controller/review_controller.dart';
 import 'package:tour_a_vlog/5_pages/1_review/review.dart';
 import 'package:tour_a_vlog/5_pages/1_travel_detail/travel_detail.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -232,78 +233,105 @@ class _PackageDetailState extends ConsumerState<PackageDetail> {
   }
 
   Widget detailInfo(TourModel tour) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: fixPadding,
-        horizontal: fixPadding * 2,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  tour.title,
-                  style: semibold18primary,
-                ),
-                height5Space,
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, ReviewScreen.routeName);
-                  },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
+    final reviews = ref.watch(getReviewByTourIdProvider(tourId: tour.id));
+
+    return reviews.when(
+      data: (data) {
+        final int totalReviews = data.length;
+        int averageStarRound = 0;
+        // Round of zero and divided by zero is infinity
+        if (totalReviews != 0) {
+          averageStarRound =
+              (data.fold(0.0, (prev, e) => prev + e.star) / totalReviews)
+                  .round();
+        }
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: fixPadding,
+            horizontal: fixPadding * 2,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      tour.title,
+                      style: semibold18primary,
+                    ),
+                    height5Space,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          ReviewScreen.routeName,
+                          arguments: tour.id,
+                        );
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          for (int i = 0; i < 5; i++)
-                            Icon(
-                              Icons.star,
-                              size: 18,
-                              color: (i < 4) ? starColor : grey94Color,
-                            )
+                          Row(
+                            children: [
+                              for (int i = 0; i < 5; i++)
+                                Icon(
+                                  Icons.star,
+                                  size: 18,
+                                  color: (i < averageStarRound)
+                                      ? starColor
+                                      : grey94Color,
+                                )
+                            ],
+                          ),
+                          height5Space,
+                          Text(
+                            "$totalReviews ${getTranslate(context, 'package_detail.review')}",
+                            style: medium14grey94,
+                          )
                         ],
                       ),
-                      height5Space,
-                      Text(
-                        "684 ${getTranslate(context, 'package_detail.review')}",
-                        style: medium14grey94,
+                    ),
+                  ],
+                ),
+              ),
+              Visibility(
+                visible: tour.status2 == "deal" ? true : false,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: fixPadding / 3, horizontal: fixPadding),
+                  width: 60.0,
+                  height: 60.0,
+                  decoration: BoxDecoration(
+                    color: whiteColor,
+                    border: Border.all(color: primaryColor),
+                    borderRadius: BorderRadius.circular(50),
+                    boxShadow: [
+                      BoxShadow(
+                        color: primaryColor.withOpacity(0.2),
+                        blurRadius: 5,
                       )
                     ],
                   ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    "${tour.percent}%",
+                    style: medium14primary,
+                  ),
                 ),
-              ],
-            ),
-          ),
-          Visibility(
-            visible: tour.status2 == "deal" ? true : false,
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                  vertical: fixPadding / 3, horizontal: fixPadding),
-              width: 60.0,
-              height: 60.0,
-              decoration: BoxDecoration(
-                color: whiteColor,
-                border: Border.all(color: primaryColor),
-                borderRadius: BorderRadius.circular(50),
-                boxShadow: [
-                  BoxShadow(
-                    color: primaryColor.withOpacity(0.2),
-                    blurRadius: 5,
-                  )
-                ],
               ),
-              alignment: Alignment.center,
-              child: Text(
-                "${tour.percent}%",
-                style: medium14primary,
-              ),
-            ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
+      loading: () {
+        return const Center(child: CircularProgressIndicator());
+      },
+      error: (error, stackTrace) {
+        return const Center(child: Text('Error'));
+      },
     );
   }
 

@@ -32,10 +32,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final currentUser = ref.watch(userControllerProvider);
-    debugPrint('Main Home - build scaffold');
     return currentUser.when(
       data: (userModel) {
-        debugPrint("main home = $userModel");
         return Scaffold(
           backgroundColor: whiteColor,
           body: Column(

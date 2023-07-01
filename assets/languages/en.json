@@ -272,7 +272,8 @@
     "say_something": "Say something"
   },
   "review": {
-    "review": "Review"
+    "review": "Review",
+    "input_review": "Input your review"
   },
   "search": {
     "trending_search": "Trending search",

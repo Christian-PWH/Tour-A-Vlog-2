@@ -5,9 +5,8 @@ import 'package:tour_a_vlog/1_common/models/order_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:tour_a_vlog/4_home_navigation/controller/order_controller.dart';
 import 'package:tour_a_vlog/4_home_navigation/controller/profile_booking_vm.dart';
-import 'package:tour_a_vlog/5_pages/5_holiday_history/holiday_history.dart';
-import 'package:tour_a_vlog/5_pages/5_holiday_ongoing/holiday_ongoing.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tour_a_vlog/5_pages/1_review/review.dart';
 
 class ProfileBookingScreen extends ConsumerStatefulWidget {
   static const routeName = '/profile_booking';
@@ -335,7 +334,21 @@ class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
                         ),
                       )
               ],
-            )
+            ),
+
+            /// TODO UI nya menggigil 🥶
+            (status != 'history')
+                ? Container()
+                : ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        ReviewScreen.routeName,
+                        arguments: orderItem.tour.id,
+                      );
+                    },
+                    child: const Text('Write a review'),
+                  ),
           ],
         ),
       ),

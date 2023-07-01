@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final editProfileLocationProvider = StateProvider.autoDispose<String>((ref) {
+final editProfileLocationProvider = StateProvider<String>((ref) {
   return 'Getting location...';
 });
 

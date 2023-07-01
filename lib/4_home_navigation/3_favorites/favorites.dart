@@ -4,7 +4,6 @@ import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:tour_a_vlog/4_home_navigation/controller/favorite_controller.dart';
 import 'package:tour_a_vlog/5_pages/1_package_detail.dart/package_detail.dart';
-import 'package:tour_a_vlog/5_pages/3_place_detail/place_detail.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FavoriteScreen extends ConsumerStatefulWidget {

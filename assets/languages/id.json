@@ -272,7 +272,8 @@
     "say_something": "Katakan sesuatu"
   },
   "review": {
-    "review": "Ulasan"
+    "review": "Ulasan",
+    "input_review": "Berikan ulasan mu"
   },
   "search": {
     "trending_search": "Pencarian tren",

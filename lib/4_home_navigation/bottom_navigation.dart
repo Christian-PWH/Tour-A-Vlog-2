@@ -30,7 +30,6 @@ class _BottomNavigationScreenState
   @override
   Widget build(BuildContext context) {
     ref.listen(userControllerProvider, (previous, next) {
-      debugPrint('Employee Home Screen - ref listen profileControllerProvider');
       if (!next.hasValue || next.value == null) {
         Navigator.pushNamedAndRemoveUntil(
             context, SignInScreen.routeName, (route) => false);
@@ -41,10 +40,8 @@ class _BottomNavigationScreenState
     ref.watch(favoriteControllerProvider).whenData((value) => '');
 
     final currentUser = ref.watch(userControllerProvider);
-    debugPrint('Main navigation - build scaffold');
     return currentUser.when(
       data: (user) {
-        debugPrint("main navigation = $user");
         return WillPopScope(
           onWillPop: () async {
             bool backStatus = onWillPop(context);

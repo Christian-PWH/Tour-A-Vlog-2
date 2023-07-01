@@ -123,8 +123,8 @@ class _EditProfileState extends ConsumerState<EditProfile> {
 
     Placemark place = placeMarks[0];
 
-    ref.read(editProfileLocationProvider.notifier).state =
-        '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
+    ref.read(editProfileLocationProvider.notifier).update((state) =>
+        '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}');
   }
 
   @override

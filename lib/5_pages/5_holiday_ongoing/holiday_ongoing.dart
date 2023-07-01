@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
-import 'package:tour_a_vlog/4_home_navigation/4_profile/profile_booking.dart';
 import 'package:tour_a_vlog/5_pages/1_package_detail.dart/package_detail.dart';
 
 class HolidayOngoing extends StatefulWidget {
