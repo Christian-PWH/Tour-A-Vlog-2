@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
@@ -250,6 +251,11 @@ class SignUpScreen extends ConsumerWidget {
       if (phoneController.text.trim().length < 9) {
         showSnackBar(context, Icons.cancel_outlined, Colors.red,
             'Phone number too short'.toString(), Colors.red);
+        return;
+      }
+      if (!EmailValidator.validate(emailController.text)) {
+        showSnackBar(context, Icons.cancel_outlined, Colors.red,
+            'Email not valid'.toString(), Colors.red);
         return;
       }
 

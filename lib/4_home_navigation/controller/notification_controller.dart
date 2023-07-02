@@ -36,7 +36,7 @@ class NotificationController extends _$NotificationController {
     });
   }
 
-  FutureOr<String> save(String title) async {
+  FutureOr<String> add(String title) async {
     // state = const AsyncValue.loading();
     final currentUser = await _userController.getCurrentUser();
     if (currentUser == null) return '';

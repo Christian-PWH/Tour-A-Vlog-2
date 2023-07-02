@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
@@ -310,6 +311,25 @@ class _TravelDetailState extends ConsumerState<TravelDetail> {
     return GestureDetector(
       onTap: () async {
         if (!validate(context)) return;
+
+        /// Direct Request
+        if (phoneController.text.trim()[0] != '0' ||
+            phoneController.text.trim()[1] != '8') {
+          showSnackBar(context, Icons.cancel_outlined, Colors.red,
+              'Phone number not valid'.toString(), Colors.red);
+          return;
+        }
+        if (phoneController.text.trim().length < 9) {
+          showSnackBar(context, Icons.cancel_outlined, Colors.red,
+              'Phone number too short'.toString(), Colors.red);
+          return;
+        }
+        if (!EmailValidator.validate(emailController.text)) {
+          showSnackBar(context, Icons.cancel_outlined, Colors.red,
+              'Email not valid'.toString(), Colors.red);
+          return;
+        }
+
         final orderController = ref.watch(orderControllerProvider);
         final user =
             await ref.read(userControllerProvider.notifier).getCurrentUser();
@@ -328,6 +348,8 @@ class _TravelDetailState extends ConsumerState<TravelDetail> {
               int.parse(noOfTravellersController.text),
           bookingDate: bookingDate!,
         );
+
+        /// TODO Notification Order New
         // Navigator.pushNamed(context, CreditCard.routeName);
         Navigator.pushNamed(context, SuccessScreen.routeName);
       },
