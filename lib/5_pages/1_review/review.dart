@@ -4,6 +4,7 @@ import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/models/review_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tour_a_vlog/1_common/widgets/show_snackbar.dart';
 import 'package:tour_a_vlog/3_auth/controller/user_controller.dart';
 import 'package:tour_a_vlog/4_home_navigation/4_profile/controller/review_vm.dart';
 import 'package:tour_a_vlog/4_home_navigation/controller/review_controller.dart';
@@ -38,7 +39,7 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
 
   late int star;
 
-  void submit() async {
+  void submit(context) async {
     debugPrint('SUBMIT');
     if (_commentCtl.text.trim().isEmpty || star <= 0 || star > 5) return;
     final errMsg = await ref.read(reviewControllerProvider).save(
@@ -46,7 +47,9 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
           star: star,
           comment: _commentCtl.text.trim(),
         );
-    if (errMsg.isNotEmpty) return; // Show error
+    if (errMsg.isNotEmpty) return;
+    showSnackBar(context, Icons.cancel_outlined, Colors.red, errMsg.toString(),
+        Colors.red);
     // ignore: unused_result
     await ref.refresh(getReviewByTourIdProvider(tourId: tourId).future);
   }
@@ -182,7 +185,7 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
                   ),
                 ),
                 IconButton(
-                  onPressed: submit,
+                  onPressed: () => submit(context),
                   icon: const Icon(Icons.send),
                 )
               ],
