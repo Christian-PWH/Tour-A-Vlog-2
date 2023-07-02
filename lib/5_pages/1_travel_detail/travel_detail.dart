@@ -6,6 +6,7 @@ import 'package:tour_a_vlog/1_common/models/tour_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:tour_a_vlog/1_common/widgets/show_snackbar.dart';
 import 'package:tour_a_vlog/3_auth/controller/user_controller.dart';
+import 'package:tour_a_vlog/4_home_navigation/controller/notification_controller.dart';
 import 'package:tour_a_vlog/4_home_navigation/controller/order_controller.dart';
 import 'package:tour_a_vlog/5_pages/1_success/success.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -330,7 +331,7 @@ class _TravelDetailState extends ConsumerState<TravelDetail> {
           return;
         }
 
-        final orderController = ref.watch(orderControllerProvider);
+        final orderController = ref.read(orderControllerProvider);
         final user =
             await ref.read(userControllerProvider.notifier).getCurrentUser();
         if (user == null) return;
@@ -349,7 +350,6 @@ class _TravelDetailState extends ConsumerState<TravelDetail> {
           bookingDate: bookingDate!,
         );
 
-        /// TODO Notification Order New
         // Navigator.pushNamed(context, CreditCard.routeName);
         Navigator.pushNamed(context, SuccessScreen.routeName);
       },

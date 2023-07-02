@@ -7,12 +7,12 @@ part of 'notification_controller.dart';
 // **************************************************************************
 
 String _$notificationControllerHash() =>
-    r'328593cf62475e3499a7c7aa8f0c6801b9925890';
+    r'7f3665cd2ef171fa6e0fe011c88ed126d9511c0e';
 
 /// See also [NotificationController].
 @ProviderFor(NotificationController)
-final notificationControllerProvider =
-    AsyncNotifierProvider<NotificationController, List<String>>.internal(
+final notificationControllerProvider = AsyncNotifierProvider<
+    NotificationController, List<NotificationModel>>.internal(
   NotificationController.new,
   name: r'notificationControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,5 +22,5 @@ final notificationControllerProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$NotificationController = AsyncNotifier<List<String>>;
+typedef _$NotificationController = AsyncNotifier<List<NotificationModel>>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

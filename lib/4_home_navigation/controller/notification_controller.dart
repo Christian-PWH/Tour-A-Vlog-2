@@ -13,39 +13,102 @@ class NotificationController extends _$NotificationController {
   late final UserController _userController;
 
   @override
-  FutureOr<List<String>> build() {
+  FutureOr<List<NotificationModel>> build() {
     _dbInstance = FirebaseDatabase.instance;
     _userController = ref.watch(userControllerProvider.notifier);
-
-    return _get();
+    _listenForChildEvent();
+    // return _get()
+    return [];
   }
 
-  Future<List<String>> _get() async {
+  // Future<List<NotificationModel>> _get() async {
+  //   final currentUser = await _userController.getCurrentUser();
+  //   if (currentUser == null) return [];
+  //   final ref = _dbInstance.ref('Users/${currentUser.uid}/notifications');
+  //   final query = ref.orderByKey();
+  //   final snapshot = await query.get();
+  //   if (!snapshot.exists) return [];
+
+  //   Map newMap = snapshot.value as Map;
+
+  //   final notifications = _extractFromFirebase(newMap);
+
+  //   _listenForChildEvent(ref);
+
+  //   return notifications;
+  // }
+
+  void _listenForChildEvent() async {
     final currentUser = await _userController.getCurrentUser();
-    if (currentUser == null) return [];
-    final ref = _dbInstance.ref('Users/${currentUser.uid}/notifications');
-    final snapshot = await ref.get();
-    if (!snapshot.exists) return [];
-    _listenForChildEvent(ref);
-    return (snapshot.value as List).map((e) => e as String).toList();
-  }
+    if (currentUser == null) return;
 
-  void _listenForChildEvent(DatabaseReference ref) {
+    final ref = _dbInstance.ref('Users/${currentUser.uid}/notifications');
     ref.onChildAdded.listen((event) {
+      debugPrint("Listen onChildAdded");
       debugPrint(event.snapshot.value.toString());
+      debugPrint(event.snapshot.key.toString());
+      if (!event.snapshot.exists) return;
+      Map<dynamic, dynamic> extractedMap = event.snapshot.value as Map;
+      extractedMap['id'] = event.snapshot.key;
+      final notifications = NotificationModel.fromMap(extractedMap);
+      final oldNotifications = state.asData?.value ?? [];
+      state = AsyncValue.data([...oldNotifications, notifications]);
+    });
+
+    ref.onChildRemoved.listen((event) {
+      debugPrint("Listen onChildRemoved");
+      debugPrint(event.snapshot.value.toString());
+      debugPrint(event.snapshot.key.toString());
+      if (!event.snapshot.exists) return;
+      final notifications = state.asData?.value ?? [];
+      notifications.removeWhere((e) => e.id == event.snapshot.key);
+      state = AsyncValue.data(notifications);
     });
   }
 
-  FutureOr<String> add(String title) async {
+  // List<NotificationModel> _extractFromFirebase(Map newMap) {
+  //   debugPrint(newMap.toString());
+  //   List<NotificationModel> extractedListOfNotification = [];
+  //   newMap.forEach((key, value) {
+  //     Map<dynamic, dynamic> extractedMap = newMap[key];
+  //     extractedMap['id'] = key;
+  //     extractedListOfNotification.add(NotificationModel.fromMap(extractedMap));
+  //   });
+  //   return extractedListOfNotification;
+  // }
+
+  FutureOr<String> add({
+    required String title,
+    required String description,
+  }) async {
     // state = const AsyncValue.loading();
     final currentUser = await _userController.getCurrentUser();
     if (currentUser == null) return '';
     // List<String> notificationItems = state.value!;
     try {
       final ref = _dbInstance.ref('Users/${currentUser.uid}/notifications');
-      await ref.set([title]);
+      // await ref.set([title]);
+      await ref.push().set({
+        'title': title,
+        'description': description,
+        'date': DateTime.now().toIso8601String(),
+      });
       // notificationItems = state.value!..add(title);
       // state = AsyncValue.data(notificationItems);
+      return '';
+    } on FirebaseException catch (e) {
+      state = AsyncValue.error('', StackTrace.current);
+      return e.toString();
+    }
+  }
+
+  FutureOr<String> remove(NotificationModel notification) async {
+    final currentUser = await _userController.getCurrentUser();
+    if (currentUser == null) return '';
+    try {
+      final ref = _dbInstance
+          .ref('Users/${currentUser.uid}/notifications/${notification.id}');
+      await ref.remove();
       return '';
     } on FirebaseException catch (e) {
       state = AsyncValue.error('', StackTrace.current);

@@ -9,6 +9,7 @@ import 'package:tour_a_vlog/1_common/widgets/error_screen.dart';
 import 'package:tour_a_vlog/2_splash_onBoarding/screens/onboarding.dart';
 import 'package:tour_a_vlog/3_auth/controller/user_controller.dart';
 import 'package:tour_a_vlog/4_home_navigation/bottom_navigation.dart';
+import 'package:tour_a_vlog/4_home_navigation/controller/notification_controller.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -49,6 +50,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final notifications = ref.watch(notificationControllerProvider);
+    notifications.when(
+      data: (data) {},
+      error: (error, stackTrace) {},
+      loading: () {},
+    );
     final size = MediaQuery.of(context).size;
     final currentUser = ref.watch(userControllerProvider);
     ref.listen(userControllerProvider, (previous, next) {

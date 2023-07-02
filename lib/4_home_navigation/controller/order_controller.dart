@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tour_a_vlog/1_common/models/order_model.dart';
 import 'package:tour_a_vlog/1_common/models/tour_model.dart';
 import 'package:tour_a_vlog/3_auth/controller/user_controller.dart';
+import 'package:tour_a_vlog/4_home_navigation/controller/notification_controller.dart';
 
 part 'order_controller.g.dart';
 
@@ -36,13 +37,20 @@ OrderController orderController(OrderControllerRef ref) {
   return OrderController(
     FirebaseDatabase.instance,
     ref.watch(userControllerProvider.notifier),
+    ref.watch(notificationControllerProvider.notifier),
   );
 }
 
 class OrderController {
   final FirebaseDatabase dbInstance;
   final UserController userController;
-  OrderController(this.dbInstance, this.userController);
+  final NotificationController notificationController;
+
+  OrderController(
+    this.dbInstance,
+    this.userController,
+    this.notificationController,
+  );
 
   Future<List<OrderModel>> getByCurrentUser() async {
     final user = await userController.getCurrentUser();
@@ -104,7 +112,12 @@ class OrderController {
         'totalPrice': totalPrice,
         'bookingDate': bookingDate.toString(),
       });
-      return '';
+
+      final errMsg = await notificationController.add(
+        title: 'New Order Added',
+        description: 'Journey to ${tour.title} with orderId $uid',
+      );
+      return errMsg;
     } on FirebaseException catch (e) {
       return e.toString();
     }

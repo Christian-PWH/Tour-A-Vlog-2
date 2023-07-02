@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
+import 'package:tour_a_vlog/1_common/models/notification_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:tour_a_vlog/1_common/widgets/column_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,27 +16,9 @@ class NotificationScreen extends ConsumerStatefulWidget {
 }
 
 class _NotificationScreenState extends ConsumerState<NotificationScreen> {
-  final todayNotification = [
-    {
-      "icon": "assets/notification/Group.png",
-      "title": "Flight booking",
-      "text1": "Congretulation! your flight",
-      "text2": "Air india's",
-      "text3": "ticket is book successfully.",
-    },
-    {
-      "icon": "assets/notification/ri_hotel-line.png",
-      "title": "Hotel booking",
-      "text1": "Congretulation! your",
-      "text2": "Hilton hotel",
-      "text3": "ticket is book successfully",
-    },
-  ];
-
   @override
   void initState() {
     super.initState();
-    // ref.read(notificationControllerProvider.notifier).add('Kamikaze');
   }
 
   @override
@@ -70,9 +53,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
           ),
         ),
       ),
-      body: (todayNotification.isEmpty)
-          ? emptyNotification()
-          : notificationList(size),
+      body: notificationList(size),
     );
   }
 
@@ -80,21 +61,20 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
     final notifications = ref.watch(notificationControllerProvider);
     return notifications.when(
       data: (data) {
-        return ListView.builder(
-          itemCount: data.length,
-          itemBuilder: (context, index) {
-            return ListTile(title: Text(data[index]));
-          },
-        );
-        // return ListView(
-        //   physics: const BouncingScrollPhysics(),
-        //   children: [
-        //     todayNotification.isEmpty
-        //         ? Container()
-        //         : todayNotificationList(size),
-        //     // olderNotification.isEmpty ? Container() : olderNotificationList(size)
-        //   ],
+        // return ListView.builder(
+        //   itemCount: data.length,
+        //   itemBuilder: (context, index) {
+        //     return ListTile(title: Text(data[index].title));
+        //   },
         // );
+        if (data.isEmpty) return emptyNotification();
+        return ListView(
+          physics: const BouncingScrollPhysics(),
+          children: [
+            todayNotificationList(size, data),
+            // olderNotification.isEmpty ? Container() : olderNotificationList(size)
+          ],
+        );
       },
       loading: () {
         return const Center(child: CircularProgressIndicator());
@@ -125,112 +105,99 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
     );
   }
 
-  Widget todayNotificationList(Size size) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            left: fixPadding * 2,
-            right: fixPadding * 2,
-            top: fixPadding * 2,
-          ),
-          child: Text(
-            getTranslate(context, 'notification.new_notification'),
-            style: semibold16black,
-          ),
-        ),
-        ColumnBuilder(
-          itemCount: todayNotification.length,
-          itemBuilder: (context, index) {
-            return Dismissible(
-              key: UniqueKey(),
-              onDismissed: (direction) {
-                setState(() {
-                  todayNotification.removeAt(index);
-                });
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(getTranslate(
-                        context, 'notification.remove_notification')),
-                    backgroundColor: blackColor,
-                    duration: const Duration(milliseconds: 1500),
-                    behavior: SnackBarBehavior.floating,
-                  ),
-                );
-              },
-              background: Container(
-                color: Colors.red,
-                margin: const EdgeInsets.symmetric(vertical: fixPadding),
-              ),
-              child: Container(
-                margin: const EdgeInsets.symmetric(
-                    horizontal: fixPadding * 2, vertical: fixPadding),
-                padding: const EdgeInsets.all(fixPadding),
-                decoration: BoxDecoration(
-                  color: whiteColor,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: grey94Color.withOpacity(0.5),
-                      blurRadius: 5,
-                    )
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    // Container(
-                    //   height: size.height * 0.065,
-                    //   width: size.height * 0.065,
-                    //   decoration: const BoxDecoration(
-                    //     shape: BoxShape.circle,
-                    //     gradient: LinearGradient(
-                    //         colors: gradient,
-                    //         begin: Alignment.topLeft,
-                    //         end: Alignment.bottomRight),
-                    //   ),
-                    //   alignment: Alignment.center,
-                    //   child: Image.asset(
-                    //     todayNotification[index]['icon'].toString(),
-                    //     height: size.height * 0.03,
-                    //     width: size.height * 0.03,
-                    //     fit: BoxFit.cover,
-                    //   ),
-                    // ),
-                    // widthSpace,
-                    // widthSpace,
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            todayNotification[index]['title'].toString(),
-                            style: semibold16black,
-                          ),
-                          heightBox(3),
-                          RichText(
-                            text: TextSpan(
-                              text: todayNotification[index]['text1'],
-                              style: semibold14black.copyWith(
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                          heightBox(3),
-                          const Text(
-                            "2 min ago",
-                            style: regular12grey,
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+  Widget todayNotificationList(
+    Size size,
+    List<NotificationModel> notifications,
+  ) {
+    return ColumnBuilder(
+      itemCount: notifications.length,
+      itemBuilder: (context, index) {
+        return Dismissible(
+          key: UniqueKey(),
+          onDismissed: (direction) {
+            ref
+                .read(notificationControllerProvider.notifier)
+                .remove(notifications[index]);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                    getTranslate(context, 'notification.remove_notification')),
+                backgroundColor: blackColor,
+                duration: const Duration(milliseconds: 1500),
+                behavior: SnackBarBehavior.floating,
               ),
             );
           },
-        ),
-      ],
+          background: Container(
+            color: Colors.red,
+            margin: const EdgeInsets.symmetric(vertical: fixPadding),
+          ),
+          child: Container(
+            margin: const EdgeInsets.symmetric(
+                horizontal: fixPadding * 2, vertical: fixPadding),
+            padding: const EdgeInsets.all(fixPadding),
+            decoration: BoxDecoration(
+              color: whiteColor,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: grey94Color.withOpacity(0.5),
+                  blurRadius: 5,
+                )
+              ],
+            ),
+            child: Row(
+              children: [
+                // Container(
+                //   height: size.height * 0.065,
+                //   width: size.height * 0.065,
+                //   decoration: const BoxDecoration(
+                //     shape: BoxShape.circle,
+                //     gradient: LinearGradient(
+                //         colors: gradient,
+                //         begin: Alignment.topLeft,
+                //         end: Alignment.bottomRight),
+                //   ),
+                //   alignment: Alignment.center,
+                //   child: Image.asset(
+                //     todayNotification[index]['icon'].toString(),
+                //     height: size.height * 0.03,
+                //     width: size.height * 0.03,
+                //     fit: BoxFit.cover,
+                //   ),
+                // ),
+                // widthSpace,
+                // widthSpace,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        notifications[index].title,
+                        style: semibold16black,
+                      ),
+                      heightBox(3),
+                      RichText(
+                        text: TextSpan(
+                          text: notifications[index].description,
+                          style: semibold14black.copyWith(
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      heightBox(3),
+                      Text(
+                        notifications[index].date.toString(),
+                        style: regular12grey,
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
