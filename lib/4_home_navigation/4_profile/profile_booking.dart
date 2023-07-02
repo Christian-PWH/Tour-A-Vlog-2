@@ -3,6 +3,7 @@ import 'package:tour_a_vlog/1_common/localization/currency_formatter.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/models/order_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
+import 'package:tour_a_vlog/1_common/widgets/show_snackbar.dart';
 import 'package:tour_a_vlog/4_home_navigation/controller/order_controller.dart';
 import 'package:tour_a_vlog/4_home_navigation/controller/profile_booking_vm.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -332,32 +333,48 @@ class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
                             style: semibold18white,
                           ),
                         ),
-                      )
+                      ),
+                (status != 'history')
+                    ? Container()
+                    : GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            ReviewScreen.routeName,
+                            arguments: orderItem.tour.id,
+                          );
+                        },
+                        child: Container(
+                          width: 100.0,
+                          height: 40.0,
+                          decoration: BoxDecoration(
+                            color: Colors.lightBlue,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: primaryColor.withOpacity(0.25),
+                                blurRadius: 5,
+                              )
+                            ],
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            getTranslate(context, 'booking.review'),
+                            style: semibold18white,
+                          ),
+                        ),
+                      ),
               ],
             ),
-
-            /// TODO UI nya menggigil 🥶
-            (status != 'history')
-                ? Container()
-                : ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        ReviewScreen.routeName,
-                        arguments: orderItem.tour.id,
-                      );
-                    },
-                    child: const Text('Write a review'),
-                  ),
           ],
         ),
       ),
     );
   }
 
-  Future<void> showCancelDialog(context, OrderModel order) async {
+  Future<void> showCancelDialog(rootContext, OrderModel order) async {
     return await showDialog(
-      context: context,
+      context: rootContext,
       builder: (context) => AlertDialog(
         icon: const Icon(
           Icons.warning,
@@ -408,13 +425,12 @@ class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
           GestureDetector(
             onTap: () async {
               Navigator.pop(context);
-              // ref.read(orderControllerProvider.)
               final errMsg = await ref
                   .read(getBookingHistoryProvider.notifier)
                   .delete(order);
               if (errMsg.isEmpty) return;
-
-              /// TODO Show Error
+              showSnackBar(rootContext, Icons.cancel_outlined, Colors.red,
+                  errMsg.toString(), Colors.red);
             },
             child: Container(
               width: 100.0,

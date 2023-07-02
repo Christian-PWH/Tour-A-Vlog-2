@@ -203,7 +203,8 @@
     "cancel": "Cancel",
     "cancel_dialog_title": "Are you sure?",
     "cancel_dialog_desc": "are you sure want to cancel this order?",
-    "confirm": "Yes"
+    "confirm": "Yes",
+    "review": "Review"
   },
   "edit_profile": {
     "edit_profile": "Edit profile",
@@ -273,7 +274,8 @@
   },
   "review": {
     "review": "Review",
-    "input_review": "Input your review"
+    "input_review": "Input your review",
+    "input_rating": "Ratings :"
   },
   "search": {
     "trending_search": "Trending search",

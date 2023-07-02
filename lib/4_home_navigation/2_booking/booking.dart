@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
-import 'package:tour_a_vlog/1_common/models/city_model.dart';
+// import 'package:tour_a_vlog/1_common/models/city_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
-import 'package:tour_a_vlog/1_common/widgets/column_builder.dart';
+// import 'package:tour_a_vlog/1_common/widgets/column_builder.dart';
 import 'package:tour_a_vlog/4_home_navigation/2_booking/open_trip.dart';
 import 'package:tour_a_vlog/4_home_navigation/2_booking/private_tour.dart';
-import 'package:tour_a_vlog/4_home_navigation/controller/city_controller.dart';
+// import 'package:tour_a_vlog/4_home_navigation/controller/city_controller.dart';
 import 'package:tour_a_vlog/5_pages/2_holiday_package/holiday_packages.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -221,7 +221,7 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
   }
 
   topImageContainer(Size size, BuildContext context) {
-    final List<CityModel> data = [];
+    // final List<CityModel> data = [];
     return Container(
       height: size.height * 0.21,
       width: double.infinity,
@@ -240,30 +240,30 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             heightSpace,
-            InkWell(
-              onTap: () {
-                selectCityDialog(
-                  context,
-                  size,
-                  data,
-                );
-              },
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.location_on,
-                    color: whiteColor,
-                    size: 18,
-                  ),
-                  width5Space,
-                  Text(
-                    ref.watch(selectedCityNameProvider),
-                    style: semibold14white,
-                  ),
-                  const Icon(Icons.keyboard_arrow_down, color: whiteColor)
-                ],
-              ),
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     selectCityDialog(
+            //       context,
+            //       size,
+            //       data,
+            //     );
+            //   },
+            //   child: Row(
+            //     children: [
+            //       const Icon(
+            //         Icons.location_on,
+            //         color: whiteColor,
+            //         size: 18,
+            //       ),
+            //       width5Space,
+            //       Text(
+            //         ref.watch(selectedCityNameProvider),
+            //         style: semibold14white,
+            //       ),
+            //       const Icon(Icons.keyboard_arrow_down, color: whiteColor)
+            //     ],
+            //   ),
+            // ),
             const Spacer(),
             Text(
               getTranslate(context, 'book.book_now'),
@@ -277,71 +277,71 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
     );
   }
 
-  selectCityDialog(context, Size size, List<CityModel> data) {
-    return showDialog(
-      barrierColor: blackColor.withOpacity(0.3),
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(builder: (context, set) {
-          return AlertDialog(
-            scrollable: true,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            titlePadding: const EdgeInsets.only(top: fixPadding * 2),
-            title: Center(
-              child: Text(
-                getTranslate(context, 'book.select_city'),
-                style: medium18black,
-              ),
-            ),
-            content: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: fixPadding),
-              child: ColumnBuilder(
-                itemCount: data.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    onTap: () {
-                      ref
-                          .watch(selectedCityNameProvider.notifier)
-                          .update((state) => data[index].title);
-                      Navigator.pop(context);
-                    },
-                    leading: Container(
-                      height: size.height * 0.035,
-                      width: size.height * 0.035,
-                      decoration: BoxDecoration(
-                        color: whiteColor,
-                        shape: BoxShape.circle,
-                        border: ref.watch(selectedCityNameProvider) ==
-                                data[index].title
-                            ? Border.all(
-                                color: primaryColor,
-                                width: 8,
-                              )
-                            : null,
-                        boxShadow: [
-                          BoxShadow(
-                            color: grey94Color.withOpacity(0.5),
-                            blurRadius: 5,
-                          )
-                        ],
-                      ),
-                    ),
-                    minLeadingWidth: 10,
-                    title: Text(
-                      data[index].title,
-                      style: medium16black,
-                    ),
-                  );
-                },
-              ),
-            ),
-          );
-        });
-      },
-    );
-  }
+// selectCityDialog(context, Size size, List<CityModel> data) {
+//   return showDialog(
+//     barrierColor: blackColor.withOpacity(0.3),
+//     context: context,
+//     builder: (context) {
+//       return StatefulBuilder(builder: (context, set) {
+//         return AlertDialog(
+//           scrollable: true,
+//           contentPadding:
+//               const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(10),
+//           ),
+//           titlePadding: const EdgeInsets.only(top: fixPadding * 2),
+//           title: Center(
+//             child: Text(
+//               getTranslate(context, 'book.select_city'),
+//               style: medium18black,
+//             ),
+//           ),
+//           content: Padding(
+//             padding: const EdgeInsets.symmetric(horizontal: fixPadding),
+//             child: ColumnBuilder(
+//               itemCount: data.length,
+//               itemBuilder: (context, index) {
+//                 return ListTile(
+//                   onTap: () {
+//                     ref
+//                         .watch(selectedCityNameProvider.notifier)
+//                         .update((state) => data[index].title);
+//                     Navigator.pop(context);
+//                   },
+//                   leading: Container(
+//                     height: size.height * 0.035,
+//                     width: size.height * 0.035,
+//                     decoration: BoxDecoration(
+//                       color: whiteColor,
+//                       shape: BoxShape.circle,
+//                       border: ref.watch(selectedCityNameProvider) ==
+//                               data[index].title
+//                           ? Border.all(
+//                               color: primaryColor,
+//                               width: 8,
+//                             )
+//                           : null,
+//                       boxShadow: [
+//                         BoxShadow(
+//                           color: grey94Color.withOpacity(0.5),
+//                           blurRadius: 5,
+//                         )
+//                       ],
+//                     ),
+//                   ),
+//                   minLeadingWidth: 10,
+//                   title: Text(
+//                     data[index].title,
+//                     style: medium16black,
+//                   ),
+//                 );
+//               },
+//             ),
+//           ),
+//         );
+//       });
+//     },
+//   );
+// }
 }

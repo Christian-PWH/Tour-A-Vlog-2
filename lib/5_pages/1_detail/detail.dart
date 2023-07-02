@@ -60,40 +60,40 @@ class _DetailScreenState extends ConsumerState<DetailScreen>
                 color: whiteColor,
               ),
             ),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    isFavorite = !isFavorite;
-                  });
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: blackColor,
-                      content: isFavorite == true
-                          ? Text(getTranslate(
-                              context, 'favorite_add_remove.added_favorites'))
-                          : Text(getTranslate(context,
-                              'favorite_add_remove.removed_favorites')),
-                      duration: const Duration(milliseconds: 1500),
-                      behavior: SnackBarBehavior.floating,
-                    ),
-                  );
-                },
-                icon: Icon(
-                  isFavorite ? Icons.favorite : Icons.favorite_border,
-                  size: 22,
-                  color: whiteColor,
-                ),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.share,
-                  color: whiteColor,
-                  size: 22,
-                ),
-              )
-            ],
+            // actions: [
+            //   IconButton(
+            //     onPressed: () {
+            //       setState(() {
+            //         isFavorite = !isFavorite;
+            //       });
+            //       ScaffoldMessenger.of(context).showSnackBar(
+            //         SnackBar(
+            //           backgroundColor: blackColor,
+            //           content: isFavorite == true
+            //               ? Text(getTranslate(
+            //                   context, 'favorite_add_remove.added_favorites'))
+            //               : Text(getTranslate(context,
+            //                   'favorite_add_remove.removed_favorites')),
+            //           duration: const Duration(milliseconds: 1500),
+            //           behavior: SnackBarBehavior.floating,
+            //         ),
+            //       );
+            //     },
+            //     icon: Icon(
+            //       isFavorite ? Icons.favorite : Icons.favorite_border,
+            //       size: 22,
+            //       color: whiteColor,
+            //     ),
+            //   ),
+            //   IconButton(
+            //     onPressed: () {},
+            //     icon: const Icon(
+            //       Icons.share,
+            //       color: whiteColor,
+            //       size: 22,
+            //     ),
+            //   )
+            // ],
             flexibleSpace: FlexibleSpaceBar(
               background: Image.asset(
                 "assets/auth/signin.png",
@@ -214,19 +214,19 @@ class _DetailScreenState extends ConsumerState<DetailScreen>
                                   },
                                 ),
                               ),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    isFavorite == true
-                                        ? Icons.favorite
-                                        : Icons.favorite_border,
-                                    size: 20,
-                                    color: whiteColor,
-                                  ),
-                                ),
-                              )
+                              // Align(
+                              //   alignment: Alignment.topRight,
+                              //   child: IconButton(
+                              //     onPressed: () {},
+                              //     icon: Icon(
+                              //       isFavorite == true
+                              //           ? Icons.favorite
+                              //           : Icons.favorite_border,
+                              //       size: 20,
+                              //       color: whiteColor,
+                              //     ),
+                              //   ),
+                              // )
                             ],
                           ),
                           height5Space,

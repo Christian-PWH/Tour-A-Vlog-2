@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/models/review_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tour_a_vlog/3_auth/controller/user_controller.dart';
+import 'package:tour_a_vlog/4_home_navigation/4_profile/controller/review_vm.dart';
 import 'package:tour_a_vlog/4_home_navigation/controller/review_controller.dart';
 
 class ReviewScreen extends ConsumerStatefulWidget {
   static const routeName = '/review';
 
   final String tourId;
+
   const ReviewScreen({super.key, required this.tourId});
 
   @override
@@ -33,12 +36,11 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
 
   final _commentCtl = TextEditingController();
 
-  /// TODO Input untuk star -> Widgetnya gt
-  int star = 5;
+  late int star;
 
   void submit() async {
     debugPrint('SUBMIT');
-    if (_commentCtl.text.trim().isEmpty || star < 0 || star > 5) return;
+    if (_commentCtl.text.trim().isEmpty || star <= 0 || star > 5) return;
     final errMsg = await ref.read(reviewControllerProvider).save(
           tourId: tourId,
           star: star,
@@ -64,6 +66,7 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    star = ref.watch(reviewStarProvider);
     return Scaffold(
         backgroundColor: whiteColor,
         appBar: AppBar(
@@ -97,12 +100,59 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
             Expanded(
               child: reviewList(size),
             ),
+            SizedBox(
+              width: size.width,
+              height: 100.0,
+              child: Card(
+                elevation: 5.0,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        getTranslate(context, 'review.input_rating'),
+                        style: semibold14black,
+                      ),
+                      Center(
+                        child: RatingBar.builder(
+                          initialRating: star.toDouble(),
+                          direction: Axis.horizontal,
+                          allowHalfRating: false,
+                          unratedColor: Colors.amber.withAlpha(50),
+                          itemCount: 5,
+                          itemSize: 50.0,
+                          itemPadding:
+                              const EdgeInsets.symmetric(horizontal: 4.0),
+                          itemBuilder: (context, _) => const Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          onRatingUpdate: (rating) {
+                            ref.read(reviewStarProvider.notifier).state =
+                                rating.toInt();
+                          },
+                          updateOnDrag: true,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
             Row(
               children: [
                 Expanded(
                   child: Container(
+                    height: 100.0,
                     padding:
                         const EdgeInsets.symmetric(horizontal: fixPadding * 2),
+                    margin:
+                        const EdgeInsets.symmetric(vertical: fixPadding * 2),
                     decoration: BoxDecoration(
                       color: whiteColor,
                       borderRadius: BorderRadius.circular(10),
@@ -121,8 +171,6 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
                       child: TextField(
                         controller: _commentCtl,
                         keyboardType: TextInputType.name,
-                        maxLines: 3,
-                        minLines: 1,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText:

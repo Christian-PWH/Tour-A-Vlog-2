@@ -7,6 +7,7 @@ import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/models/tour_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
 import 'package:tour_a_vlog/1_common/widgets/column_builder.dart';
+import 'package:tour_a_vlog/1_common/widgets/show_snackbar.dart';
 import 'package:tour_a_vlog/4_home_navigation/controller/favorite_controller.dart';
 import 'package:tour_a_vlog/4_home_navigation/controller/review_controller.dart';
 import 'package:tour_a_vlog/5_pages/1_review/review.dart';
@@ -86,16 +87,16 @@ class _PackageDetailState extends ConsumerState<PackageDetail> {
                     final errMsg = await ref
                         .watch(favoriteControllerProvider.notifier)
                         .remove(tour.id);
-
-                    /// TODO sebelum return, kasih error snackbar
-                    if (errMsg.isNotEmpty) return;
+                    if (errMsg.isEmpty) return;
+                    showSnackBar(context, Icons.cancel_outlined, Colors.red,
+                        errMsg.toString(), Colors.red);
                   } else {
                     final errMsg = await ref
                         .watch(favoriteControllerProvider.notifier)
                         .save(tour.id);
-
-                    /// TODO sebelum return, kasih error snackbar
-                    if (errMsg.isNotEmpty) return;
+                    if (errMsg.isEmpty) return;
+                    showSnackBar(context, Icons.cancel_outlined, Colors.red,
+                        errMsg.toString(), Colors.red);
                   }
 
                   ScaffoldMessenger.of(context).showSnackBar(

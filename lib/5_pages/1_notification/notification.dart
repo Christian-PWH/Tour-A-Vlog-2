@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tour_a_vlog/1_common/localization/localization_const.dart';
 import 'package:tour_a_vlog/1_common/models/notification_model.dart';
 import 'package:tour_a_vlog/1_common/theme/theme.dart';
@@ -187,7 +188,9 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
                       ),
                       heightBox(3),
                       Text(
-                        notifications[index].date.toString(),
+                        DateFormat('E, d MMM yyyy HH:mm')
+                            .format(notifications[index].date!)
+                            .toString(),
                         style: regular12grey,
                       )
                     ],

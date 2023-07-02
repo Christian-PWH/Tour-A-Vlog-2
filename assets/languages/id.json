@@ -203,7 +203,8 @@
     "cancel": "Batal",
     "cancel_dialog_title": "Apa anda yakin?",
     "cancel_dialog_desc": "apa anda yakin untuk membatalkan pesanan ini?",
-    "confirm": "Ya"
+    "confirm": "Ya",
+    "review": "Ulasan"
   },
   "edit_profile": {
     "edit_profile": "Ubah profil",
@@ -273,7 +274,8 @@
   },
   "review": {
     "review": "Ulasan",
-    "input_review": "Berikan ulasan mu"
+    "input_review": "Berikan ulasan mu",
+    "input_rating": "Peringkat :"
   },
   "search": {
     "trending_search": "Pencarian tren",
