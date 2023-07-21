@@ -26,32 +26,30 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final reviews = ref.watch(getReviewByTourIdProvider(tourId: tourId));
-    reviews.whenData((value) => alreadyCommentCheck(value));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final reviews = ref.watch(getReviewByTourIdProvider(tourId: tourId));
+      reviews.whenData((value) => alreadyCommentCheck(value));
+    });
   }
 
   final _commentCtl = TextEditingController();
 
-  late int star;
-
   void submit(context) async {
     debugPrint('SUBMIT');
+    int star = ref.read(reviewStarProvider);
     if (_commentCtl.text.trim().isEmpty || star <= 0 || star > 5) return;
     final errMsg = await ref.read(reviewControllerProvider).save(
           tourId: tourId,
           star: star,
           comment: _commentCtl.text.trim(),
         );
-    if (errMsg.isNotEmpty) return;
+    if (errMsg.isEmpty) {
+      // await ref.refresh(getReviewByTourIdProvider(tourId: tourId).future);
+      ref.invalidate(getReviewByTourIdProvider(tourId: tourId));
+      return;
+    }
     showSnackBar(context, Icons.cancel_outlined, Colors.red, errMsg.toString(),
         Colors.red);
-    // ignore: unused_result
-    await ref.refresh(getReviewByTourIdProvider(tourId: tourId).future);
   }
 
   void alreadyCommentCheck(List<ReviewModel> data) async {
@@ -63,13 +61,14 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
 
     /// wanna update comment
     _commentCtl.text = data[idx].comment;
-    star = data[idx].star;
+    // star = data[idx].star;
+    ref.read(reviewStarProvider.notifier).update((state) => data[idx].star);
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    star = ref.watch(reviewStarProvider);
+    int star = ref.watch(reviewStarProvider);
     return Scaffold(
         backgroundColor: whiteColor,
         appBar: AppBar(
