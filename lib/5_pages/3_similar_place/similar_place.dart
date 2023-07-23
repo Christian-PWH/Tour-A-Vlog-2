@@ -152,7 +152,7 @@ class _SimilarPlaceState extends State<SimilarPlace> {
           heightSpace,
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, ReviewScreen.routeName);
+              // Navigator.pushNamed(context, ReviewScreen.routeName);
             },
             child: Container(
               height: size.height * 0.07,

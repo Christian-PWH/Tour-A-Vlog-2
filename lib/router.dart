@@ -89,10 +89,15 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return PageTransition(
           child: const SuccessScreen(), type: PageTransitionType.leftToRight);
     case '/review':
-      final tourId = routeSettings.arguments as String;
+      // final tourId = routeSettings.arguments as String;
+      final arguments = routeSettings.arguments as ReviewScreenArguments;
       return PageTransition(
-          child: ReviewScreen(tourId: tourId),
-          type: PageTransitionType.leftToRight);
+        child: ReviewScreen(
+          tourId: arguments.tourId,
+          canEdit: arguments.canEdit,
+        ),
+        type: PageTransitionType.leftToRight,
+      );
 
     ///home - 3
     case '/recommendation':

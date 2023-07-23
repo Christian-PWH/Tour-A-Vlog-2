@@ -7,6 +7,11 @@ import 'package:tour_a_vlog/3_auth/controller/user_controller.dart';
 
 part 'notification_controller.g.dart';
 
+// @Riverpod(keepAlive: true)
+// int notificationCount(NotificationCountRef ref) {
+//   return 0;
+// }
+
 @Riverpod(keepAlive: true)
 class NotificationController extends _$NotificationController {
   late final FirebaseDatabase _dbInstance;
@@ -42,7 +47,9 @@ class NotificationController extends _$NotificationController {
     final currentUser = await _userController.getCurrentUser();
     if (currentUser == null) return;
 
-    final ref = _dbInstance.ref('Users/${currentUser.uid}/notifications');
+    final ref = _dbInstance
+        .ref('Users/${currentUser.uid}/notifications')
+        .orderByChild('date');
     ref.onChildAdded.listen((event) {
       debugPrint("Listen onChildAdded");
       debugPrint(event.snapshot.value.toString());
@@ -52,7 +59,7 @@ class NotificationController extends _$NotificationController {
       extractedMap['id'] = event.snapshot.key;
       final notifications = NotificationModel.fromMap(extractedMap);
       final oldNotifications = state.asData?.value ?? [];
-      state = AsyncValue.data([...oldNotifications, notifications]);
+      state = AsyncValue.data([notifications, ...oldNotifications]);
     });
 
     ref.onChildRemoved.listen((event) {

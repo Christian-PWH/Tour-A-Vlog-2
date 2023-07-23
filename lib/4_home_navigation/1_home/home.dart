@@ -565,6 +565,46 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
+  /// For future use, if new notification added, show number on icon
+  Widget iconNotification(int newNotificationAdded) {
+    if (newNotificationAdded == 0) {
+      return Positioned(
+        right: 5,
+        top: 5,
+        child: Container(
+          height: 6,
+          width: 6,
+          decoration: const BoxDecoration(
+            color: Color(0xffEC2727),
+            shape: BoxShape.circle,
+          ),
+        ),
+      );
+    }
+    return Positioned(
+      right: 0,
+      top: 0,
+      child: Container(
+        height: 18,
+        width: 18,
+        decoration: const BoxDecoration(
+          color: Color(0xffEC2727),
+          shape: BoxShape.circle,
+        ),
+        child: const Center(
+          child: Text(
+            '',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget topImageContainer(
     Size size,
     BuildContext context,
@@ -661,18 +701,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           size: 24,
                         ),
                       ),
-                      Positioned(
-                        right: 5,
-                        top: 5,
-                        child: Container(
-                          height: 6,
-                          width: 6,
-                          decoration: const BoxDecoration(
-                            color: Color(0xffEC2727),
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                      ),
+                      iconNotification(0),
                     ],
                   ),
                 )

@@ -7,7 +7,7 @@ part of 'notification_controller.dart';
 // **************************************************************************
 
 String _$notificationControllerHash() =>
-    r'7f3665cd2ef171fa6e0fe011c88ed126d9511c0e';
+    r'c0644b908515b4c8f3ac8fcf8423903959bb3468';
 
 /// See also [NotificationController].
 @ProviderFor(NotificationController)

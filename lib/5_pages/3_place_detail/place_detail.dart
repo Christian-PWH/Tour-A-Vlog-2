@@ -155,7 +155,7 @@ class _PlaceDetailState extends State<PlaceDetail> {
           heightSpace,
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, ReviewScreen.routeName);
+              // Navigator.pushNamed(context, ReviewScreen.routeName);
             },
             child: Container(
               height: size.height * 0.07,

@@ -17,15 +17,22 @@ part 'order_controller.g.dart';
 @riverpod
 class GetBookingHistory extends _$GetBookingHistory {
   late final OrderController _orderController;
+  late final NotificationController _notificationController;
   @override
   FutureOr<List<OrderModel>> build() {
     _orderController = ref.watch(orderControllerProvider);
+    _notificationController =
+        ref.watch(notificationControllerProvider.notifier);
     return _orderController.getByCurrentUser();
   }
 
   FutureOr<String> delete(OrderModel order) async {
     state = await AsyncValue.guard(() async {
       await _orderController.delete(order);
+      _notificationController.add(
+          title: "New Order Canceled",
+          description:
+              "Order to ${order.tour.title} with orderId ${order.id} has been canceled");
       return _orderController.getByCurrentUser();
     });
     return '';

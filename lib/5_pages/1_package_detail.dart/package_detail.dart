@@ -269,7 +269,10 @@ class _PackageDetailState extends ConsumerState<PackageDetail> {
                         Navigator.pushNamed(
                           context,
                           ReviewScreen.routeName,
-                          arguments: tour.id,
+                          arguments: ReviewScreenArguments(
+                            tourId: tour.id,
+                            canEdit: false,
+                          ),
                         );
                       },
                       child: Column(

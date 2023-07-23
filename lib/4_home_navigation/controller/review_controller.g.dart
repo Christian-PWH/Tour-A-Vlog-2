@@ -111,7 +111,7 @@ class GetReviewByTourIdProvider
   }
 }
 
-String _$reviewControllerHash() => r'274549a16cd45e4cc4a23f7dda4e524bca7b6abe';
+String _$reviewControllerHash() => r'9293c143ac438f5ab4c6a8f99a7e386d52960ab4';
 
 /// See also [reviewController].
 @ProviderFor(reviewController)

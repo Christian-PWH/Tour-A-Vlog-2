@@ -2,8 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tour_a_vlog/1_common/models/review_model.dart';
+import 'package:tour_a_vlog/1_common/models/tour_model.dart';
 import 'package:tour_a_vlog/1_common/models/user_model.dart';
 import 'package:tour_a_vlog/3_auth/controller/user_controller.dart';
+import 'package:tour_a_vlog/4_home_navigation/controller/tour_controller.dart';
 
 part 'review_controller.g.dart';
 
@@ -26,16 +28,17 @@ FutureOr<List<ReviewModel>> getReviewByTourId(
 @Riverpod(keepAlive: true)
 ReviewController reviewController(ReviewControllerRef ref) {
   return ReviewController(
-    FirebaseDatabase.instance,
-    ref.watch(userControllerProvider.notifier),
-  );
+      FirebaseDatabase.instance,
+      ref.watch(userControllerProvider.notifier),
+      ref.watch(tourControllerProvider));
 }
 
 class ReviewController {
   final FirebaseDatabase dbInstance;
-  final UserController userController;
+  final UserController _userController;
+  final TourController _tourController;
 
-  ReviewController(this.dbInstance, this.userController);
+  ReviewController(this.dbInstance, this._userController, this._tourController);
 
   FutureOr<List<ReviewModel>> get(String tourId) async {
     final snapshot =
@@ -93,22 +96,18 @@ class ReviewController {
     required int star,
     required String comment,
   }) async {
-    final currentUser = await userController.getCurrentUser();
+    final currentUser = await _userController.getCurrentUser();
     if (currentUser == null) return '';
     try {
+      final TourModel? tour = await _tourController.getTourById(tourId);
+      if (tour == null) return 'This tour is no longer exists';
       final ref = dbInstance.ref('Items/$tourId/reviews/${currentUser.uid}');
       await ref.set({
         'userId': currentUser.uid,
         'star': star,
         'comment': comment,
       });
-      // final ref = dbInstance.ref('Items/$tourId/reviews');
-      // final newReviewRef = ref.push();
-      // await newReviewRef.set({
-      //   'userId': currentUser.uid,
-      //   'star': star,
-      //   'comment': comment,
-      // });
+
       return '';
     } on FirebaseException catch (e) {
       return e.toString();

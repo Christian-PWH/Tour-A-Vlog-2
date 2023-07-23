@@ -341,7 +341,10 @@ class _ProfileBookingScreenState extends ConsumerState<ProfileBookingScreen> {
                           Navigator.pushNamed(
                             context,
                             ReviewScreen.routeName,
-                            arguments: orderItem.tour.id,
+                            arguments: ReviewScreenArguments(
+                              tourId: orderItem.tour.id,
+                              canEdit: true,
+                            ),
                           );
                         },
                         child: Container(

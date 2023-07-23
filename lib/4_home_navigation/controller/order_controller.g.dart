@@ -21,7 +21,7 @@ final orderControllerProvider = Provider<OrderController>.internal(
 );
 
 typedef OrderControllerRef = ProviderRef<OrderController>;
-String _$getBookingHistoryHash() => r'f0fee415ddf1af6e4d07b697fc5ea3d21e941658';
+String _$getBookingHistoryHash() => r'2af80c4872f99e4d4cdadc1f24f23637455aa530';
 
 /// See also [GetBookingHistory].
 @ProviderFor(GetBookingHistory)
