@@ -35,7 +35,7 @@ class ReviewScreen extends ConsumerStatefulWidget {
 
 class _ReviewScreenState extends ConsumerState<ReviewScreen> {
   // String get tourId => widget.tourId;
-  String get tourId => "0909";
+  String get tourId => widget.tourId;
   bool get canEdit => widget.canEdit;
 
   @override
@@ -138,7 +138,9 @@ class _ReviewScreenState extends ConsumerState<ReviewScreen> {
     final reviews = ref.watch(getReviewByTourIdProvider(tourId: tourId));
     return reviews.when(
       data: (data) {
-        // for (int i = 0; i < data.length; i++) debugPrint(data[i].toString());
+        for (int i = 0; i < data.length; i++) {
+          debugPrint(data[i].toString());
+        }
         return ListView.builder(
           padding: const EdgeInsets.symmetric(
               horizontal: fixPadding * 2, vertical: fixPadding),
