@@ -19,9 +19,17 @@ class NotificationController extends _$NotificationController {
 
   @override
   FutureOr<List<NotificationModel>> build() {
+    debugPrint('notification_controller - build');
     _dbInstance = FirebaseDatabase.instance;
     _userController = ref.watch(userControllerProvider.notifier);
     _listenForChildEvent();
+    ref.listen(userControllerProvider, (previous, next) {
+      debugPrint("notification_controller - ref listen userControllerProvider");
+      if (!next.hasValue || next.value == null) {
+        return;
+      }
+      _listenForChildEvent();
+    });
     // return _get()
     return [];
   }
